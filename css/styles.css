@@ -42,16 +42,89 @@ body { background-color: var(--bg-light); }
 .msg { background-color: #006aff; }
 .wa { background-color: #25d366; }
 
-/* CABECERA */
+/* ==========================================
+   CABECERA SUPERIOR COMPLETA (CORREGIDO)
+   ========================================== */
 .top-header {
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 15px 50px; background-color: #fff;
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center;
+    padding: 15px 50px;
+    background-color: #fff;
+    font-family: 'Arial', sans-serif;
 }
-.hospital-logo-text { font-size: 1.6rem; color: var(--dark-blue); font-weight: 800; }
-.hospital-logo-text span { color: var(--primary-blue); }
-.contact-info { display: flex; gap: 30px; font-size: 0.85rem; }
-.info-item { display: flex; align-items: center; gap: 10px; color: var(--primary-blue); }
-.info-item span { color: var(--gray-text); }
+
+.logo-container {
+    display: flex;
+    align-items: center;
+}
+
+.hospital-logo-img {
+    height: 65px; /* Ajuste sutil de tamaño para que los textos queden bien encuadrados */
+    width: auto;  
+    display: block;
+    object-fit: contain;
+}
+
+/* Contenedor principal de los datos de contacto a la derecha */
+.contact-info { 
+    display: flex; 
+    gap: 40px; /* Separación prudente entre el bloque de correo y el de horario */
+}
+
+/* Bloques individuales de información */
+.info-item { 
+    display: flex; 
+    align-items: center; 
+    gap: 12px; 
+}
+
+/* Iconos celestes de gran tamaño como en el diseño original */
+.info-icon {
+    font-size: 1.8rem;
+    color: #00a8e8; /* Color celeste brillante institucional */
+}
+
+/* Estructura de las columnas de texto */
+.info-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.info-text strong {
+    font-size: 0.85rem;
+    color: #111;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.info-text span { 
+    font-size: 0.8rem;
+    color: #555; 
+    margin-top: 2px;
+}
+
+/* Alerta roja para el fin de semana */
+.highlight-red {
+    color: #e60000;
+    font-weight: bold;
+}
+
+/* Responsivo básico por si la pantalla es pequeña */
+@media (max-width: 992px) {
+    .top-header {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+    .contact-info {
+        flex-direction: column;
+        gap: 15px;
+    }
+    .info-item {
+        flex-direction: column;
+    }
+}
 
 /* ==========================================
    BARRA DE NAVEGACIÓN Y DROPDOWNS (CORREGIDO)
