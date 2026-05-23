@@ -10,7 +10,7 @@
 <body>
 
 <div class="side-social-bar">
-    <a href="https://www.facebook.com/hcaletachimbote" target="_blank" class="social-link fb" title="Facebook Oficial"><i class="fab fa-facebook-f"></i></a>
+    <a href="https://www.facebook.com/HospitalLaCaletaoficial/?locale=es_LA" target="_blank" class="social-link fb" title="Facebook Oficial"><i class="fab fa-facebook-f"></i></a>
     <a href="https://m.me/hcaletachimbote" target="_blank" class="social-link msg" title="Chat por Messenger"><i class="fab fa-facebook-messenger"></i></a>
     <a href="https://wa.me/51905471523" target="_blank" class="social-link wa" title="Consultas WhatsApp"><i class="fab fa-whatsapp"></i></a>
 </div>
@@ -223,6 +223,43 @@
         </div>
     </div>
 </section>
+
+<div class="chatbot-container">
+    <div class="chatbot-bubble" id="chat-bubble">
+        <i class="fas fa-comments-medical"></i>
+        <span class="bubble-notification">1</span>
+    </div>
+
+    <div class="chatbot-window id-hidden" id="chat-window">
+        <div class="chat-header">
+            <div class="chat-profile">
+                <i class="fas fa-user-md header-avatar"></i>
+                <div>
+                    <h4>Asistente Caleta</h4>
+                    <span>En línea • Triaje Virtual</span>
+                </div>
+            </div>
+            <button class="close-chat-btn" id="close-chat">&times;</button>
+        </div>
+
+        <div class="chat-body" id="chat-body">
+            <div class="message bot-msg">
+                <p>¡Hola! Bienvido al portal del Hospital La Caleta. Soy tu asistente virtual. ¿En qué puedo ayudarte hoy?</p>
+            </div>
+            
+            <div class="chat-options" id="initial-options">
+                <button class="option-btn" data-action="horarios">🕒 1. Ver Horarios de Atención</button>
+                <button class="option-btn" data-action="sis">📋 2. Requisitos para SIS</button>
+                <button class="option-btn" data-action="emergencia">🚨 3. Números de Emergencia</button>
+            </div>
+        </div>
+
+        <div class="chat-footer">
+            <input type="text" id="chat-input" placeholder="Escribe tu pregunta aquí...">
+            <button id="send-msg-btn"><i class="fas fa-paper-plane"></i></button>
+        </div>
+    </div>
+</div>
 
 <script src="js/script.js"></script>
 </body>

@@ -93,3 +93,152 @@ document.addEventListener("DOMContentLoaded", function() {
         window.addEventListener("resize", updateCarousel);
     }
 });
+
+// ==========================================
+// CHATBOT INTERACTIVO (TRIAJE VIRTUAL)
+// ==========================================
+document.addEventListener('DOMContentLoaded', () => {
+    const chatBubble = document.getElementById('chat-bubble');
+    const chatWindow = document.getElementById('chat-window');
+    const closeChat = document.getElementById('close-chat');
+    const chatBody = document.getElementById('chat-body');
+    const optionButtons = document.querySelectorAll('.option-btn');
+    
+    // Nuevas variables para la barra de texto
+    const chatInput = document.getElementById('chat-input');
+    const sendBtn = document.getElementById('send-msg-btn');
+
+    // Base de datos de respuestas
+    const respuestasBot = {
+        horarios: "🕒 <strong>Horarios de Atención:</strong><br>• <strong>Mesa de Partes:</strong> Lun a Vie de 08:00 AM a 15:30 PM.<br>• <strong>Consultorios Externos:</strong> Lun a Vie de 08:00 AM a 13:00 PM.",
+        sis: "📋 <strong>Requisitos de afiliación al SIS:</strong><br>1. Contar con DNI o Carné de Extranjería vigente.<br>2. No contar con otro seguro de salud activo.<br>3. Dirigirse a la oficina de Seguros del hospital con su documento.",
+        emergencia: "🚨 <strong>Números de Emergencia Directos:</strong><br>• Central de Emergencias: (043) 327589<br>• Línea Gratuita Nacional: 113 (MINSA)<br>• Atención SAMU Chimbote: 106"
+    };
+
+    // 1. Abrir ventana de chat
+    chatBubble.addEventListener('click', () => {
+        chatWindow.classList.remove('id-hidden');
+        const notification = chatBubble.querySelector('.bubble-notification');
+        if (notification) notification.style.display = 'none';
+    });
+
+    // 2. Cerrar ventana de chat
+    closeChat.addEventListener('click', () => {
+        chatWindow.classList.add('id-hidden');
+    });
+
+    // 3. Manejo del click en los botones de opciones fijas
+    optionButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const action = this.getAttribute('data-action');
+            if (!action) return; // Por si es el botón de reinicio
+            
+            inyectarMensajeUsuario(this.innerText);
+            responderBot(action);
+        });
+    });
+
+    // 4. Función para procesar y evaluar la PREGUNTA LIBRE por teclado
+    function procesarPreguntaLibre() {
+        const textoUsuario = chatInput.value.trim().toLowerCase();
+        if (textoUsuario === "") return;
+
+        // Mostramos el mensaje original escrito por el usuario
+        inyectarMensajeUsuario(chatInput.value);
+        chatInput.value = ""; // Limpiar la barra de texto
+
+        // Evaluamos mediante palabras clave qué responder
+        let accionDetectada = "desconocido";
+        if (textoUsuario.includes('hora') || textoUsuario.includes('horario') || textoUsuario.includes('atienden') || textoUsuario.includes('atencion')) {
+            accionDetectada = "horarios";
+        } else if (textoUsuario.includes('sis') || textoUsuario.includes('seguro') || textoUsuario.includes('afiliarme')) {
+            accionDetectada = "sis";
+        } else if (textoUsuario.includes('emergencia') || textoUsuario.includes('urgencia') || textoUsuario.includes('telefono') || textoUsuario.includes('numero')) {
+            accionDetectada = "emergencia";
+        }
+
+        responderBot(accionDetectada);
+    }
+
+    // Funciones auxiliares para no duplicar código
+    function inyectarMensajeUsuario(texto) {
+        const userDiv = document.createElement('div');
+        userDiv.className = 'message user-msg';
+        userDiv.innerHTML = `<p>${texto}</p>`;
+        chatBody.appendChild(userDiv);
+        chatBody.scrollTop = chatBody.scrollHeight;
+        
+        // Desactivamos el menú de botones iniciales para mantener el flujo limpio
+        const initialOptions = document.getElementById('initial-options');
+        if (initialOptions) {
+            initialOptions.style.pointerEvents = 'none';
+            initialOptions.style.opacity = '0.5';
+        }
+    }
+
+    function responderBot(accion) {
+        setTimeout(() => {
+            const botDiv = document.createElement('div');
+            botDiv.className = 'message bot-msg';
+
+            if (accion !== "desconocido") {
+                botDiv.innerHTML = `<p>${respuestasBot[accion]}</p>`;
+            } else {
+                botDiv.innerHTML = `<p>No logré entender tu consulta de forma exacta. Por favor, intenta usando palabras clave sencillas como <strong>"horarios"</strong>, <strong>"SIS"</strong> o <strong>"emergencia"</strong>.</p>`;
+            }
+
+            chatBody.appendChild(botDiv);
+
+            // CORREGIDO: Crea el botón "Hacer otra consulta" de forma independiente
+            const resetDiv = document.createElement('div');
+            resetDiv.className = 'chat-options';
+            resetDiv.innerHTML = `<button class="option-btn reset-flow-btn">🔄 Hacer otra consulta</button>`;
+            chatBody.appendChild(resetDiv);
+
+            // Asignar el evento para continuar la conversación sin borrar nada
+            resetDiv.querySelector('.reset-flow-btn').addEventListener('click', mostrarOpcionesNuevamente);
+
+            chatBody.scrollTop = chatBody.scrollHeight;
+        }, 600);
+    }
+
+    // NUEVA FUNCIÓN: Continúa la conversación agregando nuevas opciones abajo
+    function mostrarOpcionesNuevamente(e) {
+        // 1. Ocultamos el botón de reinicio al que le acabamos de dar clic para que no estorbe
+        e.target.parentElement.remove();
+
+        // 2. Creamos un nuevo bloque de opciones interactivas frescas
+        const nuevasOpcionesDiv = document.createElement('div');
+        nuevasOpcionesDiv.className = 'chat-options';
+        nuevasOpcionesDiv.innerHTML = `
+            <button class="option-btn" data-action="horarios">🕒 1. Ver Horarios de Atención</button>
+            <button class="option-btn" data-action="sis">📋 2. Requisitos para SIS</button>
+            <button class="option-btn" data-action="emergencia">🚨 3. Números de Emergencia</button>
+        `;
+
+        // 3. Lo agregamos al final del cuerpo del chat
+        chatBody.appendChild(nuevasOpcionesDiv);
+
+        // 4. Le enlazamos la lógica de clics a este nuevo grupo de botones
+        const nuevosBotones = nuevasOpcionesDiv.querySelectorAll('.option-btn');
+        nuevosBotones.forEach(button => {
+            button.addEventListener('click', function() {
+                const action = this.getAttribute('data-action');
+                if (!action) return;
+                
+                inyectarMensajeUsuario(this.innerText);
+                responderBot(action);
+            });
+        });
+
+        // 5. Scroll automático para enfocar los nuevos botones abajo
+        chatBody.scrollTop = chatBody.scrollHeight;
+        chatInput.value = ""; // Limpiar el teclado por si acaso
+    }
+
+    // 5. Oyentes de eventos para la barra de texto (Click y Tecla Enter)
+    sendBtn.addEventListener('click', procesarPreguntaLibre);
+    chatInput.addEventListener('keypress', (e) => { 
+        if (e.key === 'Enter') procesarPreguntaLibre(); 
+    });
+});
