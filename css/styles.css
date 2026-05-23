@@ -345,3 +345,150 @@ body { background-color: var(--bg-light); }
         height: 300px; /* Reduce la altura en pantallas pequeñas para mejor usabilidad */
     }
 }
+
+/* ==========================================
+   SECCIÓN: ENLACES DE INTERÉS
+   ========================================== */
+.interests-section {
+    padding: 60px 50px;
+    background-color: #f8fbfd; /* Fondo sutilmente gris/azul para contrastar con las tarjetas blancas */
+    font-family: 'Arial', sans-serif;
+}
+
+/* Alineación del título y los botones en la misma línea */
+.interests-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    max-width: 1100px;
+    margin: 0 auto 10px auto;
+}
+
+.interests-section .section-title-container {
+    text-align: left;
+    margin: 0;
+}
+
+.interests-section h2 {
+    font-size: 1.8rem;
+    color: #111;
+    font-weight: 700;
+    margin: 0;
+}
+
+.interests-section h2 .text-blue {
+    color: #00a8e8;
+}
+
+.interests-section .title-underline {
+    width: 50px;
+    height: 4px;
+    background-color: #00a8e8;
+    margin: 10px 0 0 0; /* Alineada a la izquierda */
+    border-radius: 2px;
+}
+
+.interests-section .section-subtitle {
+    font-size: 0.9rem;
+    color: #777;
+    max-width: 1100px;
+    margin: 0 auto 30px auto;
+    text-align: left;
+}
+
+/* Botones celestes de navegación */
+.carousel-nav {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 5px;
+}
+
+.nav-btn {
+    background-color: #00a8e8;
+    color: white;
+    border: none;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.nav-btn:hover {
+    background-color: #0086b8;
+}
+
+.nav-btn:active {
+    transform: scale(0.95);
+}
+
+/* Ventana del Carrusel */
+.carousel-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    overflow: hidden; /* Oculta los logos que se desbordan */
+    padding: 10px 5px;
+}
+
+/* Riel interno que se moverá */
+.carousel-track {
+    display: flex;
+    gap: 25px;
+    transition: transform 0.5s ease-in-out;
+}
+
+/* Tarjetas de Logotipos */
+.logo-card {
+    flex: 0 0 calc(33.333% - 17px); /* Muestra exactamente 3 tarjetas en pantalla */
+    background-color: #fff;
+    border: 1px solid #eef2f5;
+    border-radius: 6px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 120px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.logo-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+.logo-card img {
+    max-width: 100%;
+    max-height: 80px;
+    object-fit: contain;
+    filter: grayscale(10%) contrast(100%);
+    transition: filter 0.3s ease;
+}
+
+.logo-card:hover img {
+    filter: grayscale(0%);
+}
+
+/* Adaptación para tablets y móviles */
+@media (max-width: 992px) {
+    .logo-card {
+        flex: 0 0 calc(50% - 13px); /* Muestra 2 en tablets */
+    }
+}
+
+@media (max-width: 600px) {
+    .interests-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+    .carousel-nav {
+        align-self: flex-end;
+    }
+    .logo-card {
+        flex: 0 0 100%; /* Muestra 1 sola tarjeta en móviles */
+    }
+}
