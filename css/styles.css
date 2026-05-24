@@ -317,21 +317,21 @@ body { background-color: var(--bg-light); transition: background-color 0.3s ease
    ========================================== */
 body.dark-mode {
     --bg-light: #121212;
-    --primary-blue: #33b5e5;
-    --dark-blue: #e0e0e0;
+    --primary-blue: #33b5e5; 
+    --dark-blue: #e0e0e0; 
     --gray-text: #aaaaaa;
 }
 
-body.dark-mode,
-body.dark-mode .top-header,
+/* Aplicar fondo oscuro a los elementos estructurales (Quitamos .logo-card de aquí) */
+body.dark-mode, 
+body.dark-mode .top-header, 
 body.dark-mode .main-nav,
 body.dark-mode .dropdown-menu,
-body.dark-mode .info-section,
+body.dark-mode .info-section, 
 body.dark-mode .interactive-card,
 body.dark-mode .link-item,
-body.dark-mode .location-section,
+body.dark-mode .location-section, 
 body.dark-mode .interests-section,
-body.dark-mode .logo-card,
 body.dark-mode .chat-window,
 body.dark-mode .chat-body,
 body.dark-mode .chat-footer,
@@ -344,16 +344,18 @@ body.dark-mode .organigram-display {
     border-color: #333333 !important;
 }
 
-body.dark-mode h2,
-body.dark-mode h3,
-body.dark-mode h4,
-body.dark-mode p,
-body.dark-mode span,
+/* Asegurar que los textos importantes sean legibles */
+body.dark-mode h2, 
+body.dark-mode h3, 
+body.dark-mode h4, 
+body.dark-mode p, 
+body.dark-mode span, 
 body.dark-mode strong,
 body.dark-mode a:not(.btn-slide):not(.download-btn) {
     color: #e0e0e0 !important;
 }
 
+/* Textos que deben mantenerse azules/celestes */
 body.dark-mode .text-blue,
 body.dark-mode .info-icon,
 body.dark-mode .link-item i,
@@ -361,12 +363,19 @@ body.dark-mode .card-icon {
     color: var(--primary-blue) !important;
 }
 
+/* Botón de la lunita en modo oscuro */
 body.dark-mode .theme-toggle-nav {
-    color: #ffd700; /* La lunita se vuelve amarilla cuando está en modo oscuro */
+    color: #ffd700; 
 }
 
+/* Semáforo en modo oscuro */
 body.dark-mode .quota-item { background: #2a2a2a; border-color: #444; }
 
+/* REGLA NUEVA: Forzamos a que las tarjetas de logos siempre tengan fondo blanco */
+body.dark-mode .logo-card {
+    background-color: #ffffff !important;
+    border-color: #eef2f5 !important;
+}
 
 /* ==========================================
    CHATBOT FLOTANTE
@@ -573,4 +582,108 @@ body.dark-mode .quota-item { background: #2a2a2a; border-color: #444; }
         margin: 0 auto 15px auto;
         max-width: 100%;
     }
+}
+
+/* --- ESTILOS PARA LA PÁGINA DE CONSULTA DE CITAS --- */
+
+/* 1. Banner Gris (Igual al de la imagen) */
+.page-banner {
+    background-color: #444444;
+    padding: 20px 0;
+    color: #ffffff;
+    text-align: left;
+    margin-bottom: 30px;
+}
+
+.page-banner .banner-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* 2. Contenedor de la tarjeta de búsqueda */
+.appointment-card-container {
+    background: #ffffff;
+    border: 1px solid #eeeeee;
+    padding: 20px;
+    margin-top: 20px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.appointment-card-header {
+    background: #f8f8f8;
+    padding: 10px;
+    font-weight: bold;
+    border-bottom: 1px solid #eeeeee;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+/* 3. Grupo de Búsqueda */
+.search-group {
+    margin-bottom: 25px;
+}
+
+.input-button-wrapper {
+    display: flex;
+    gap: 5px;
+    margin-top: 5px;
+}
+
+#doc-number {
+    border: 1px solid #cccccc;
+    padding: 8px;
+    width: 250px;
+}
+
+#btn-search {
+    background-color: #00a8e8;
+    color: white;
+    border: none;
+    padding: 8px 20px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* 4. Tabla de resultados */
+.appointment-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.table-blue-header th {
+    background-color: #00a8e8;
+    color: white;
+    padding: 12px;
+    text-align: center;
+}
+
+.table-sub-header th {
+    background-color: #f8f8f8;
+    padding: 10px;
+    border-bottom: 1px solid #dddddd;
+    font-weight: 600;
+}
+
+.appointment-table td {
+    padding: 15px;
+    text-align: center;
+    border-bottom: 1px solid #dddddd;
+    color: #666;
+}
+
+/* 5. Footer de la tabla */
+.table-footer-info {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9em;
+    color: #777;
+}
+
+.pagination-links a {
+    text-decoration: none;
+    color: #999;
+    margin-left: 15px;
 }

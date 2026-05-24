@@ -1,55 +1,160 @@
-<section id="consulta-cita-section" class="inst-section">
-    <div class="section-title">
-        <h2>CONSUILTE SU <span class="text-blue">CITA</span></h2>
-        <div class="title-underline"></div>
-    </div>
-    
-    <p class="section-subtitle-description">Aperturamos la plataforma de consultas de citas, solo debes ingresar su número de documento a consultar.</p>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consulta de Citas - Hospital La Caleta</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
 
-    <div class="appointment-card-container">
-        
-        <div class="appointment-card-header">
-            <i class="far fa-id-card"></i> DATOS DEL DOCUMENTO
+    <header class="top-header">
+        <div class="logo-container">
+            <a href="index.html"><img src="assets/logo_caleta.png" alt="Logo Hospital La Caleta" class="hospital-logo-img"></a>
         </div>
+        <div class="contact-info">
+            <div class="info-item">
+                <i class="fas fa-envelope info-icon"></i>
+                <div class="info-text">
+                    <strong>CORREO ELECTRÓNICO</strong>
+                    <span>mesa_partes@hcaleta.gob.pe</span>
+                </div>
+            </div>
+            <div class="info-item">
+                <i class="fas fa-clock info-icon"></i>
+                <div class="info-text">
+                    <strong>HORARIO DE ATENCIÓN MESA DE PARTES</strong>
+                    <span>Lunes - Viernes: 08:00AM - 15:30PM | <span class="highlight-red">Sab - Dom No hay atención</span></span>
+                </div>
+            </div>
+        </div>
+    </header>
 
-        <div class="appointment-card-body">
+    <nav class="main-nav">
+        <ul>
+            <li><a href="index.html" class="active"><i class="fas fa-home"></i> INICIO</a></li>
+            <li><a href="institucional.html"><i class="fas fa-building"></i> INSTITUCIONAL</a></li>
+
+            <li class="dropdown">
+                <a href="#"><i class="fas fa-briefcase-medical"></i> CARTERA DE SERVICIOS <i class="fas fa-chevron-down arrow"></i></a>
+                <ul class="dropdown-menu">
+                    <li><a href="#">Servicios Centrales</a></li>
+                    <li><a href="#">Especialidades Médicas</a></li>
+                    <li><a href="#">Servicios Quirúrgicos</a></li>
+                </ul>
+            </li>
+
+            <li class="dropdown">
+                <a href="#" class="text-blue-nav"><i class="fas fa-laptop-medical"></i> SERVICIOS EN LÍNEA <i class="fas fa-chevron-down arrow"></i></a>
+                <ul class="dropdown-menu">
+                    <li><a href="consulta-cita.html"><i class="fas fa-user-md"></i> Consulta tu Cita</a></li>
+                    <li><a href="#"><i class="fas fa-user-tie"></i> Convocatorias</a></li>
+                    <li><a href="#"><i class="fas fa-calendar-alt"></i> Disponibilidad de Cupos</a></li>
+                </ul>
+            </li>
+
+            <li><a href="#"><i class="fas fa-envelope"></i> CONTÁCTENOS</a></li>
+            <li class="portal-link"><a href="#"><i class="fas fa-shield-alt"></i> TRANSPARENCIA</a></li>
+
+            <li class="theme-li">
+                <button id="theme-toggle" class="theme-toggle-nav" title="Cambiar contraste visual">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </li>
+        </ul>
+    </nav>
+
+    <section class="page-banner">
+        <div class="banner-content">
+            <h1>CONSULTE SU CITA</h1>
+        </div>
+    </section>
+
+    <main class="institutional-container">
+        <section id="consulta-cita-section" class="inst-section">
+            <div class="section-title">
+                <h2>CONSULTE SU PROXIMA <span class="text-blue">CITA</span></h2>
+                <div class="title-underline"></div>
+            </div>
             
-            <div class="search-group">
-                <label for="doc-number">Nro de Documento :</label>
-                <div class="input-button-wrapper">
-                    <input type="text" id="doc-number" placeholder="Ingrese DNI o pasaporte">
-                    <button type="button" id="btn-search"><i class="fas fa-search"></i> BUSCAR</button>
+            <p class="section-subtitle-description">Aperturamos la plataforma de consultas de citas, solo debes ingresar su número de documento a consultar.</p>
+
+            <div class="appointment-card-container">
+                <div class="appointment-card-header">
+                    <i class="far fa-id-card"></i> DATOS DEL DOCUMENTO
+                </div>
+
+                <div class="appointment-card-body">
+                    <div class="search-group">
+                        <label for="doc-number">Nro de Documento :</label>
+                        <div class="input-button-wrapper">
+                            <input type="text" id="doc-number" placeholder="Ingrese DNI o pasaporte">
+                            <button type="button" id="btn-search"><i class="fas fa-search"></i> BUSCAR</button>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="appointment-table">
+                            <thead>
+                                <tr class="table-blue-header">
+                                    <th colspan="3">DATOS DE TU CITA</th>
+                                </tr>
+                                <tr class="table-sub-header">
+                                    <th>Servicio <i class="fas fa-sort"></i></th>
+                                    <th>Fecha <i class="fas fa-caret-down"></i></th>
+                                    <th>Ticket <i class="fas fa-sort"></i></th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-results-body">
+                                <tr>
+                                    <td colspan="3" class="no-data-msg">Ningún dato disponible en esta tabla</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
+        </section>
+    </main>
 
-            <div class="table-responsive">
-                <table class="appointment-table">
-                    <thead>
-                        <tr class="table-blue-header">
-                            <th colspan="3">DATOS DE TU CITA</th>
-                        </tr>
-                        <tr class="table-sub-header">
-                            <th>Servicio <i class="fas fa-sort"></i></th>
-                            <th>Fecha <i class="fas fa-caret-down"></i></th>
-                            <th>Ticket <i class="fas fa-sort"></i></th>
-                        </tr>
-                    </thead>
-                    <tbody id="table-results-body">
-                        <tr>
-                            <td colspan="3" class="no-data-msg">Ningún dato disponible en esta tabla</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+    <footer></footer>
 
-            <div class="table-footer-info">
-                <span id="registry-count">Mostrando registros del 0 al 0 de un total de 0 registros</span>
-                <div class="pagination-links">
-                    <a href="#" class="disabled-link">Anterior</a>
-                    <a href="#" class="disabled-link">Siguiente</a>
-                </div>
-            </div>
+    <script>
+        document.getElementById('btn-search').addEventListener('click', function() {
+            const docNumber = document.getElementById('doc-number').value;
+            const tableBody = document.getElementById('table-results-body');
 
-        </div>
-    </div>
-</section>
+            // VALIDACIÓN CON ESTILO BONITO
+            if (docNumber === "") {
+                Swal.fire({
+                    icon: 'info', // El icono de información que sale en tu imagen
+                    title: 'Mensaje De Advertencia',
+                    text: 'Ingrese Nº Documento',
+                    confirmButtonText: 'Aceptar',
+                    confirmButtonColor: '#3085d6',
+                    customClass: {
+                        title: 'swal-title-custom'
+                    }
+                });
+                return;
+            }
+
+            // Si sí hay número, procedes con la búsqueda
+            console.log("Buscando documento:", docNumber);
+            
+            tableBody.innerHTML = `
+                <tr>
+                    <td>Medicina General</td>
+                    <td>25/05/2026 - 10:30 AM</td>
+                    <td>TK-9982</td>
+                </tr>
+            `;
+            
+            document.getElementById('registry-count').innerText = "Mostrando registros del 1 al 1 de un total de 1 registros";
+        });
+    </script>
+
+</body>
+</html>
