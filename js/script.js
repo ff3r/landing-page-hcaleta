@@ -116,23 +116,27 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // 1. Abrir ventana de chat
-    chatBubble.addEventListener('click', () => {
-        chatWindow.classList.remove('id-hidden');
+    if (chatBubble) {
+        chatBubble.addEventListener('click', () => {
+            chatWindow.classList.remove('id-hidden');
 
-        // CORRECCIÓN: Ocultamos el ícono del chat al abrir la ventana
-        chatBubble.style.display = 'none';
+            // CORRECCIÓN: Ocultamos el ícono del chat al abrir la ventana
+            chatBubble.style.display = 'none';
 
-        const notification = chatBubble.querySelector('.bubble-notification');
-        if (notification) notification.style.display = 'none';
-    });
+            const notification = chatBubble.querySelector('.bubble-notification');
+            if (notification) notification.style.display = 'none';
+        });
+    }
 
     // 2. Cerrar ventana de chat
-    closeChat.addEventListener('click', () => {
-        chatWindow.classList.add('id-hidden');
+    if (closeChat) {
+        closeChat.addEventListener('click', () => {
+            chatWindow.classList.add('id-hidden');
 
-        // CORRECCIÓN: Volvemos a mostrar el ícono del chat al cerrar la ventana
-        chatBubble.style.display = 'flex';
-    });
+            // CORRECCIÓN: Volvemos a mostrar el ícono del chat al cerrar la ventana
+            chatBubble.style.display = 'flex';
+        });
+    }
 
     // 3. Manejo del click en los botones de opciones fijas
     optionButtons.forEach(button => {
@@ -209,7 +213,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 600);
     }
 
-    // NUEVA FUNCIÓN: Continúa la conversación agregando nuevas opciones abajo
+    // Continúa la conversación agregando nuevas opciones abajo
     function mostrarOpcionesNuevamente(e) {
         // 1. Ocultamos el botón de reinicio al que le acabamos de dar clic para que no estorbe
         e.target.parentElement.remove();
@@ -240,12 +244,51 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // 5. Scroll automático para enfocar los nuevos botones abajo
         chatBody.scrollTop = chatBody.scrollHeight;
-        chatInput.value = ""; // Limpiar el teclado por si acaso
+        if (chatInput) chatInput.value = ""; // Limpiar el teclado por si acaso
     }
 
     // 5. Oyentes de eventos para la barra de texto (Click y Tecla Enter)
-    sendBtn.addEventListener('click', procesarPreguntaLibre);
-    chatInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') procesarPreguntaLibre();
+    if (sendBtn) {
+        sendBtn.addEventListener('click', procesarPreguntaLibre);
+    }
+    if (chatInput) {
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') procesarPreguntaLibre();
+        });
+    }
+});
+
+// ==========================================
+// LÓGICA DEL MODO OSCURO (DARK MODE)
+// ==========================================
+document.addEventListener('DOMContentLoaded', () => {
+    const themeToggle = document.getElementById('theme-toggle');
+    if (!themeToggle) return; // Si no encuentra el botón, no hace nada
+
+    const icon = themeToggle.querySelector('i');
+
+    // 1. Revisamos si el usuario ya había activado el modo oscuro antes (incluso en otra pestaña)
+    if (localStorage.getItem('temaCaleta') === 'oscuro') {
+        document.body.classList.add('dark-mode');
+        icon.classList.remove('fa-moon');
+        icon.classList.add('fa-sun');
+    }
+
+    // 2. Acción al dar clic al botón
+    themeToggle.addEventListener('click', () => {
+        document.body.classList.toggle('dark-mode');
+
+        // Si acabamos de activar el modo oscuro...
+        if (document.body.classList.contains('dark-mode')) {
+            localStorage.setItem('temaCaleta', 'oscuro'); // Guardamos memoria
+            icon.classList.remove('fa-moon');
+            icon.classList.add('fa-sun'); // Cambiamos icono a sol
+        }
+        // Si acabamos de volver al modo claro...
+        else {
+            localStorage.setItem('temaCaleta', 'claro'); // Guardamos memoria
+            icon.classList.remove('fa-sun');
+            icon.classList.add('fa-moon'); // Cambiamos icono a luna
+        }
     });
 });
