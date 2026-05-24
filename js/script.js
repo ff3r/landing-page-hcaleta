@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const prevBtn = document.querySelector('.slider-control.prev');
     const nextBtn = document.querySelector('.slider-control.next');
     const dots = document.querySelectorAll('.dot');
-    
+
     let currentIndex = 0;
     const totalSlides = slides.length;
     let interval;
@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     nextBtn.addEventListener('click', () => { currentIndex = (currentIndex + 1) % totalSlides; showSlide(currentIndex); resetInterval(); });
     prevBtn.addEventListener('click', () => { currentIndex = (currentIndex - 1 + totalSlides) % totalSlides; showSlide(currentIndex); resetInterval(); });
-    
+
     dots.forEach((dot, i) => {
         dot.addEventListener('click', () => { currentIndex = i; showSlide(currentIndex); resetInterval(); });
     });
@@ -49,10 +49,10 @@ document.addEventListener("DOMContentLoaded", function() {
     const track = document.getElementById("interest-track");
     const prevBtn = document.getElementById("interest-prev");
     const nextBtn = document.getElementById("interest-next");
-    
+
     if (track && prevBtn && nextBtn) {
         let index = 0;
-        
+
         // Calcula cuántas veces se puede mover el carrusel basándose en los elementos totales
         function getMaxIndex() {
             const cardsTotal = track.children.length;
@@ -63,11 +63,11 @@ document.addEventListener("DOMContentLoaded", function() {
         function updateCarousel() {
             const maxIndex = getMaxIndex();
             if (index > maxIndex) index = maxIndex;
-            
+
             const cardWidth = track.children[0].getBoundingClientRect().width;
             const gap = 25; // Debe coincidir con el gap del CSS
             const amountToMove = index * (cardWidth + gap);
-            
+
             track.style.transform = `translateX(-${amountToMove}px)`;
         }
 
@@ -103,7 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const closeChat = document.getElementById('close-chat');
     const chatBody = document.getElementById('chat-body');
     const optionButtons = document.querySelectorAll('.option-btn');
-    
+
     // Nuevas variables para la barra de texto
     const chatInput = document.getElementById('chat-input');
     const sendBtn = document.getElementById('send-msg-btn');
@@ -118,6 +118,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // 1. Abrir ventana de chat
     chatBubble.addEventListener('click', () => {
         chatWindow.classList.remove('id-hidden');
+
+        // CORRECCIÓN: Ocultamos el ícono del chat al abrir la ventana
+        chatBubble.style.display = 'none';
+
         const notification = chatBubble.querySelector('.bubble-notification');
         if (notification) notification.style.display = 'none';
     });
@@ -125,6 +129,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // 2. Cerrar ventana de chat
     closeChat.addEventListener('click', () => {
         chatWindow.classList.add('id-hidden');
+
+        // CORRECCIÓN: Volvemos a mostrar el ícono del chat al cerrar la ventana
+        chatBubble.style.display = 'flex';
     });
 
     // 3. Manejo del click en los botones de opciones fijas
@@ -132,7 +139,7 @@ document.addEventListener('DOMContentLoaded', () => {
         button.addEventListener('click', function() {
             const action = this.getAttribute('data-action');
             if (!action) return; // Por si es el botón de reinicio
-            
+
             inyectarMensajeUsuario(this.innerText);
             responderBot(action);
         });
@@ -167,7 +174,7 @@ document.addEventListener('DOMContentLoaded', () => {
         userDiv.innerHTML = `<p>${texto}</p>`;
         chatBody.appendChild(userDiv);
         chatBody.scrollTop = chatBody.scrollHeight;
-        
+
         // Desactivamos el menú de botones iniciales para mantener el flujo limpio
         const initialOptions = document.getElementById('initial-options');
         if (initialOptions) {
@@ -225,7 +232,7 @@ document.addEventListener('DOMContentLoaded', () => {
             button.addEventListener('click', function() {
                 const action = this.getAttribute('data-action');
                 if (!action) return;
-                
+
                 inyectarMensajeUsuario(this.innerText);
                 responderBot(action);
             });
@@ -238,7 +245,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 5. Oyentes de eventos para la barra de texto (Click y Tecla Enter)
     sendBtn.addEventListener('click', procesarPreguntaLibre);
-    chatInput.addEventListener('keypress', (e) => { 
-        if (e.key === 'Enter') procesarPreguntaLibre(); 
+    chatInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') procesarPreguntaLibre();
     });
 });
