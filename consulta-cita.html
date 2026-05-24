@@ -1,0 +1,55 @@
+<section id="consulta-cita-section" class="inst-section">
+    <div class="section-title">
+        <h2>CONSUILTE SU <span class="text-blue">CITA</span></h2>
+        <div class="title-underline"></div>
+    </div>
+    
+    <p class="section-subtitle-description">Aperturamos la plataforma de consultas de citas, solo debes ingresar su número de documento a consultar.</p>
+
+    <div class="appointment-card-container">
+        
+        <div class="appointment-card-header">
+            <i class="far fa-id-card"></i> DATOS DEL DOCUMENTO
+        </div>
+
+        <div class="appointment-card-body">
+            
+            <div class="search-group">
+                <label for="doc-number">Nro de Documento :</label>
+                <div class="input-button-wrapper">
+                    <input type="text" id="doc-number" placeholder="Ingrese DNI o pasaporte">
+                    <button type="button" id="btn-search"><i class="fas fa-search"></i> BUSCAR</button>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="appointment-table">
+                    <thead>
+                        <tr class="table-blue-header">
+                            <th colspan="3">DATOS DE TU CITA</th>
+                        </tr>
+                        <tr class="table-sub-header">
+                            <th>Servicio <i class="fas fa-sort"></i></th>
+                            <th>Fecha <i class="fas fa-caret-down"></i></th>
+                            <th>Ticket <i class="fas fa-sort"></i></th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-results-body">
+                        <tr>
+                            <td colspan="3" class="no-data-msg">Ningún dato disponible en esta tabla</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="table-footer-info">
+                <span id="registry-count">Mostrando registros del 0 al 0 de un total de 0 registros</span>
+                <div class="pagination-links">
+                    <a href="#" class="disabled-link">Anterior</a>
+                    <a href="#" class="disabled-link">Siguiente</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
