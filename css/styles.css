@@ -705,3 +705,107 @@ body { background-color: var(--bg-light); }
     border-color: #86efac !important;
     transform: none !important; /* Evita que se deslice lateralmente como las opciones */
 }
+
+/* ====================================================================================
+   ESTILOS: PÁGINA INSTITUCIONAL
+   ==================================================================================== */
+.page-banner {
+    background: linear-gradient(135deg, #0d233a 0%, #00a8e8 100%);
+    color: white;
+    padding: 60px 20px;
+    text-align: center;
+}
+.banner-content h1 { font-size: 2.2rem; margin-bottom: 10px; font-weight: 700; }
+.banner-content p { font-size: 1rem; max-width: 600px; margin: 0 auto; opacity: 0.9; }
+
+.institutional-container {
+    max-width: 1100px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+/* Navegación por pestañas */
+.tabs-nav {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 50px;
+    border-bottom: 2px solid #e2e8f0;
+    padding-bottom: 15px;
+}
+.tab-btn {
+    text-decoration: none;
+    color: #4a5568;
+    padding: 10px 20px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    border-radius: 6px;
+    transition: all 0.3s;
+}
+.tab-btn:hover, .tab-btn.active {
+    background-color: #00a8e8;
+    color: white;
+}
+
+/* Secciones internas */
+.inst-section { padding: 20px 0; scroll-margin-top: 80px; }
+.inst-subtitle { color: #718096; margin-bottom: 25px; }
+.section-divider { border: 0; height: 1px; background: #e2e8f0; margin: 40px 0; }
+
+/* Grid de Nosotros (Misión/Visión) */
+.about-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+    margin-top: 30px;
+}
+.about-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 25px;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+}
+.card-icon {
+    font-size: 2rem;
+    color: #00a8e8;
+    margin-bottom: 15px;
+}
+.about-card h3 { color: #0d233a; margin-bottom: 12px; font-weight: 600; }
+.about-card p { font-size: 0.9rem; color: #4a5568; line-height: 1.5; }
+
+/* Reseña Histórica */
+.history-content p {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: #2d3748;
+    margin-bottom: 15px;
+    text-align: justify;
+}
+
+/* Organigrama */
+.organigram-display {
+    text-align: center;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+}
+.img-responsive {
+    max-width: 100%;
+    height: auto;
+    border-radius: 4px;
+}
+.download-container { margin-top: 25px; }
+.download-btn {
+    display: inline-block;
+    background-color: #e53e3e;
+    color: white;
+    text-decoration: none;
+    padding: 12px 24px;
+    border-radius: 6px;
+    font-weight: 600;
+    transition: background 0.2s;
+}
+.download-btn:hover { background-color: #c53030; }
