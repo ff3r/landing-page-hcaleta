@@ -730,20 +730,20 @@ body.dark-mode .main-footer {
    ========================================== */
 
 
-.tag-disponible { 
-    background-color: #00a8e8; 
-    color: white; 
-    padding: 3px 10px; 
-    border-radius: 4px; 
-    font-weight: bold; 
+.tag-disponible {
+    background-color: #00a8e8;
+    color: white;
+    padding: 3px 10px;
+    border-radius: 4px;
+    font-weight: bold;
 }
 
-.tag-agotado { 
-    background-color: #dc3545; 
-    color: white; 
-    padding: 3px 6px; 
-    border-radius: 4px; 
-    font-size: 0.85em; 
+.tag-agotado {
+    background-color: #dc3545;
+    color: white;
+    padding: 3px 6px;
+    border-radius: 4px;
+    font-size: 0.85em;
     font-weight: bold;
 }
 
@@ -753,7 +753,7 @@ body.dark-mode .main-footer {
     border-collapse: collapse;
 }
 
-.appointment-table th, 
+.appointment-table th,
 .appointment-table td {
     padding: 15px;
     text-align: center;
@@ -764,3 +764,111 @@ body.dark-mode .main-footer {
 .appointment-table th:nth-child(1) { width: 40%; } /* Médico */
 .appointment-table th:nth-child(2) { width: 40%; } /* Servicios */
 .appointment-table th:nth-child(3) { width: 20%; } /* Cupos */
+
+/* ==========================================
+   CORRECCIÓN DEFINITIVA DE LOGOS EN NAV
+   ========================================== */
+.main-nav ul {
+    align-items: center; /* Centra verticalmente logos y textos */
+}
+
+.nav-img-item {
+    display: flex;
+    align-items: center;
+    margin: 0 8px; /* Separación entre logos */
+}
+
+/* Esta es la regla mágica que empuja a la derecha */
+.nav-img-item.push-right {
+    margin-left: auto;
+}
+
+/* Quitamos el margen a la lunita para que quede pegada a los logos */
+.theme-li {
+    margin-left: 0 !important;
+}
+
+.nav-img-item a {
+    padding: 0 !important;
+    background-color: transparent !important;
+}
+
+.nav-logo {
+    height: 35px !important; /* Forzamos el tamaño para que no se hagan gigantes */
+    width: auto !important;
+    display: block;
+    transition: transform 0.2s ease;
+}
+
+.nav-logo:hover {
+    transform: scale(1.05);
+}
+
+/* ==========================================
+   CORRECCIÓN DEFINITIVA DEL CHATBOT OSCURO
+   ========================================== */
+body.dark-mode .chatbot-window {
+    background-color: #1a1a1a !important;
+    border: 1px solid #333 !important;
+}
+body.dark-mode .chat-header {
+    background-color: #111111 !important;
+    border-bottom: 3px solid var(--primary-blue) !important;
+}
+body.dark-mode .chat-header h4,
+body.dark-mode .chat-header span,
+body.dark-mode .close-chat-btn {
+    color: #ffffff !important;
+    background-color: transparent !important;
+}
+body.dark-mode .chat-body {
+    background-color: #1a1a1a !important;
+}
+
+/* Burbuja del asistente (Gris oscuro, letras blancas) */
+body.dark-mode #chat-window .bot-msg {
+    background-color: #333333 !important;
+}
+body.dark-mode #chat-window .bot-msg p,
+body.dark-mode #chat-window .bot-msg strong {
+    color: #ffffff !important;
+}
+
+/* Burbuja del usuario (Azul, letras blancas) */
+body.dark-mode #chat-window .user-msg p {
+    color: #ffffff !important;
+}
+
+/* Input y barra de escritura */
+body.dark-mode .chat-footer {
+    background-color: #1a1a1a !important;
+    border-top: 1px solid #333 !important;
+}
+body.dark-mode #chat-input {
+    background-color: #222222 !important;
+    color: #ffffff !important;
+    border: 1px solid #555 !important;
+}
+
+/* ==========================================
+   CENTRAR MENÚ Y LOGOS (LUNITA A LA DERECHA)
+   ========================================== */
+.main-nav ul {
+    display: flex;
+    justify-content: center; /* Centra todo el contenido (textos y logos) */
+    align-items: center;
+    position: relative; /* Necesario para que la lunita se ancle a este contenedor */
+    width: 100%;
+}
+
+/* Quitamos la regla que empujaba los logos al fondo y les damos un margen normal */
+.nav-img-item.push-right {
+    margin-left: 10px !important;
+}
+
+/* Sacamos la lunita del flujo normal y la anclamos a la derecha absoluta */
+.theme-li {
+    position: absolute !important;
+    right: 0;
+    margin-left: 0 !important;
+}
