@@ -110,9 +110,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Base de datos de respuestas
     const respuestasBot = {
-        horarios: "🕒 <strong>Horarios de Atención:</strong><br>• <strong>Mesa de Partes:</strong> Lun a Vie de 08:00 AM a 15:30 PM.<br>• <strong>Consultorios Externos:</strong> Lun a Vie de 08:00 AM a 13:00 PM.",
-        sis: "📋 <strong>Requisitos de afiliación al SIS:</strong><br>1. Contar con DNI o Carné de Extranjería vigente.<br>2. No contar con otro seguro de salud activo.<br>3. Dirigirse a la oficina de Seguros del hospital con su documento.",
-        emergencia: "🚨 <strong>Números de Emergencia Directos:</strong><br>• Central de Emergencias: (043) 327589<br>• Línea Gratuita Nacional: 113 (MINSA)<br>• Atención SAMU Chimbote: 106"
+        horarios: {
+            texto: "🕒 <strong>Horarios de Atención:</strong><br>• <strong>Mesa de Partes:</strong> Lun a Vie de 08:00 AM a 15:30 PM.",
+            link: null
+        },
+        sis: {
+            texto: "📋 <strong>Requisitos SIS:</strong> Debes presentar tu DNI y no contar con otro seguro.",
+            link: null
+        },
+        citas: {
+            texto: "¡Claro! Te estoy redirigiendo a la sección de Consulta de Citas...",
+            link: "consulta-cita.html" // Aquí pones el nombre de tu archivo
+        },
+        emergencia: {
+            texto: "🚨 <strong>Emergencias:</strong> Central: (043) 327589.",
+            link: null
+        },
+        cupos: {
+            texto: "✅ Disponibilidad de Cupos: Estoy redirigiéndote al sistema donde podrás ver qué especialistas tienen cupos libres hoy.",
+            link: "consulta-cupos.html" // Asegúrate de que este sea el nombre de tu archivo
+        }
+
     };
 
     // 1. Abrir ventana de chat
@@ -166,6 +184,8 @@ document.addEventListener('DOMContentLoaded', () => {
             accionDetectada = "sis";
         } else if (textoUsuario.includes('emergencia') || textoUsuario.includes('urgencia') || textoUsuario.includes('telefono') || textoUsuario.includes('numero')) {
             accionDetectada = "emergencia";
+        } else if (textoUsuario.includes('cita') || textoUsuario.includes('consultar')) {
+            accionDetectada = "citas";
         }
 
         responderBot(accionDetectada);
@@ -193,12 +213,20 @@ document.addEventListener('DOMContentLoaded', () => {
             botDiv.className = 'message bot-msg';
 
             if (accion !== "desconocido") {
-                botDiv.innerHTML = `<p>${respuestasBot[accion]}</p>`;
-            } else {
-                botDiv.innerHTML = `<p>No logré entender tu consulta de forma exacta. Por favor, intenta usando palabras clave sencillas como <strong>"horarios"</strong>, <strong>"SIS"</strong> o <strong>"emergencia"</strong>.</p>`;
-            }
+                const data = respuestasBot[accion];
+                botDiv.innerHTML = `<p>${data.texto}</p>`;
+                chatBody.appendChild(botDiv);
 
-            chatBody.appendChild(botDiv);
+                // SI HAY UN LINK, REDIRIGIMOS
+                if (data.link) {
+                    setTimeout(() => {
+                        window.location.href = data.link; // Redirección automática
+                    }, 2000); // Espera 2 segundos para que el usuario lea el mensaje
+                }
+            } else {
+                botDiv.innerHTML = `<p>No entiendo esa consulta. Prueba con "citas", "horarios" o "SIS".</p>`;
+                chatBody.appendChild(botDiv);
+            }
 
             // CORREGIDO: Crea el botón "Hacer otra consulta" de forma independiente
             const resetDiv = document.createElement('div');
@@ -225,6 +253,8 @@ document.addEventListener('DOMContentLoaded', () => {
             <button class="option-btn" data-action="horarios">🕒 1. Ver Horarios de Atención</button>
             <button class="option-btn" data-action="sis">📋 2. Requisitos para SIS</button>
             <button class="option-btn" data-action="emergencia">🚨 3. Números de Emergencia</button>
+            <button class="option-btn" data-action="citas">📅 4. Consultar Cita</button>
+            <button class="option-btn" data-action="cupos">🏥 5. Ver Cupos Disponibles
         `;
 
         // 3. Lo agregamos al final del cuerpo del chat

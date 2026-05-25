@@ -63,8 +63,26 @@
                 </ul>
             </li>
 
+            <li class="dropdown">
+                <a href="#"><i class="fas fa-users"></i> TU OPINIÓN <i class="fas fa-chevron-down arrow"></i></a>
+                <ul class="dropdown-menu">
+                    <li><a href="valoracion-usuarios.html"><i class="fas fa-star"></i> Valoración</a></li>
+                    <li><a href="comentarios-sugerencias.html"><i class="fas fa-comments"></i> Comentarios</a></li>
+                </ul>
+            </li>
+
             <li><a href="contactenos.html" class="active"><i class="fas fa-envelope"></i> CONTÁCTENOS</a></li>
-            <li class="portal-link"><a href="#"><i class="fas fa-shield-alt"></i> TRANSPARENCIA</a></li>
+
+            <li class="nav-img-item push-right">
+                <a href="citas.html" title="Citas en Línea">
+                    <img src="assets/logo-citas-linea.png" alt="Citas en Línea" class="nav-logo">
+                </a>
+            </li>
+            <li class="nav-img-item">
+                <a href="transparencia.html" title="Portal de Transparencia">
+                    <img src="assets/portal-logo.png" alt="Portal de Transparencia" class="nav-logo">
+                </a>
+            </li>
 
             <li class="theme-li">
                 <button id="theme-toggle" class="theme-toggle-nav" title="Cambiar contraste visual">
@@ -131,6 +149,47 @@
         </form>
     </div>
 </section>
+
+    <div class="chatbot-container">
+
+        <div class="chatbot-bubble" id="chat-bubble">
+            <img src="assets/icn-msg.png" alt="Icono del chat" width="32" height="32">
+            <span class="bubble-notification">1</span>
+        </div>
+
+        <div class="chatbot-window id-hidden" id="chat-window">
+            <div class="chat-header">
+                <div class="chat-profile">
+                    <i class="fas fa-user-md header-avatar"></i>
+                    <div>
+                        <h4>Asistente Caleta</h4>
+                        <span>En línea • Triaje Virtual</span>
+                    </div>
+                </div>
+                <button class="close-chat-btn" id="close-chat">×</button>
+            </div>
+
+            <div class="chat-body" id="chat-body">
+                <div class="message bot-msg">
+                    <p>¡Hola! Bienvido al portal del Hospital La Caleta. Soy tu asistente virtual. ¿En qué puedo ayudarte hoy?</p>
+                </div>
+
+                <div class="chat-options" id="initial-options">
+                    <button class="option-btn" data-action="horarios">🕒 1. Ver Horarios de Atención</button>
+                    <button class="option-btn" data-action="sis">📋 2. Requisitos para SIS</button>
+                    <button class="option-btn" data-action="emergencia">🚨 3. Números de Emergencia</button>
+                    <button class="option-btn" data-action="citas">📅 4. Consultar Cita</button>
+                    <button class="option-btn" data-action="cupos">🏥 5. Ver Cupos Disponibles
+                </div>
+            </div>
+
+            <div class="chat-footer">
+                <input type="text" id="chat-input" placeholder="Escribe tu pregunta aquí...">
+                <button id="send-msg-btn"><i class="fas fa-paper-plane"></i></button>
+            </div>
+        </div>
+
+    </div>
 
 <section class="blue-info-strip">
     <div class="info-block">
