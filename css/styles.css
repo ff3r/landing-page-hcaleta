@@ -148,6 +148,15 @@ body { background-color: var(--bg-light); transition: background-color 0.3s ease
 .interests-section { padding: 60px 50px; background-color: #f8fbfd; font-family: 'Arial', sans-serif; transition: background-color 0.3s ease; }
 .interests-header { display: flex; justify-content: space-between; align-items: flex-end; max-width: 1100px; margin: 0 auto 10px auto; }
 .interests-section h2 { font-size: 1.8rem; color: #111; font-weight: 700; margin: 0; }
+
+/* --- REGLA AGREGADA PARA CENTRAR EL SUBTÍTULO --- */
+.interests-section .section-subtitle {
+    text-align: center;
+    max-width: 1100px;
+    margin: 0 auto 30px auto;
+}
+/* ------------------------------------------------ */
+
 .carousel-nav { display: flex; gap: 8px; margin-bottom: 5px; }
 .nav-btn { background-color: #00a8e8; color: white; border: none; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 0.9rem; transition: background-color 0.3s ease, transform 0.2s ease; }
 .nav-btn:hover { background-color: #0086b8; }
@@ -159,7 +168,6 @@ body { background-color: var(--bg-light); transition: background-color 0.3s ease
 .logo-card:hover img { filter: grayscale(0%); }
 @media (max-width: 992px) { .logo-card { flex: 0 0 calc(50% - 13px); } }
 @media (max-width: 600px) { .interests-header { flex-direction: column; align-items: flex-start; gap: 15px; } .carousel-nav { align-self: flex-end; } .logo-card { flex: 0 0 100%; } }
-
 /* ==========================================
    MODO OSCURO (GLOBALES)
    ========================================== */
