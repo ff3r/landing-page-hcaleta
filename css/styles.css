@@ -218,3 +218,284 @@ body.dark-mode .bot-msg { background-color: #2a2a2a !important; }
 body.dark-mode .bot-msg p, body.dark-mode .bot-msg strong { color: #e0e0e0 !important; }
 body.dark-mode .user-msg p { color: #ffffff !important; }
 body.dark-mode #chat-input { background-color: #1a1a1a !important; color: #e0e0e0 !important; border-color: #444444 !important; }
+
+/* ==========================================
+   ESTILOS: PÁGINA INSTITUCIONAL
+   ========================================== */
+.page-banner {
+    background: linear-gradient(135deg, #0d233a 0%, #00a8e8 100%);
+    color: white;
+    padding: 60px 20px;
+    text-align: center;
+}
+.banner-content h1 { font-size: 2.2rem; margin-bottom: 10px; font-weight: 700; }
+.banner-content p { font-size: 1rem; max-width: 600px; margin: 0 auto; opacity: 0.9; }
+
+.institutional-container {
+    max-width: 1100px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+/* Navegación por pestañas */
+.tabs-nav {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 50px;
+    border-bottom: 2px solid #e2e8f0;
+    padding-bottom: 15px;
+}
+.tab-btn {
+    text-decoration: none;
+    color: #4a5568;
+    padding: 10px 20px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    border-radius: 6px;
+    transition: all 0.3s;
+}
+.tab-btn:hover, .tab-btn.active {
+    background-color: #00a8e8;
+    color: white;
+}
+
+/* Secciones internas */
+.inst-section { padding: 20px 0; scroll-margin-top: 80px; }
+.inst-subtitle { color: #718096; margin-bottom: 25px; }
+.section-divider { border: 0; height: 1px; background: #e2e8f0; margin: 40px 0; }
+
+/* Grid de Nosotros (Misión/Visión) */
+.about-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+    margin-top: 30px;
+}
+.about-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 25px;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+}
+.card-icon {
+    font-size: 2rem;
+    color: #00a8e8;
+    margin-bottom: 15px;
+}
+.about-card h3 { color: #0d233a; margin-bottom: 12px; font-weight: 600; }
+.about-card p { font-size: 0.9rem; color: #4a5568; line-height: 1.5; }
+
+/* Reseña Histórica */
+.history-content p {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: #2d3748;
+    margin-bottom: 15px;
+    text-align: justify;
+}
+
+/* Organigrama */
+.organigram-display {
+    text-align: center;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+}
+.img-responsive {
+    max-width: 100%;
+    height: auto;
+    border-radius: 4px;
+}
+.download-container { margin-top: 25px; }
+.download-btn {
+    display: inline-block;
+    background-color: #e53e3e;
+    color: white;
+    text-decoration: none;
+    padding: 12px 24px;
+    border-radius: 6px;
+    font-weight: 600;
+    transition: background 0.2s;
+}
+.download-btn:hover { background-color: #c53030; }
+
+/* El recuadro blanco con borde sutil y sombra suave */
+.history-card-container {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    padding: 24px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+    margin-top: 15px;
+}
+
+/* Encabezado fuera del cuadro */
+.history-card-header {
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+.history-card-header .hospital-title {
+    font-size: 1.35rem;
+    color: #1a202c;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+.header-line-blue {
+    width: 35px;
+    height: 3px;
+    background-color: #00a8e8;
+    margin-bottom: 10px;
+}
+.hospital-subtitle {
+    font-size: 0.9rem;
+    color: #1a202c;
+    font-weight: 700;
+}
+
+/* Comportamiento del texto envolvente */
+.history-card-body-float {
+    display: block;
+    width: 100%;
+}
+
+.history-floating-img {
+    float: right;
+    width: 100%;
+    max-width: 450px; /* Tamaño ideal de la imagen */
+    height: auto;
+    border-radius: 12px;
+    margin-left: 20px;
+    margin-bottom: 12px;
+}
+
+.history-card-body-float p {
+    font-size: 0.92rem;
+    line-height: 1.6;
+    color: #4a5568;
+    margin-bottom: 15px;
+    text-align: justify;
+}
+
+.read-more-link {
+    color: #00a8e8;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+/* Responsivo para dispositivos móviles */
+@media (max-width: 767px) {
+    .history-floating-img {
+        float: none;
+        display: block;
+        margin: 0 auto 15px auto;
+        max-width: 100%;
+    }
+}
+
+/* --- ESTILOS PARA LA PÁGINA DE CONSULTA DE CITAS --- */
+
+/* 1. Banner Gris (Igual al de la imagen) */
+.page-banner {
+    background-color: #444444;
+    padding: 20px 0;
+    color: #ffffff;
+    text-align: left;
+    margin-bottom: 30px;
+}
+
+.page-banner .banner-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* 2. Contenedor de la tarjeta de búsqueda */
+.appointment-card-container {
+    background: #ffffff;
+    border: 1px solid #eeeeee;
+    padding: 20px;
+    margin-top: 20px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.appointment-card-header {
+    background: #f8f8f8;
+    padding: 10px;
+    font-weight: bold;
+    border-bottom: 1px solid #eeeeee;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+/* 3. Grupo de Búsqueda */
+.search-group {
+    margin-bottom: 25px;
+}
+
+.input-button-wrapper {
+    display: flex;
+    gap: 5px;
+    margin-top: 5px;
+}
+
+#doc-number {
+    border: 1px solid #cccccc;
+    padding: 8px;
+    width: 250px;
+}
+
+#btn-search {
+    background-color: #00a8e8;
+    color: white;
+    border: none;
+    padding: 8px 20px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* 4. Tabla de resultados */
+.appointment-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.table-blue-header th {
+    background-color: #00a8e8;
+    color: white;
+    padding: 12px;
+    text-align: center;
+}
+
+.table-sub-header th {
+    background-color: #f8f8f8;
+    padding: 10px;
+    border-bottom: 1px solid #dddddd;
+    font-weight: 600;
+}
+
+.appointment-table td {
+    padding: 15px;
+    text-align: center;
+    border-bottom: 1px solid #dddddd;
+    color: #666;
+}
+
+/* 5. Footer de la tabla */
+.table-footer-info {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9em;
+    color: #777;
+}
+
+.pagination-links a {
+    text-decoration: none;
+    color: #999;
+    margin-left: 15px;
+}
