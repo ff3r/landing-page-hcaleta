@@ -321,4 +321,5 @@ document.addEventListener('DOMContentLoaded', () => {
             icon.classList.add('fa-moon'); // Cambiamos icono a luna
         }
     });
+
 });
