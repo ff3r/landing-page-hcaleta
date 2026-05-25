@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consulta de Citas - Hospital La Caleta</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+
+    <header class="top-header">
+        <div class="logo-container">
+            <a href="index.html"><img src="assets/logo_caleta.png" alt="Logo Hospital La Caleta" class="hospital-logo-img"></a>
+        </div>
+        <div class="contact-info">
+            <div class="info-item">
+                <i class="fas fa-envelope info-icon"></i>
+                <div class="info-text">
+                    <strong>CORREO ELECTRÓNICO</strong>
+                    <span>mesa_partes@hcaleta.gob.pe</span>
+                </div>
+            </div>
+            <div class="info-item">
+                <i class="fas fa-clock info-icon"></i>
+                <div class="info-text">
+                    <strong>HORARIO DE ATENCIÓN MESA DE PARTES</strong>
+                    <span>Lunes - Viernes: 08:00AM - 15:30PM | <span class="highlight-red">Sab - Dom No hay atención</span></span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <nav class="main-nav">
+        <ul>
+            <li><a href="index.html" class="active"><i class="fas fa-home"></i> INICIO</a></li>
+            <li><a href="institucional.html"><i class="fas fa-building"></i> INSTITUCIONAL</a></li>
+
+            <li class="dropdown">
+                <a href="#"><i class="fas fa-briefcase-medical"></i> CARTERA DE SERVICIOS <i class="fas fa-chevron-down arrow"></i></a>
+                <ul class="dropdown-menu">
+                    <li><a href="#">Servicios Centrales</a></li>
+                    <li><a href="#">Especialidades Médicas</a></li>
+                    <li><a href="#">Servicios Quirúrgicos</a></li>
+                </ul>
+            </li>
+
+            <li class="dropdown">
+                <a href="#" class="text-blue-nav"><i class="fas fa-laptop-medical"></i> SERVICIOS EN LÍNEA <i class="fas fa-chevron-down arrow"></i></a>
+                <ul class="dropdown-menu">
+                    <li><a href="consulta-cita.html"><i class="fas fa-user-md"></i> Consulta tu Cita</a></li>
+                    <li><a href="#"><i class="fas fa-user-tie"></i> Convocatorias</a></li>
+                    <li><a href="#"><i class="fas fa-calendar-alt"></i> Disponibilidad de Cupos</a></li>
+                </ul>
+            </li>
+
+            <li><a href="#"><i class="fas fa-envelope"></i> CONTÁCTENOS</a></li>
+            <li class="portal-link"><a href="#"><i class="fas fa-shield-alt"></i> TRANSPARENCIA</a></li>
+
+            <li class="theme-li">
+                <button id="theme-toggle" class="theme-toggle-nav" title="Cambiar contraste visual">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </li>
+        </ul>
+    </nav>
+
+    <section class="page-banner">
+        <div class="banner-content">
+            <h1>CONSULTA DE CUPOS</h1>
+        </div>
+    </section>
+
+    <main class="institutional-container">
+        <section id="consulta-cupos-section" class="inst-section">
+            <div class="section-title">
+                <h2>CUPOS DISPONIBLES <span class="text-blue">A CONSULTAR</span></h2>
+                <div class="title-underline"></div>
+            </div>
+            <p class="section-subtitle-description">Aperturamos la plataforma de consultas de cupos, solo debes ingresar la fecha a consultar.</p>
+
+            <div class="appointment-card-container">
+                <div class="appointment-card-header">
+                    <i class="far fa-calendar-alt"></i> FECHA DE CUPOS
+                </div>
+                
+                <div class="appointment-card-body">
+                    <div class="search-group" style="margin-bottom: 20px;">
+                        <input type="date" id="cupos-date" style="padding: 8px; border: 1px solid #ccc;">
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="appointment-table">
+                            <thead>
+                                <tr class="table-blue-header">
+                                    <th colspan="3">LISTADO DE SERVICIOS DISPONIBLES</th>
+                                </tr>
+                                <tr class="table-sub-header">
+                                    <th>Médico</th>
+                                    <th>Servicios</th>
+                                    <th>Cupos Disponibles</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td><span style="background: #ffffff; color: white; padding: 2px 8px; border-radius: 4px;"></span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer></footer>
+
+<script>
+    // Esta es tu "base de datos" local
+    const baseDeDatosCupos = {
+        "2026-05-26": [
+            { medico: "PAREDES BOCANEGRA", servicio: "Consulta Externa - Mañana", cantidad: 7 },
+            { medico: "PALMA AGURTO", servicio: "Consulta Externa - Tarde", cantidad: 0 }
+        ],
+        "2026-05-27": [
+            { medico: "COBA TABOADA", servicio: "Consulta Externa - Mañana", cantidad: 5 },
+            { medico: "PULIDO SALAS", servicio: "Consulta Externa - Tarde", cantidad: 0 }
+        ]
+    };
+
+    document.getElementById('cupos-date').addEventListener('change', function() {
+        const fecha = this.value;
+        const tbody = document.querySelector('.appointment-table tbody');
+        
+        // Buscamos los datos en nuestro objeto
+        const datos = baseDeDatosCupos[fecha];
+
+        tbody.innerHTML = ''; // Limpiar tabla
+
+        if (!datos) {
+            tbody.innerHTML = '<tr><td colspan="3">No hay registros para esta fecha</td></tr>';
+            return;
+        }
+
+        datos.forEach(item => {
+            const esAgotado = item.cantidad == 0;
+            tbody.innerHTML += `
+                <tr>
+                    <td>${item.medico}</td>
+                    <td>${item.servicio}</td>
+                    <td>
+                        <span class="${esAgotado ? 'tag-agotado' : 'tag-disponible'}">
+                            ${esAgotado ? 'Agotado' : item.cantidad}
+                        </span>
+                    </td>
+                </tr>
+            `;
+        });
+    });
+</script>
+</body>
+</html>

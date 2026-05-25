@@ -724,3 +724,43 @@ body.dark-mode .input-error {
 body.dark-mode .main-footer {
     background-color: #111;
 }
+
+/* ==========================================
+   CONSULTA DE CUPOS (consulta-cupos.html)
+   ========================================== */
+
+
+.tag-disponible { 
+    background-color: #00a8e8; 
+    color: white; 
+    padding: 3px 10px; 
+    border-radius: 4px; 
+    font-weight: bold; 
+}
+
+.tag-agotado { 
+    background-color: #dc3545; 
+    color: white; 
+    padding: 3px 6px; 
+    border-radius: 4px; 
+    font-size: 0.85em; 
+    font-weight: bold;
+}
+
+.appointment-table {
+    width: 100%;
+    table-layout: fixed; /* ESTO ES LA CLAVE: mantiene las columnas fijas */
+    border-collapse: collapse;
+}
+
+.appointment-table th, 
+.appointment-table td {
+    padding: 15px;
+    text-align: center;
+    word-wrap: break-word; /* Si el texto es muy largo, se corta en dos líneas en lugar de estirar la columna */
+}
+
+/* Opcional: Define anchos específicos para columnas */
+.appointment-table th:nth-child(1) { width: 40%; } /* Médico */
+.appointment-table th:nth-child(2) { width: 40%; } /* Servicios */
+.appointment-table th:nth-child(3) { width: 20%; } /* Cupos */
