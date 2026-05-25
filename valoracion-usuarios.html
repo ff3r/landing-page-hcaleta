@@ -77,16 +77,62 @@
     </nav>
 
 
+<!-- desde aqui esta el cuerpo -->
+
+<section class="stats-banner">
+
+    <h1>VALORACIÓN DE USUARIOS</h1>
+    <p>
+        Estadísticas y niveles de satisfacción de nuestros pacientes según los servicios brindados.
+    </p>
+
+</section>
+
+<section class="stats-filters">
+
+    <button class="stats-btn active" data-service="todos">Todos</button>
+    <button class="stats-btn" data-service="emergencia">Emergencia</button>
+    <button class="stats-btn" data-service="consulta">Consulta Externa</button>
+    <button class="stats-btn" data-service="laboratorio">Laboratorio</button>
+    <button class="stats-btn" data-service="farmacia">Farmacia</button>
+
+</section>
+
+<section class="charts-container">
+
+    <div class="chart-card">
+        <h3>Satisfacción General</h3>
+        <canvas id="generalChart"></canvas>
+    </div>
+
+    <div class="chart-card">
+        <h3>Distribución de Calificaciones</h3>
+        <canvas id="servicesChart"></canvas>
+    </div>
+
+</section>
+
+<section class="live-stats">
+
+    <div class="live-card">
+        <h2 id="totalUsers">1254</h2>
+        <p>Opiniones Registradas</p>
+    </div>
+
+    <div class="live-card">
+        <h2 id="averageRating">4.6</h2>
+        <p>Promedio General</p>
+    </div>
+
+    <div class="live-card">
+        <h2 id="satisfactionRate">92%</h2>
+        <p>Satisfacción</p>
+    </div>
+
+</section>
 
 
 
-
-
-
-
-
-
-    
 
 
 
