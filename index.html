@@ -3,39 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hospital La Caleta - Portal Ciudadano</title>
+    <title>Hospital - Plantilla</title>
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
 
-<div class="side-social-bar">
-    <a href="https://www.facebook.com/HospitalLaCaletaoficial/?locale=es_LA" target="_blank" class="social-link fb" title="Facebook Oficial"><i class="fab fa-facebook-f"></i></a>
-    <a href="https://m.me/hcaletachimbote" target="_blank" class="social-link msg" title="Chat por Messenger"><i class="fab fa-facebook-messenger"></i></a>
-    <a href="https://wa.me/51925304304" target="_blank" class="social-link wa" title="Consultas WhatsApp"><i class="fab fa-whatsapp"></i></a>
-</div>
-
 <header class="top-header">
     <div class="logo-container">
-        <a href="#">
-            <img src="assets/logo_caleta.png" alt="Logo Hospital La Caleta" class="hospital-logo-img">
-        </a>
+        <img src="logo_caleta.png" alt="Logo Hospital" class="logo">
     </div>
-
     <div class="contact-info">
         <div class="info-item">
-            <i class="fas fa-envelope info-icon"></i>
-            <div class="info-text">
-                <strong>CORREO ELECTRÓNICO</strong>
-                <span>mesa_partes@hcaleta.gob.pe</span>
+            <i class="fas fa-envelope"></i>
+            <div>
+                <strong>CORREO ELECTRÓNICO</strong><br>
+                <span>contacto@tuhospital.com</span>
             </div>
         </div>
-
         <div class="info-item">
-            <i class="fas fa-clock info-icon"></i>
-            <div class="info-text">
-                <strong>HORARIO DE ATENCIÓN MESA DE PARTES</strong>
-                <span>Lunes - Viernes: 08:00AM - 15:30PM | <span class="highlight-red">Sab - Dom No hay atención</span></span>
+            <i class="fas fa-clock"></i>
+            <div>
+                <strong>HORARIO DE ATENCIÓN</strong><br>
+                <span>Lunes - Viernes: 08:00 AM - 15:00 PM</span>
             </div>
         </div>
     </div>
@@ -43,235 +33,122 @@
 
 <nav class="main-nav">
     <ul>
-        <li><a href="index.html" class="active"><i class="fas fa-home"></i> INICIO</a></li>
-        <li><a href="institucional.html"><i class="fas fa-building"></i> INSTITUCIONAL</a></li>
-
-        <li class="dropdown">
-            <a href="#"><i class="fas fa-briefcase-medical"></i> CARTERA DE SERVICIOS <i class="fas fa-chevron-down arrow"></i></a>
-            <ul class="dropdown-menu">
-                <li><a href="#">Servicios Centrales</a></li>
-                <li><a href="#">Especialidades Médicas</a></li>
-                <li><a href="#">Servicios Quirúrgicos</a></li>
-            </ul>
-        </li>
-
-        <li class="dropdown">
-            <a href="#" class="text-blue-nav"><i class="fas fa-laptop-medical"></i> SERVICIOS EN LÍNEA <i class="fas fa-chevron-down arrow"></i></a>
-            <ul class="dropdown-menu">
-                <li><a href="consulta-cita.html"><i class="fas fa-user-md"></i> Consulta tu Cita</a></li>
-                <li><a href="#"><i class="fas fa-user-tie"></i> Convocatorias</a></li>
-                <li><a href="#"><i class="fas fa-calendar-alt"></i> Disponibilidad de Cupos</a></li>
-            </ul>
-        </li>
-
+        <li><a href="#"><i class="fas fa-home"></i> INICIO</a></li>
+        <li><a href="#"><i class="fas fa-building"></i> INSTITUCIONAL</a></li>
+        <li><a href="#"><i class="fas fa-briefcase-medical"></i> SERVICIOS</a></li>
         <li><a href="#"><i class="fas fa-envelope"></i> CONTÁCTENOS</a></li>
-        <li class="portal-link"><a href="#"><i class="fas fa-shield-alt"></i> TRANSPARENCIA</a></li>
-
-        <li class="theme-li">
-            <button id="theme-toggle" class="theme-toggle-nav" title="Cambiar contraste visual">
-                <i class="fas fa-moon"></i>
-            </button>
-        </li>
     </ul>
 </nav>
 
-<section class="main-banner">
-    <div class="emergency-float-banner">
-        <i class="fas fa-plus-circle"></i> EMERGENCIA 24 HORAS
-    </div>
+<section class="hero-section">
+    <div class="hero-image-circle" style="background-image: url('ruta-a-tu-imagen-doctores.jpg');"></div>
 
-    <div class="slider-container">
-        <div class="slider-wrapper">
-            <div class="slide active">
-                <img src="https://images.unsplash.com/photo-1579684385127-1ef15d508118?q=80&w=1600" alt="Especialidades">
-                <div class="slide-content">
-                    <h2>Atención Médica Especializada</h2>
-                    <p>Comprometidos con la salud y bienestar de toda la provincia del Santa.</p>
-                    <a href="#" class="btn-slide">Ver Especialidades</a>
-                </div>
-            </div>
-            <div class="slide">
-                <img src="https://images.unsplash.com/photo-1581594693702-fbdc51b2763b?q=80&w=1600" alt="Equipamiento">
-                <div class="slide-content">
-                    <h2>Modernización de Consultas</h2>
-                    <p>Evita colas innecesarias utilizando nuestros nuevos servicios digitales en línea.</p>
-                    <a href="#servicios-linea" class="btn-slide">Trámites Digitales</a>
-                </div>
-            </div>
+    <div class="hero-content">
+        <div class="emergency-banner">
+            <i class="fas fa-plus-circle"></i> EMERGENCIA
         </div>
-        <button class="slider-control prev">❮</button>
-        <button class="slider-control next">❯</button>
-        <div class="slider-dots">
-            <span class="dot active"></span>
-            <span class="dot"></span>
-        </div>
-    </div>
-</section>
+        <h1 class="main-title">ATENCIÓN LAS 24 HORAS</h1>
+        <div class="subtitle-pill">TU SALUD ES PRIMERO</div>
 
-<section id="servicios-linea" class="info-section">
-    <h2 class="section-title">SERVICIOS EN <span>LÍNEA</span></h2>
-    <p class="section-subtitle">Accesos rápidos y herramientas interactivas de gestión pública.</p>
-
-    <div class="interactive-grid">
-        <div class="interactive-card">
-            <div class="card-icon"><i class="fas fa-calendar-check"></i></div>
-            <h3>Disponibilidad de Cupos</h3>
-            <p>Monitoreo en tiempo real de citas médicas disponibles para mañana:</p>
-            <div class="quota-monitor">
-                <div class="quota-item status-high">
-                    <span>Medicina General</span>
-                    <span class="badge">Abierto</span>
-                </div>
-                <div class="quota-item status-medium">
-                    <span>Pediatría</span>
-                    <span class="badge">Pocos cupos</span>
-                </div>
-                <div class="quota-item status-low">
-                    <span>Cardiología</span>
-                    <span class="badge">Agotado</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="interactive-card grid-links">
-            <div class="link-item">
-                <i class="fas fa-file-invoice"></i>
-                <div>
-                    <h4>Mesa de Partes Virtual</h4>
-                    <p>Envía tus solicitudes formalmente.</p>
-                </div>
-            </div>
-            <div class="link-item">
-                <i class="fas fa-user-tie"></i>
-                <div>
-                    <h4>Convocatorias CAS</h4>
-                    <p>Plazas vigentes de empleo.</p>
-                </div>
-            </div>
-            <div class="link-item">
-                <i class="fas fa-book"></i>
-                <div>
-                    <h4>Libro de Reclamaciones</h4>
-                    <p>Tu opinión nos ayuda a mejorar.</p>
-                </div>
+        <div class="hero-hours">
+            <i class="far fa-calendar-alt calendar-icon"></i>
+            <div>
+                <strong>Horario de Atención: Lunes a Viernes</strong><br>
+                08:00 am. - 1:00 pm.<br>
+                Sábados de 8:00 am. - 1:00 pm.
             </div>
         </div>
     </div>
 </section>
 
-<section class="location-section">
-    <div class="section-title-container">
-        <h2>MAPA <span class="text-blue">DE UBICACIÓN</span></h2>
-        <div class="title-underline"></div>
-    </div>
+<section class="info-section">
+    <h2 class="section-title">HORARIO DE <span>ATENCIÓN</span></h2>
+    <p class="section-subtitle">Manténgase informado con nuestro horario de atención.</p>
 
-    <p class="section-subtitle">
-        Le brindamos el mapa google maps para saber cómo llegar al Hospital la Caleta y atenderse en nuestros distintos servicios que les ofrecemos con el mejor equipo de profesionales altamente capacitados.
-    </p>
-
-    <div class="map-container">
-        <iframe
-                src="https://maps.google.com/maps?q=Hospital%20La%20Caleta,%20Chimbote,%20Peru&t=&z=16&ie=UTF8&iwloc=&output=embed"            width="100%"
-                height="450"
-                style="border:0;"
-                allowfullscreen=""
-                loading="lazy"
-                referrerpolicy="no-referrer-when-downgrade">
-        </iframe>
-    </div>
-</section>
-
-<section class="interests-section">
-    <div class="interests-header">
-        <div class="section-title-container">
-            <h2>ENLACES <span class="text-blue">DE INTERÉS</span></h2>
-            <div class="title-underline"></div>
+    <div class="services-grid">
+        <div class="service-item">
+            <i class="fas fa-ambulance"></i>
+            <div>
+                <strong>EMERGENCIA</strong><br>
+                <span>Lunes - Domingo<br>Atención las 24 horas</span>
+            </div>
         </div>
-        <div class="carousel-nav">
-            <button class="nav-btn prev-btn" id="interest-prev">
-                <i class="fas fa-arrow-left"></i>
-            </button>
-            <button class="nav-btn next-btn" id="interest-next">
-                <i class="fas fa-arrow-right"></i>
-            </button>
+        <div class="service-item">
+            <i class="fas fa-user-md"></i>
+            <div>
+                <strong>CONSULTA EXTERNA</strong><br>
+                <span>Lunes - Viernes 08:00 am - 15:00 pm</span>
+            </div>
         </div>
-    </div>
-
-    <p class="section-subtitle">
-        Acceso directos a otras páginas de interes mediante nuestra plataforma web que le brindamos.
-    </p>
-
-    <div class="carousel-container">
-        <div class="carousel-track" id="interest-track">
-            <a href="https://www.cmp.org.pe/" target="_blank" class="logo-card">
-                <img src="assets/colegio_medico.png" alt="Colegio Médico del Perú">
-            </a>
-            <a href="https://www.gob.pe/bicentenario" target="_blank" class="logo-card">
-                <img src="assets/bicentenario.png" alt="Bicentenario 2024">
-            </a>
-            <a href="https://www.gob.pe/fissal" target="_blank" class="logo-card">
-                <img src="assets/fisal.jpg" alt="FISSAL">
-            </a>
-            <a href="https://www.gob.pe/susalud" target="_blank" class="logo-card">
-                <img src="assets/susalud.png" alt="SUSALUD">
-            </a>
-            <a href="https://www.gob.pe/reniec" target="_blank" class="logo-card">
-                <img src="assets/reniec.png" alt="RENIEC">
-            </a>
-            <a href="https://www.gob.pe/contraloria" target="_blank" class="logo-card">
-                <img src="assets/contraloria.png" alt="La Contraloría">
-            </a>
-            <a href="https://appsalud.minsa.gob.pe/portal_sismed/?op=551" target="_blank" class="logo-card">
-                <img src="assets/sismed.png" alt="SISMED Observatorio">
-            </a>
-            <a href="https://www.sunat.gob.pe/" target="_blank" class="logo-card">
-                <img src="assets/sunat.jpg" alt="SUNAT">
-            </a>
-            <a href="https://www.gob.pe/regionancash" target="_blank" class="logo-card">
-                <img src="assets/gobiernoregional.png" alt="Gobierno Regional de Áncash">
-            </a>
+        <div class="service-item">
+            <i class="fas fa-users"></i>
+            <div>
+                <strong>ATENCIÓN AL USUARIO</strong><br>
+                <span>Lunes - Viernes 08:00 am - 15:00 pm</span>
+            </div>
         </div>
     </div>
 </section>
 
-<div class="chatbot-container">
 
-    <div class="chatbot-bubble" id="chat-bubble">
-        <img src="assets/icn-msg.png" alt="Icono del chat" width="32" height="32">
-        <span class="bubble-notification">1</span>
+
+<!--aqui se estan agregando las 12 imagenes -->
+<section class="gallery-section">
+    <h2 class="gallery-title">SERVICIOS EN <span>LINEA</span></h2>
+
+    <div class="gallery-grid">
+
+        <div class="gallery-item">
+            <img src="assets/servicio-01.png" alt="">
+        </div>
+
+        <div class="gallery-item">
+            <img src="assets/servicio-02.png" alt="">
+        </div>
+
+        <div class="gallery-item">
+            <img src="assets/servicio-03.png" alt="">
+        </div>
+
+        <div class="gallery-item">
+            <img src="assets/servicio-04.png" alt="">
+        </div>
+
+        <div class="gallery-item">
+            <img src="assets/servicio-05.png" alt="">
+        </div>
+
+        <div class="gallery-item">
+            <img src="assets/servicio-06.png" alt="">
+        </div>
+
+        <div class="gallery-item">
+            <img src="assets/servicio-07.png" alt="">
+        </div>
+
+        <div class="gallery-item">
+            <img src="assets/servicio-08.png" alt="">
+        </div>
+
+        <div class="gallery-item">
+            <img src="assets/servicio-09.png" alt="">
+        </div>
+
+        <div class="gallery-item">
+            <img src="assets/servicio-10.png" alt="">
+        </div>
+
+        <div class="gallery-item">
+            <img src="assets/servicio-11.png" alt="">
+        </div>
+
+        <div class="gallery-item">
+            <img src="assets/servicio-12.png" alt="">
+        </div>
+
     </div>
+</section>
 
-    <div class="chatbot-window id-hidden" id="chat-window">
-        <div class="chat-header">
-            <div class="chat-profile">
-                <i class="fas fa-user-md header-avatar"></i>
-                <div>
-                    <h4>Asistente Caleta</h4>
-                    <span>En línea • Triaje Virtual</span>
-                </div>
-            </div>
-            <button class="close-chat-btn" id="close-chat">×</button>
-        </div>
-
-        <div class="chat-body" id="chat-body">
-            <div class="message bot-msg">
-                <p>¡Hola! Bienvido al portal del Hospital La Caleta. Soy tu asistente virtual. ¿En qué puedo ayudarte hoy?</p>
-            </div>
-
-            <div class="chat-options" id="initial-options">
-                <button class="option-btn" data-action="horarios">🕒 1. Ver Horarios de Atención</button>
-                <button class="option-btn" data-action="sis">📋 2. Requisitos para SIS</button>
-                <button class="option-btn" data-action="emergencia">🚨 3. Números de Emergencia</button>
-            </div>
-        </div>
-
-        <div class="chat-footer">
-            <input type="text" id="chat-input" placeholder="Escribe tu pregunta aquí...">
-            <button id="send-msg-btn"><i class="fas fa-paper-plane"></i></button>
-        </div>
-    </div>
-
-</div>
 <script src="js/script.js"></script>
 </body>
 </html>
