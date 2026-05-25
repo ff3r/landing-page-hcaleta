@@ -178,6 +178,14 @@ body.dark-mode .text-blue, body.dark-mode .info-icon, body.dark-mode .link-item 
 body.dark-mode .theme-toggle-nav { color: #ffd700; }
 body.dark-mode .quota-item { background: #2a2a2a; border-color: #444; }
 body.dark-mode .logo-card { background-color: #ffffff !important; border-color: #eef2f5 !important; }
+/* Correcciones para la Tabla de Citas en Modo Oscuro */
+body.dark-mode .appointment-card-container {background-color: #1a1a1a !important; border-color: #333333 !important;}
+body.dark-mode .appointment-card-header {background-color: #222222 !important; color: #e0e0e0 !important; border-bottom: 1px solid #333333 !important;}
+body.dark-mode .appointment-table th {background-color: #1a1a1a !important; /* O un gris muy oscuro si prefieres */color: #e0e0e0 !important;border-bottom: 2px solid #333333 !important;}
+body.dark-mode .appointment-table td {color: #aaaaaa !important;border-bottom: 1px solid #333333 !important;}
+/* Ajuste para que los campos de entrada de búsqueda se vean bien */
+body.dark-mode #doc-number {background-color: #2a2a2a !important;color: #e0e0e0 !important;border-color: #444444 !important;}
+
 
 /* ==========================================
    CHATBOT FLOTANTE (ESTRUCTURA BASE)
@@ -850,25 +858,23 @@ body.dark-mode #chat-input {
     border: 1px solid #555 !important;
 }
 
-/* ==========================================
-   CENTRAR MENÚ Y LOGOS (LUNITA A LA DERECHA)
-   ========================================== */
-.main-nav ul {
-    display: flex;
-    justify-content: center; /* Centra todo el contenido (textos y logos) */
-    align-items: center;
-    position: relative; /* Necesario para que la lunita se ancle a este contenedor */
-    width: 100%;
-}
 
-/* Quitamos la regla que empujaba los logos al fondo y les damos un margen normal */
-.nav-img-item.push-right {
-    margin-left: 10px !important;
-}
+       /* ==========================================
+       RESALTADO DE LOS BOTONES DEL MENÚ (HOVER)
+       ========================================== */
 
-/* Sacamos la lunita del flujo normal y la anclamos a la derecha absoluta */
-.theme-li {
-    position: absolute !important;
-    right: 0;
-    margin-left: 0 !important;
+       /* 1. MODO CLARO: Resaltado celeste suave */
+   .main-nav > ul > li > a:hover,
+   .main-nav > ul > li > a.active {
+       color: #0077b3 !important; /* Texto azul más oscuro */
+       background-color: #dcedfa !important; /* Fondo celeste suave */
+       border-radius: 5px !important; /* Bordes ligeramente redondeados */
+   }
+
+/* 2. MODO OSCURO: Fondo sutil y texto celeste brillante */
+body.dark-mode .main-nav > ul > li > a:hover,
+body.dark-mode .main-nav > ul > li > a.active {
+    color: #33b5e5 !important; /* Texto celeste brillante para resaltar */
+    background-color: #2b3035 !important; /* Fondo gris oscuro, elimina el parche blanco */
+    border-radius: 5px !important;
 }
