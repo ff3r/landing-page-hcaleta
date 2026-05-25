@@ -1,1 +1,185 @@
 <!--esto es el segundo -->
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contáctenos - Hospital La Caleta</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+<div class="side-social-bar">
+    <a href="#" class="social-link fb"><i class="fab fa-facebook-f"></i></a>
+    <a href="#" class="social-link msg"><i class="fab fa-facebook-messenger"></i></a>
+    <a href="#" class="social-link wa"><i class="fab fa-whatsapp"></i></a>
+</div>
+
+<header class="top-header">
+    <div class="logo-container">
+        <a href="index.html">
+            <img src="assets/logo_caleta.png" alt="Logo Hospital La Caleta" class="hospital-logo-img">
+        </a>
+    </div>
+    <div class="contact-info">
+        <div class="info-item">
+            <i class="fas fa-envelope info-icon"></i>
+            <div class="info-text">
+                <strong>CORREO ELECTRÓNICO</strong>
+                <span>mesa_partes@hcaleta.gob.pe</span>
+            </div>
+        </div>
+        <div class="info-item">
+            <i class="fas fa-clock info-icon"></i>
+            <div class="info-text">
+                <strong>HORARIO DE ATENCIÓN MESA DE PARTES</strong>
+                <span>Lunes - Viernes: 08:00AM - 15:30PM | <span class="highlight-red">Sab - Dom No hay atención</span></span>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+    <nav class="main-nav">
+        <ul>
+            <li><a href="index.html"><i class="fas fa-home"></i> INICIO</a></li>
+            <li><a href="institucional.html"><i class="fas fa-building"></i> INSTITUCIONAL</a></li>
+
+            <li class="dropdown">
+                <a href="#"><i class="fas fa-briefcase-medical"></i> CARTERA DE SERVICIOS <i class="fas fa-chevron-down arrow"></i></a>
+                <ul class="dropdown-menu">
+                    <li><a href="#">Servicios Centrales</a></li>
+                    <li><a href="#">Especialidades Médicas</a></li>
+                    <li><a href="#">Servicios Quirúrgicos</a></li>
+                </ul>
+            </li>
+
+            <li class="dropdown">
+                <a href="#" class="text-blue-nav"><i class="fas fa-laptop-medical"></i> SERVICIOS EN LÍNEA <i class="fas fa-chevron-down arrow"></i></a>
+                <ul class="dropdown-menu">
+                    <li><a href="consulta-cita.html"><i class="fas fa-user-md"></i> Consulta tu Cita</a></li>
+                    <li><a href="#"><i class="fas fa-user-tie"></i> Convocatorias</a></li>
+                    <li><a href="consulta-cupos.html"><i class="fas fa-calendar-alt"></i> Disponibilidad de Cupos</a></li>
+                </ul>
+            </li>
+
+            <li><a href="contactenos.html" class="active"><i class="fas fa-envelope"></i> CONTÁCTENOS</a></li>
+            <li class="portal-link"><a href="#"><i class="fas fa-shield-alt"></i> TRANSPARENCIA</a></li>
+
+            <li class="theme-li">
+                <button id="theme-toggle" class="theme-toggle-nav" title="Cambiar contraste visual">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </li>
+        </ul>
+    </nav>
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+    <div class="chatbot-container">
+
+    <div class="chatbot-bubble" id="chat-bubble">
+        <img src="assets/icn-msg.png" alt="Icono del chat" width="32" height="32">
+        <span class="bubble-notification">1</span>
+    </div>
+
+    <div class="chatbot-window id-hidden" id="chat-window">
+        <div class="chat-header">
+            <div class="chat-profile">
+                <i class="fas fa-user-md header-avatar"></i>
+                <div>
+                    <h4>Asistente Caleta</h4>
+                    <span>En línea • Triaje Virtual</span>
+                </div>
+            </div>
+            <button class="close-chat-btn" id="close-chat">×</button>
+        </div>
+
+        <div class="chat-body" id="chat-body">
+            <div class="message bot-msg">
+                <p>¡Hola! Bienvido al portal del Hospital La Caleta. Soy tu asistente virtual. ¿En qué puedo ayudarte hoy?</p>
+            </div>
+
+            <div class="chat-options" id="initial-options">
+                <button class="option-btn" data-action="horarios">🕒 1. Ver Horarios de Atención</button>
+                <button class="option-btn" data-action="sis">📋 2. Requisitos para SIS</button>
+                <button class="option-btn" data-action="emergencia">🚨 3. Números de Emergencia</button>
+            </div>
+        </div>
+
+        <div class="chat-footer">
+            <input type="text" id="chat-input" placeholder="Escribe tu pregunta aquí...">
+            <button id="send-msg-btn"><i class="fas fa-paper-plane"></i></button>
+        </div>
+    </div>
+
+</div>
+
+<section class="blue-info-strip">
+    <div class="info-block">
+        <i class="fas fa-phone-alt"></i>
+        <div>
+            <strong>+51 043-702030</strong>
+            <span>Reserva tu cita ahora mismo</span>
+        </div>
+    </div>
+    <div class="info-block">
+        <i class="fas fa-book"></i>
+        <div>
+            <strong>Libro de Reclamaciones</strong>
+            <span>Registre su queja o reclamo si tuviera</span>
+        </div>
+    </div>
+    <div class="info-block">
+        <i class="fas fa-phone-volume"></i>
+        <div>
+            <strong>+51 905471523</strong>
+            <span>Referencia y Contrarreferencia</span>
+        </div>
+    </div>
+</section>
+
+<footer class="main-footer">
+    <div class="footer-col">
+        <h4>Bienvenidos</h4>
+        <div class="footer-line"></div>
+        <p>Centro hospitalario público de Segundo Nivel II-2 que ofrece servicios especializados en salud, administrado por el Gobierno Regional ubicado en el centro poblado ancashino de La Caleta, distrito de Chimbote, provincia del Santa.</p>
+    </div>
+    <div class="footer-col">
+        <h4>Enlaces de Interés</h4>
+        <div class="footer-line"></div>
+        <ul class="footer-links">
+            <li><a href="https://appsalud.minsa.gob.pe/portal_sismed/?op=551"><i class="fas fa-arrow-circle-right"></i> Ministerio de Salud</a></li>
+            <li><a href="https://www.gob.pe/"><i class="fas fa-arrow-circle-right"></i> Portal del Estado Peruano</a></li>
+            <li><a href="https://www.gob.pe/susalud"><i class="fas fa-arrow-circle-right"></i> Susalud</a></li>
+            <li><a href="https://www.gob.pe/sis"><i class="fas fa-arrow-circle-right"></i> Seguro Integral de Salud</a></li>
+            <li><a href="https://opm-digemid.minsa.gob.pe/#/consulta-producto"><i class="fas fa-arrow-circle-right"></i> Digemid</a></li>
+            <li><a href="https://apps.contraloria.gob.pe/wcm/control_interno/index.html"><i class="fas fa-arrow-circle-right"></i> Sistema de Control Interno</a></li>
+            <li><a href="https://www.gob.pe/servir"><i class="fas fa-arrow-circle-right"></i> Servir</a></li>
+            <li><a href="https://www.gob.pe/oece"><i class="fas fa-arrow-circle-right"></i> Contrataciones del Estado</a></li>
+
+        </ul>
+    </div>
+    <div class="footer-col">
+        <h4>Ubicación</h4>
+        <div class="footer-line"></div>
+        <p><i class="fas fa-map-marker-alt"></i> Av. Malecon Grau s/n - Urb. La Caleta</p>
+        <p><i class="fas fa-phone-alt"></i> Teléfono : (043) 327589</p>
+        <p><i class="fas fa-globe"></i> Página Web : www.hcaleta.gob.pe</p>
+    </div>
+</footer>
+<script src="js/script.js"></script>
