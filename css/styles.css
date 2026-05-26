@@ -1526,3 +1526,165 @@ body.dark-mode .live-card p{
     }
 
 }
+
+/* COMUNICADOS DE VIDEO - DISEÑO MODERNO */
+.social-media-section {
+    padding: 60px 20px;
+}
+
+/* Título de la sección */
+.section-title-container {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.section-title-container h2 {
+    font-size: 2rem;
+    color: var(--dark-blue);
+    margin-bottom: 10px;
+}
+
+.title-underline {
+    width: 80px;
+    height: 4px;
+    background: var(--primary-blue);
+    margin: 0 auto;
+    border-radius: 2px;
+}
+
+/* Grid equilibrado */
+.social-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.75fr; /* Proporción elegante */
+    gap: 30px;
+    max-width: 1100px;
+    margin: 0 auto; 
+    align-items: stretch; /* Esto es clave: estira ambos al mismo alto */
+}
+
+/* Caja de comunicado */
+.comunicado-box {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.07);
+    height: 100%; /* Toma la altura del video */
+
+    /* Esto permite que el elemento se pueda mover libremente */
+    position: relative;
+    
+    /* Ajusta este valor para moverlo cuanto quieras */
+    left: -55px;
+}
+
+.comunicado-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Llena todo el espacio sin verse borroso */
+}
+
+/* Video 16:9 */
+.video-container {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.07);
+    background: #000;
+    aspect-ratio: 16 / 9; /* Mantiene formato estándar */
+    display: flex;
+
+        /* Esto permite que el elemento se pueda mover libremente */
+    position: relative;
+    
+    /* Ajusta este valor para moverlo cuanto quieras */
+    left: -55px;
+}
+
+.video-container video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Adaptación a móviles */
+@media (max-width: 768px) {
+    .social-grid { grid-template-columns: 1fr; }
+    .comunicado-box { height: 300px; }
+}
+
+/* Contenedor principal que mantiene el tamaño */
+.comunicado-box {
+    border-radius: 12px;
+    overflow: hidden; /* Esto es vital: corta lo que sale del recuadro */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    background: #fff;
+    height: 100%;
+    position: relative;
+}
+
+/* La cinta que se mueve */
+#comunicado-slider {
+    display: flex;
+    width: 100%; /* El ancho total del contenedor */
+    height: 100%;
+    transition: transform 0.8s ease-in-out;
+}
+
+/* Cada imagen ocupa el 100% del ancho del recuadro */
+.comunicado-img {
+    width: 100%; 
+    flex-shrink: 0; /* Esto evita que la imagen se encoja */
+    height: 100%;
+    object-fit: cover;
+}
+
+.horario-section {
+    padding: 60px 20px;
+    text-align: center;
+}
+
+.horario-section h2 {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.title-underline {
+    width: 60px;
+    height: 3px;
+    background: #00aaff; /* Azul de la imagen */
+    margin: 0 auto 20px;
+}
+
+.subtitle {
+    color: #888;
+    margin-bottom: 40px;
+}
+
+.horario-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.horario-item i {
+    font-size: 2rem;
+    color: #00aaff;
+    margin-bottom: 15px;
+    display: block;
+}
+
+.horario-item h3 {
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+}
+
+.horario-item p {
+    font-size: 0.9rem;
+    color: #555;
+    line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+    .horario-grid { grid-template-columns: 1fr; }
+}
