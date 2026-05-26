@@ -178,14 +178,36 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Evaluamos mediante palabras clave qué responder
         let accionDetectada = "desconocido";
-        if (textoUsuario.includes('hora') || textoUsuario.includes('horario') || textoUsuario.includes('atienden') || textoUsuario.includes('atencion')) {
+
+        // Palabras clave para Horarios
+        if (textoUsuario.includes('hora') || textoUsuario.includes('horario') || 
+            textoUsuario.includes('atienden') || textoUsuario.includes('atencion') || 
+            textoUsuario.includes('abierto') || textoUsuario.includes('cuando')) {
             accionDetectada = "horarios";
-        } else if (textoUsuario.includes('sis') || textoUsuario.includes('seguro') || textoUsuario.includes('afiliarme')) {
+
+        // Palabras clave para SIS
+        } else if (textoUsuario.includes('sis') || textoUsuario.includes('seguro') || 
+                textoUsuario.includes('afiliarme') || textoUsuario.includes('gratuito') || 
+                textoUsuario.includes('requisitos')) {
             accionDetectada = "sis";
-        } else if (textoUsuario.includes('emergencia') || textoUsuario.includes('urgencia') || textoUsuario.includes('telefono') || textoUsuario.includes('numero')) {
+
+        // Palabras clave para Emergencia
+        } else if (textoUsuario.includes('emergencia') || textoUsuario.includes('urgencia') || 
+                textoUsuario.includes('telefono') || textoUsuario.includes('numero') || 
+                textoUsuario.includes('llamar') || textoUsuario.includes('contacto') || 
+                textoUsuario.includes('ayuda')) {
             accionDetectada = "emergencia";
-        } else if (textoUsuario.includes('cita') || textoUsuario.includes('consultar')) {
+
+        // Palabras clave para Citas
+        } else if (textoUsuario.includes('cita') || textoUsuario.includes('consultar') || 
+                textoUsuario.includes('separar') || textoUsuario.includes('programar') || 
+                textoUsuario.includes('medico') || textoUsuario.includes('especialidad')) {
             accionDetectada = "citas";
+            
+        // Palabras clave para Cupos
+        } else if (textoUsuario.includes('cupo') || textoUsuario.includes('disponibilidad') || 
+                textoUsuario.includes('hay campo') || textoUsuario.includes('ver vacantes')) {
+            accionDetectada = "cupos";
         }
 
         responderBot(accionDetectada);
