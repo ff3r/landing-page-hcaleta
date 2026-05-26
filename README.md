@@ -1,6 +1,6 @@
-# 🚛 Landing Page - Hospital La Caleta
+# 🏥 Landing Page - Hospital La Caleta
 
-Landing page moderna para xxxxxxxxxxxxxxxxxxxx
+Landing page moderna para el Hospital La Caleta
 
 👉 Demo en vivo: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -15,8 +15,8 @@ Landing page moderna para xxxxxxxxxxxxxxxxxxxx
 
 - Diseño minimalista
 - Modo claro / oscuro 🌙☀️
-- Sección de modelos de camiones
-- Formulario de contacto
+- Catálogo de servicios
+- Formulario de contacto integrado
 
 ---
 
@@ -31,15 +31,29 @@ Landing page moderna para xxxxxxxxxxxxxxxxxxxx
 ## 📁 Estructura del proyecto
 
 ```plaintext
-landing-camiones/
+landing-page-hcaleta/
 │
 ├── index.html
+├── institucional.html
+├── convocatorias.html
+├── consulta-cupos.html
+├── consulta-cita.html
+├── contactos.html
+├── comentarios-sugerencias.html
+├── valoracion-usuarios.html
+│
 ├── css/
-│   └── style.css
+│   └── styles.css
+│
 ├── js/
-│   └── script.js
+│   ├── script.js
+│   ├── comentarios.js
+│   └── valoracion.js
+│
 ├── assets/
-│   └── (assets del proyecto)
+│   └── (imágenes, iconos, logos, etc.)
+│
+├── .gitignore
 └── README.md
 `````
 
