@@ -1829,3 +1829,49 @@ body.dark-mode .form-container {
     border: 1px solid #333;
     box-shadow: 0 4px 12px rgba(0,0,0,0.5);
 }   
+
+/* Sección de Horarios */
+.horario-section {
+    background-color: #ffffff; /* Fondo blanco sólido */
+    padding: 60px 0;           /* Espaciado para que no se vea apretado */
+    position: relative;
+    z-index: 1;                /* Asegura que esté por encima de otros elementos */
+}
+
+/* Modo oscuro: ajusta el fondo para que no se pierda la visibilidad */
+body.dark-mode .horario-section {
+    background-color: #1a1a1a; /* Un tono oscuro si el modo oscuro está activo */
+}
+
+.social-footer-msg {
+    text-align: center;
+    color: #666;
+    font-size: 0.95rem;
+    margin-top: 20px;
+    font-style: italic;
+    padding: 0 20px;
+}
+
+/* Ajuste para modo oscuro */
+body.dark-mode .social-footer-msg {
+    color: #aaa;
+}
+
+.side-social-bar {
+    position: fixed;
+    top: 50%; /* Centrado vertical */
+    transform: translateY(-50%);
+    left: 0;
+    z-index: 999; /* Asegura que esté por encima de otros elementos */
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    transition: opacity 0.3s ease;
+}
+
+/* Regla para ocultarla cuando llegue al tope del banner */
+@media (max-height: 700px) {
+    .side-social-bar {
+        display: none; /* O puedes poner 'opacity: 0' para ocultarla suavemente */
+    }
+}

@@ -346,3 +346,17 @@ document.addEventListener("DOMContentLoaded", function() {
     // Intervalo de 4 segundos
     setInterval(slideComunicados, 4000);
 });
+
+window.addEventListener('scroll', function() {
+    const socialBar = document.querySelector('.side-social-bar');
+    const scrollPos = window.scrollY;
+
+    // Si el usuario baja más de 300px, ocultamos la barra
+    if (scrollPos < 300) {
+        socialBar.style.opacity = '0';
+        socialBar.style.pointerEvents = 'none'; // Evita clics accidentales
+    } else {
+        socialBar.style.opacity = '1';
+        socialBar.style.pointerEvents = 'auto';
+    }
+});
