@@ -1875,3 +1875,38 @@ body.dark-mode .social-footer-msg {
         display: none; /* O puedes poner 'opacity: 0' para ocultarla suavemente */
     }
 }
+
+/* Ajuste de la sección principal */
+.interests-section {
+    padding: 20px 20px 40px 20px; /* Reducimos el padding superior */
+    text-align: center;
+}
+
+/* Unificación del encabezado */
+.interests-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 10px; /* Reducimos el margen inferior del bloque de texto */
+}
+
+/* Reducimos el margen del título y su subrayado */
+.section-title-container {
+    margin-bottom: 5px; 
+}
+
+/* Ajustamos el subtítulo */
+.section-subtitle {
+    margin: 0 auto 10px auto; /* Eliminamos márgenes excesivos */
+    line-height: 1.2;
+    color: #555;
+}
+
+/* El wrapper de las flechas ahora tiene margen negativo o reducido para acercarse al texto */
+.carousel-nav-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    max-width: 1100px;
+    margin: -10px auto 10px auto; /* El -10px 'jala' las flechas hacia arriba */
+    padding-right: 20px;
+}
