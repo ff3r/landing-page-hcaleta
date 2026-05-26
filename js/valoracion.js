@@ -35,6 +35,13 @@ document.addEventListener("DOMContentLoaded", () => {
             usuarios: 224,
             satisfaccion: 85,
             estrellas: [3, 12, 17, 60, 132]
+        },
+
+        pediatria: {
+            promedio: 4.5,
+            usuarios: 180,
+            satisfaccion: 91,
+            estrellas: [2, 5, 20, 60, 93]
         }
     };
 
@@ -49,21 +56,6 @@ document.addEventListener("DOMContentLoaded", () => {
     document.body.classList.contains("dark-mode")
         ? "#ffffff"
         : "#333333";
-
-
-
-    /*let generalChart = new Chart(ctxGeneral, {
-        type: "doughnut",
-        data: {
-            labels: [
-                "Satisfechos",
-                "No satisfechos"
-            ],
-            datasets: [{
-                data: [92, 8]
-            }]
-        }
-    });*/
 
 
     let generalChart = new Chart(ctxGeneral, {
@@ -151,4 +143,67 @@ document.addEventListener("DOMContentLoaded", () => {
 
         });
 
+
+
+    /* =========================
+       LEER ESTADISTICAS GUARDADAS
+    ========================= */
+
+    const estadisticasGuardadas = JSON.parse(
+        localStorage.getItem("estadisticasHospital")
+    );
+
+
+    if(estadisticasGuardadas){
+
+        document.getElementById("totalUsers")
+            .textContent =
+            estadisticasGuardadas.total;
+
+        document.getElementById("averageRating")
+            .textContent =
+            estadisticasGuardadas.promedio;
+
+
+        const satisfechos =
+            (
+                (
+                    estadisticasGuardadas.conteo[4] +
+                    estadisticasGuardadas.conteo[5]
+                )
+                /
+                estadisticasGuardadas.total
+            ) * 100;
+
+
+        document.getElementById("satisfactionRate")
+            .textContent =
+            satisfechos.toFixed(0) + "%";
+
+
+        generalChart.data.datasets[0].data = [
+            satisfechos,
+            100 - satisfechos
+        ];
+
+        generalChart.update();
+
+
+        servicesChart.data.datasets[0].data = [
+
+            estadisticasGuardadas.conteo[1],
+            estadisticasGuardadas.conteo[2],
+            estadisticasGuardadas.conteo[3],
+            estadisticasGuardadas.conteo[4],
+            estadisticasGuardadas.conteo[5]
+
+        ];
+
+        servicesChart.update();
+
+    }
+
+
 });
+
+

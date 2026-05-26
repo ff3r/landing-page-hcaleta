@@ -62,3 +62,218 @@ document.addEventListener('DOMContentLoaded', () => {
 
     filtrar();
 });
+
+
+let selectedStars = 0;
+
+const stars = document.querySelectorAll(".star-input");
+const reviewForm = document.getElementById("reviewForm");
+const reviewsContainer = document.querySelector(".reviews-container");
+
+
+/* =========================
+   SELECCIONAR ESTRELLAS
+========================= */
+
+stars.forEach(star => {
+
+    star.addEventListener("click", () => {
+
+        selectedStars = parseInt(star.dataset.value);
+
+        stars.forEach(s => {
+
+            s.classList.remove("active");
+            s.classList.replace("fas", "far");
+
+        });
+
+        for(let i = 0; i < selectedStars; i++){
+
+            stars[i].classList.add("active");
+            stars[i].classList.replace("far", "fas");
+
+        }
+
+    });
+
+});
+
+
+/* =========================
+   ENVIAR COMENTARIO
+========================= */
+
+reviewForm.addEventListener("submit", (e) => {
+
+    e.preventDefault();
+
+    const nombre =
+        document.getElementById("reviewName").value;
+
+    const categoria =
+        document.getElementById("reviewCategory").value;
+
+    const comentario =
+        document.getElementById("reviewText").value;
+
+
+    if(selectedStars === 0){
+
+        alert("Selecciona una puntuación");
+        return;
+
+    }
+
+
+    /* =========================
+       CREAR ESTRELLAS HTML
+    ========================= */
+
+    let estrellasHTML = "";
+
+    for(let i = 0; i < 5; i++){
+
+        if(i < selectedStars){
+
+            estrellasHTML +=
+                `<i class="fas fa-star"></i>`;
+
+        }else{
+
+            estrellasHTML +=
+                `<i class="far fa-star"></i>`;
+
+        }
+
+    }
+
+
+    /* =========================
+       FECHA ACTUAL
+    ========================= */
+
+    const fecha = new Date();
+
+    const fechaTexto =
+        fecha.toLocaleDateString("es-PE");
+
+
+    /* =========================
+       NUEVO COMENTARIO
+    ========================= */
+
+    const nuevoComentario = document.createElement("div");
+
+    nuevoComentario.classList.add("review-card");
+
+    nuevoComentario.setAttribute(
+        "data-categoria",
+        categoria
+    );
+
+    nuevoComentario.setAttribute(
+        "data-estrellas",
+        selectedStars
+    );
+
+    nuevoComentario.innerHTML = `
+
+        <div class="review-stars">
+            ${estrellasHTML}
+        </div>
+
+        <p>"${comentario}"</p>
+
+        <div class="review-footer">
+            <strong>
+                <i class="fas fa-user-circle"></i>
+                ${nombre}
+            </strong>
+
+            <span>
+                ${categoria} • ${fechaTexto}
+            </span>
+        </div>
+
+    `;
+
+
+    /* =========================
+       AGREGAR ARRIBA
+    ========================= */
+
+    reviewsContainer.prepend(nuevoComentario);
+
+
+    /* =========================
+       GUARDAR EN LOCALSTORAGE
+    ========================= */
+
+    const comentarioGuardado = {
+        nombre,
+        categoria,
+        categoriaKey: categoria
+            .toLowerCase()
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, ""),
+        comentario,
+        estrellas: selectedStars,
+        fecha: fechaTexto
+    };
+        let comentarios = JSON.parse(
+        localStorage.getItem("comentariosHospital")
+    ) || [];
+
+    comentarios.unshift(comentarioGuardado);
+
+    localStorage.setItem(
+        "comentariosHospital",
+        JSON.stringify(comentarios)
+    );
+
+
+    /* =========================
+    ACTUALIZAR CONTADOR
+    ========================= */
+
+    const totalOpiniones =
+        document.querySelectorAll(".review-card").length;
+
+    document.querySelector(
+        ".rating-score p"
+    ).textContent =
+        `Basado en ${totalOpiniones} opiniones`;
+
+
+
+    /* =========================
+       RESETEAR FORMULARIO
+    ========================= */
+
+    reviewForm.reset();
+
+    selectedStars = 0;
+
+    stars.forEach(s => {
+
+        s.classList.remove("active");
+        s.classList.replace("fas", "far");
+
+    });
+
+
+    /* =========================
+       ACTUALIZAR ESTADISTICAS
+    ========================= */
+
+    actualizarResumen();
+
+
+    /* =========================
+    RECARGAR GRAFICAS
+    ========================= */
+
+    location.reload();
+
+});

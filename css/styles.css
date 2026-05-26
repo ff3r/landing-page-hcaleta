@@ -1910,3 +1910,96 @@ body.dark-mode .social-footer-msg {
     margin: -10px auto 10px auto; /* El -10px 'jala' las flechas hacia arriba */
     padding-right: 20px;
 }
+
+
+/* =========================
+   FORMULARIO DE OPINIONES
+========================= */
+
+.add-review-section{
+    background: #ffffff;
+    padding: 25px;
+    border-radius: 15px;
+    margin: 30px auto;
+    max-width: 900px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+}
+
+.add-review-section h3{
+    margin-bottom: 20px;
+    color: #0b4f8a;
+    font-size: 24px;
+}
+
+.review-form{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.review-form input,
+.review-form select,
+.review-form textarea{
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #dcdcdc;
+    border-radius: 10px;
+    font-size: 15px;
+    outline: none;
+    transition: 0.3s;
+}
+
+.review-form input:focus,
+.review-form select:focus,
+.review-form textarea:focus{
+    border-color: #0b6efd;
+}
+
+.review-form textarea{
+    resize: none;
+}
+
+.star-selector{
+    display: flex;
+    gap: 8px;
+    font-size: 28px;
+    color: #cfcfcf;
+    cursor: pointer;
+}
+
+.star-selector i.active{
+    color: #ffc107;
+}
+
+.submit-review-btn{
+    background: #0b6efd;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.submit-review-btn:hover{
+    background: #094fb5;
+}
+
+/* MODO OSCURO */
+
+.dark-mode .add-review-section{
+    background: #1e1e1e;
+}
+
+.dark-mode .review-form input,
+.dark-mode .review-form select,
+.dark-mode .review-form textarea{
+    background: #2a2a2a;
+    color: white;
+    border: 1px solid #444;
+}
+
+.dark-mode .add-review-section h3{
+    color: #ffffff;
+}
