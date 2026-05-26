@@ -44,7 +44,15 @@ document.addEventListener("DOMContentLoaded", () => {
     const ctxServices =
         document.getElementById("servicesChart").getContext("2d");
 
-    let generalChart = new Chart(ctxGeneral, {
+
+    const textColor =
+    document.body.classList.contains("dark-mode")
+        ? "#ffffff"
+        : "#333333";
+
+
+
+    /*let generalChart = new Chart(ctxGeneral, {
         type: "doughnut",
         data: {
             labels: [
@@ -55,7 +63,31 @@ document.addEventListener("DOMContentLoaded", () => {
                 data: [92, 8]
             }]
         }
-    });
+    });*/
+
+
+    let generalChart = new Chart(ctxGeneral, {
+    type: "doughnut",
+    data: {
+        labels: [
+            "Satisfechos",
+            "No satisfechos"
+        ],
+        datasets: [{
+            data: [92, 8]
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: {
+                labels: {
+                    color: textColor
+                }
+            }
+        }
+    }
+});
 
     let servicesChart = new Chart(ctxServices, {
         type: "bar",

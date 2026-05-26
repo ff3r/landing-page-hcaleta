@@ -1688,3 +1688,37 @@ body.dark-mode .live-card p{
 @media (max-width: 768px) {
     .horario-grid { grid-template-columns: 1fr; }
 }
+
+/* ==========================================
+   MODO OSCURO - VALORACIÓN DE USUARIOS
+   ========================================== */
+
+body.dark-mode .stats-banner{
+    background: linear-gradient(135deg,#111827 0%,#1f2937 100%);
+}
+
+body.dark-mode .chart-card,
+body.dark-mode .live-card,
+body.dark-mode .stats-btn{
+    background:#1a1a1a;
+    border:1px solid #333333;
+}
+
+body.dark-mode .chart-card h3,
+body.dark-mode .live-card p,
+body.dark-mode .live-card h2{
+    color:#ffffff;
+}
+
+body.dark-mode .stats-btn{
+    color:#e5e5e5;
+}
+
+body.dark-mode .stats-btn:hover{
+    background:#2a2a2a;
+}
+
+body.dark-mode .stats-btn.active{
+    background:var(--primary-blue);
+    color:white;
+}
