@@ -1386,3 +1386,29 @@ body.dark-mode .filter-btn.active { background-color: #00a8e8; color: #fff; }
     .social-grid { grid-template-columns: 1fr; }
     .comunicado-box { height: 300px; }
 }
+
+/* Contenedor principal que mantiene el tamaño */
+.comunicado-box {
+    border-radius: 12px;
+    overflow: hidden; /* Esto es vital: corta lo que sale del recuadro */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    background: #fff;
+    height: 100%;
+    position: relative;
+}
+
+/* La cinta que se mueve */
+#comunicado-slider {
+    display: flex;
+    width: 100%; /* El ancho total del contenedor */
+    height: 100%;
+    transition: transform 0.8s ease-in-out;
+}
+
+/* Cada imagen ocupa el 100% del ancho del recuadro */
+.comunicado-img {
+    width: 100%; 
+    flex-shrink: 0; /* Esto evita que la imagen se encoja */
+    height: 100%;
+    object-fit: cover;
+}

@@ -323,3 +323,26 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
 });
+
+document.addEventListener("DOMContentLoaded", function() {
+    const slider = document.getElementById('comunicado-slider');
+    const images = document.querySelectorAll('.comunicado-img');
+    let currentIndex = 0;
+
+    function slideComunicados() {
+        currentIndex++;
+        
+        // Si llega al final, reiniciamos
+        if (currentIndex >= images.length) {
+            currentIndex = 0;
+            slider.style.transition = 'none'; // Sin animación para el salto al inicio
+            slider.style.transform = 'translateX(0%)';
+        } else {
+            slider.style.transition = 'transform 0.8s ease-in-out';
+            slider.style.transform = `translateX(-${currentIndex * 100}%)`;
+        }
+    }
+
+    // Intervalo de 4 segundos
+    setInterval(slideComunicados, 4000);
+});
