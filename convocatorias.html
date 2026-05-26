@@ -43,9 +43,13 @@
             <li class="dropdown">
                 <a href="#"><i class="fas fa-briefcase-medical"></i> CARTERA DE SERVICIOS <i class="fas fa-chevron-down arrow"></i></a>
                 <ul class="dropdown-menu">
-                    <li><a href="#">Servicios Centrales</a></li>
-                    <li><a href="#">Especialidades Médicas</a></li>
-                    <li><a href="#">Servicios Quirúrgicos</a></li>
+
+                    <li><a href="#" onclick="abrirModal('assets/servicios-centrales.png')">Servicios Centrales</a></li>
+
+                    <li><a href="#" onclick="abrirModal('assets/especialidades.jpg')">Especialidades Médicas</a></li>
+
+                    <li><a href="#" onclick="abrirModal('assets/servicios-qui.png')">Servicios Quirúrgicos</a></li>
+
                 </ul>
             </li>
 
@@ -211,6 +215,22 @@
                 this.classList.add('active');
             });
         });
+    </script>
+    <div id="modal-servicios" style="display:none; position:fixed; z-index:9999; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.8);">
+        <div style="position:relative; margin:5% auto; width:80%; max-width:600px; background:#fff; padding:20px; text-align:center; border-radius:10px;">
+            <img id="modal-img" src="" style="width:100%;">
+            <button id="cerrar-modal" style="margin-top:15px; padding:10px 25px; cursor:pointer;">CERRAR</button>
+        </div>
+    </div>
+
+    <script>
+        function abrirModal(url) {
+            document.getElementById("modal-img").src = url;
+            document.getElementById("modal-servicios").style.display = "block";
+        }
+        document.getElementById("cerrar-modal").onclick = function() {
+            document.getElementById("modal-servicios").style.display = "none";
+        }
     </script>
     <script src="js/script.js"></script>
 
