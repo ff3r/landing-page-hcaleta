@@ -53,4 +53,22 @@ document.addEventListener("DOMContentLoaded", () => {
             passwordInput.focus();
         }
     });
+
+    // 3. Simulación de Recuperación de Contraseña
+    const forgotPassLink = document.querySelector(".forgot-pass");
+    if (forgotPassLink) {
+        forgotPassLink.addEventListener("click", (e) => {
+            e.preventDefault();
+            const email = prompt("Ingrese su correo institucional para recibir las instrucciones de recuperación:");
+            
+            if (email) {
+                const emailClean = email.trim();
+                if (emailClean.endsWith("@hcaleta.gob.pe") || emailClean === "admin@gmail.com") {
+                    alert(`¡Correo enviado con éxito!\n\nSe ha enviado un enlace de restauración al correo: ${emailClean}\nPor favor revise su bandeja de entrada (y carpetas de spam).`);
+                } else {
+                    alert("Error: Por favor ingrese un correo institucional válido (@hcaleta.gob.pe).");
+                }
+            }
+        });
+    }
 });
