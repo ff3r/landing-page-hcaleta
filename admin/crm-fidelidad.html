@@ -112,7 +112,7 @@
                             <i class="fa-solid fa-award"></i>
                         </div>
                         <div class="metric-details">
-                            <h3>24,500</h3>
+                            <h3 id="totalFidelityPoints">2,660</h3>
                             <p>Puntos de Salud Totales</p>
                         </div>
                     </div>
@@ -122,7 +122,7 @@
                             <i class="fa-solid fa-gift"></i>
                         </div>
                         <div class="metric-details">
-                            <h3>142</h3>
+                            <h3 id="totalRedeemedBenefits">142</h3>
                             <p>Beneficios Canjeados este mes</p>
                         </div>
                     </div>
@@ -179,42 +179,37 @@
                         <table class="admin-table">
                             <thead>
                                 <tr>
-                                    <th>Paciente</th>
+                                    <th>Paciente (DNI)</th>
                                     <th>Nivel (Tier)</th>
                                     <th>Puntos de Salud</th>
                                     <th>Última Visita</th>
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="loyaltyPatientsTable">
+                                <!-- Se cargará dinámicamente por JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Historial de Canjes Recientes -->
+                <div class="admin-card">
+                    <div class="admin-card-header">
+                        <h2 class="admin-card-title"><i class="fa-solid fa-clock-rotate-left"></i> Historial de Canjes Recientes (CRM)</h2>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="admin-table">
+                            <thead>
                                 <tr>
-                                    <td>Ana María Flores</td>
-                                    <td><span class="admin-badge admin-badge-danger">Nivel Platino</span></td>
-                                    <td>1,240 pts</td>
-                                    <td>08/06/2026</td>
-                                    <td><button class="admin-btn admin-btn-secondary" style="padding: 4px 8px; font-size: 0.75rem;">Detalle</button></td>
+                                    <th>Paciente (DNI)</th>
+                                    <th>Beneficio Canjeado</th>
+                                    <th>Puntos Debitados</th>
+                                    <th>Fecha y Hora</th>
                                 </tr>
-                                <tr>
-                                    <td>Roberto Carlos Soto</td>
-                                    <td><span class="admin-badge admin-badge-warning">Nivel Oro</span></td>
-                                    <td>850 pts</td>
-                                    <td>05/06/2026</td>
-                                    <td><button class="admin-btn admin-btn-secondary" style="padding: 4px 8px; font-size: 0.75rem;">Detalle</button></td>
-                                </tr>
-                                <tr>
-                                    <td>Luisa Fernanda Ríos</td>
-                                    <td><span class="admin-badge admin-badge-info">Nivel Plata</span></td>
-                                    <td>420 pts</td>
-                                    <td>01/06/2026</td>
-                                    <td><button class="admin-btn admin-btn-secondary" style="padding: 4px 8px; font-size: 0.75rem;">Detalle</button></td>
-                                </tr>
-                                <tr>
-                                    <td>Juan Manuel Castro</td>
-                                    <td><span class="admin-badge admin-badge-success">Nivel Bronce</span></td>
-                                    <td>150 pts</td>
-                                    <td>28/05/2026</td>
-                                    <td><button class="admin-btn admin-btn-secondary" style="padding: 4px 8px; font-size: 0.75rem;">Detalle</button></td>
-                                </tr>
+                            </thead>
+                            <tbody id="redemptionHistoryBody">
+                                <!-- Se cargará dinámicamente por JS -->
                             </tbody>
                         </table>
                     </div>
