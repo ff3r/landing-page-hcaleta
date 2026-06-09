@@ -2003,3 +2003,60 @@ body.dark-mode .social-footer-msg {
 .dark-mode .add-review-section h3{
     color: #ffffff;
 }
+
+/* ==========================================
+   BOTONES DE ACCESO ERP / CRM (TOP HEADER)
+   ========================================== */
+.admin-access-group {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-admin-access {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: bold;
+    color: white !important;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.btn-admin-access i {
+    font-size: 0.95rem;
+}
+
+.erp-btn {
+    background-color: var(--primary-blue);
+}
+
+.erp-btn:hover {
+    background-color: var(--dark-blue);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 153, 204, 0.2);
+}
+
+.crm-btn {
+    background-color: var(--dark-blue);
+}
+
+.crm-btn:hover {
+    background-color: var(--primary-blue);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(11, 34, 64, 0.2);
+}
+
+/* Ajuste responsivo */
+@media (max-width: 768px) {
+    .admin-access-group {
+        flex-direction: row;
+        width: 100%;
+        justify-content: center;
+    }
+}
