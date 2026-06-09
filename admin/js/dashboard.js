@@ -120,3 +120,30 @@ function renderizarCitas() {
 
 // Ejecutar al cargar
 document.addEventListener("DOMContentLoaded", renderizarCitas);
+
+// BOTON VER INVENTARIO
+document.addEventListener("DOMContentLoaded", function() {
+    const btnVer = document.getElementById("btnVerInventario");
+    const modal = document.getElementById("modalInventario");
+    const spanClose = document.querySelector(".close-btn");
+
+    if (btnVer) {
+        btnVer.addEventListener("click", function(event) {
+            event.preventDefault(); // Evita que el enlace # recargue la página
+            if (modal) {
+                modal.style.display = "block";
+            } else {
+                console.error("El elemento con id 'modalInventario' no existe en tu HTML.");
+            }
+        });
+    }
+
+    if (spanClose) {
+        spanClose.addEventListener("click", function() {
+            modal.style.display = "none";
+        });
+    }
+});
+
+
+
