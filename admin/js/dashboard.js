@@ -3,13 +3,18 @@
    ========================================================================= */
 
 document.addEventListener("DOMContentLoaded", () => {
+    // 1. Inicialización de componentes principales
     inicializarGrafico();
-    renderizarInventario(); // Cargamos la tabla inicial
+    renderizarInventario(); 
+    
+    // Aquí puedes llamar futuras funciones como:
+    // configurarAlertasCamas();
+    // actualizarRelojTiempoReal();
 });
 
 /**
- * 1. MÓDULO DE DATOS (Base de datos simulada)
- * Aquí guardamos la información que luego se inyectará en el HTML.
+ * DATOS DINÁMICOS
+ * Modifica esta sección para conectar con tu futura base de datos o API.
  */
 const dataERP = {
     inventario: [
@@ -21,13 +26,13 @@ const dataERP = {
 };
 
 /**
- * 2. MÓDULO DE TABLAS (Renderizado dinámico)
+ * MÓDULO DE TABLA DE INVENTARIO
  */
 function renderizarInventario() {
     const tableBody = document.querySelector(".admin-table tbody");
     if (!tableBody) return;
 
-    tableBody.innerHTML = ""; // Limpiar tabla
+    tableBody.innerHTML = ""; // Limpieza previa
 
     dataERP.inventario.forEach(item => {
         const badgeClass = item.estado === 'Crítico' ? 'admin-badge-danger' : 
@@ -46,12 +51,13 @@ function renderizarInventario() {
 }
 
 /**
- * 3. MÓDULO DE GRÁFICOS (Chart.js)
+ * MÓDULO DE GRÁFICOS (Chart.js)
  */
 function inicializarGrafico() {
     const ctx = document.getElementById("admissionsChart");
     if (!ctx) return;
 
+    // Detectar tema actual para colores consistentes
     const isDarkMode = document.body.classList.contains("dark-mode");
     const gridColor = isDarkMode ? "rgba(255, 255, 255, 0.08)" : "rgba(0, 0, 0, 0.05)";
     const textColor = isDarkMode ? "#94a3b8" : "#64748b";
@@ -82,3 +88,35 @@ function inicializarGrafico() {
         }
     });
 }
+
+// TABLA DE CITAS
+const citasProgramadas = [
+    { hora: "08:00", paciente: "Juan Pérez", especialidad: "Cardiología", estado: "Confirmado" },
+    { hora: "08:30", paciente: "María López", especialidad: "Pediatría", estado: "En Espera" },
+    { hora: "09:15", paciente: "Carlos Ruiz", especialidad: "Med. General", estado: "En Consulta" },
+    { hora: "10:00", paciente: "Ana Torres", especialidad: "Odontología", estado: "Pendiente" },
+    { hora: "10:45", paciente: "Luis Solís", especialidad: "Ginecología", estado: "Confirmado" }
+];
+
+function renderizarCitas() {
+    const tbody = document.getElementById("lista-citas-dinamica");
+    tbody.innerHTML = "";
+
+    citasProgramadas.forEach(cita => {
+        // Asignar color al badge según el estado
+        const claseBadge = cita.estado === 'Confirmado' ? 'admin-badge-success' : 
+                           cita.estado === 'En Consulta' ? 'admin-badge-warning' : 'admin-badge-muted';
+
+        tbody.innerHTML += `
+            <tr>
+                <td><strong>${cita.hora}</strong></td>
+                <td>${cita.paciente}</td>
+                <td>${cita.especialidad}</td>
+                <td><span class="admin-badge ${claseBadge}">${cita.estado}</span></td>
+            </tr>
+        `;
+    });
+}
+
+// Ejecutar al cargar
+document.addEventListener("DOMContentLoaded", renderizarCitas);

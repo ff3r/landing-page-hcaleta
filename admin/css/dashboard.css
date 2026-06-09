@@ -752,3 +752,20 @@
     from { opacity: 0; }
     to { opacity: 1; }
 }
+
+/* TABLA DE CITAS */
+
+/* Esto obliga a que la tabla sea flexible pero alineada a la izquierda */
+.admin-table {
+    width: 100% !important;
+    table-layout: fixed; /* Esto hace que todas las columnas midan lo mismo */
+    border-collapse: collapse;
+}
+
+.admin-table th, 
+.admin-table td {
+    text-align: left !important;
+    padding: 15px !important;
+    white-space: nowrap; /* Evita que el texto se rompa raro */
+    border-bottom: 1px solid var(--border-color); /* Líneas divisorias */
+}
