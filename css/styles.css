@@ -2005,11 +2005,10 @@ body.dark-mode .social-footer-msg {
 }
 
 /* ==========================================
-   BOTONES DE ACCESO ERP / CRM (TOP HEADER)
+   BOTÓN DE ACCESO INTRANET (TOP HEADER)
    ========================================== */
 .admin-access-group {
     display: flex;
-    gap: 10px;
     align-items: center;
     justify-content: center;
 }
@@ -2018,7 +2017,7 @@ body.dark-mode .social-footer-msg {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    padding: 10px 16px;
+    padding: 10px 18px;
     border-radius: 6px;
     text-decoration: none;
     font-size: 0.85rem;
@@ -2032,31 +2031,33 @@ body.dark-mode .social-footer-msg {
     font-size: 0.95rem;
 }
 
-.erp-btn {
+.intranet-btn {
     background-color: var(--primary-blue);
 }
 
-.erp-btn:hover {
+.intranet-btn:hover {
     background-color: var(--dark-blue);
     transform: translateY(-2px);
     box-shadow: 0 6px 12px rgba(0, 153, 204, 0.2);
 }
 
-.crm-btn {
-    background-color: var(--dark-blue);
+/* Corrección de contraste y visibilidad en Modo Oscuro */
+body.dark-mode .intranet-btn {
+    background-color: #33b5e5 !important; /* Azul claro del tema oscuro */
+    color: #0b2240 !important; /* Texto oscuro para fuerte contraste */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
 }
 
-.crm-btn:hover {
-    background-color: var(--primary-blue);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 12px rgba(11, 34, 64, 0.2);
+body.dark-mode .intranet-btn:hover {
+    background-color: #ffffff !important;
+    color: #0b2240 !important;
 }
 
 /* Ajuste responsivo */
 @media (max-width: 768px) {
     .admin-access-group {
-        flex-direction: row;
         width: 100%;
         justify-content: center;
+        margin-top: 5px;
     }
 }
