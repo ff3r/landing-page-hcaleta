@@ -1,81 +1,84 @@
-/* ==========================================
-   LÓGICA DEL ERP DASHBOARD (INTRANET HCALETA)
-   ========================================== */
+/* =========================================================================
+   LÓGICA DEL ERP DASHBOARD - Hospital La Caleta (@Gerardie)
+   ========================================================================= */
 
 document.addEventListener("DOMContentLoaded", () => {
-    // 1. Inicializar Gráfico de Admisiones por Especialidad (Chart.js)
-    const ctx = document.getElementById("admissionsChart");
-    
-    if (ctx) {
-        // Colores temáticos para el gráfico según el tema
-        const isDarkMode = document.body.classList.contains("dark-mode");
-        const gridColor = isDarkMode ? "rgba(255, 255, 255, 0.08)" : "rgba(0, 0, 0, 0.05)";
-        const textColor = isDarkMode ? "#94a3b8" : "#64748b";
-
-        new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: ['Emergencia', 'Pediatría', 'Ginecología', 'Cardiología', 'Odontología', 'Med. General'],
-                datasets: [{
-                    label: 'Admisiones de Pacientes',
-                    data: [65, 45, 30, 25, 18, 55],
-                    backgroundColor: [
-                        'rgba(239, 68, 68, 0.85)', // Emergencia (Danger)
-                        'rgba(0, 153, 204, 0.85)', // Pediatría (Primary)
-                        'rgba(46, 196, 182, 0.85)', // Ginecología (Success)
-                        'rgba(255, 159, 28, 0.85)', // Cardiología (Warning)
-                        'rgba(148, 163, 184, 0.85)', // Odontología (Muted)
-                        'rgba(139, 92, 246, 0.85)'  // Medicina General (Purple)
-                    ],
-                    borderWidth: 0,
-                    borderRadius: 6
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        display: false
-                    },
-                    tooltip: {
-                        padding: 10,
-                        backgroundColor: isDarkMode ? '#1e293b' : '#0b2240',
-                        titleColor: '#fff',
-                        bodyColor: '#fff',
-                        borderColor: isDarkMode ? '#334155' : 'transparent',
-                        borderWidth: 1
-                    }
-                },
-                scales: {
-                    y: {
-                        grid: {
-                            color: gridColor
-                        },
-                        ticks: {
-                            color: textColor,
-                            font: {
-                                family: "'Segoe UI', sans-serif"
-                            }
-                        },
-                        border: {
-                            dash: [4, 4]
-                        }
-                    },
-                    x: {
-                        grid: {
-                            display: false
-                        },
-                        ticks: {
-                            color: textColor,
-                            font: {
-                                family: "'Segoe UI', sans-serif",
-                                weight: 600
-                            }
-                        }
-                    }
-                }
-            }
-        });
-    }
+    inicializarGrafico();
+    renderizarInventario(); // Cargamos la tabla inicial
 });
+
+/**
+ * 1. MÓDULO DE DATOS (Base de datos simulada)
+ * Aquí guardamos la información que luego se inyectará en el HTML.
+ */
+const dataERP = {
+    inventario: [
+        { nombre: "Oxígeno Médico (Balón)", categoria: "Gases", stock: 120, estado: "Stock Alto" },
+        { nombre: "Mascarillas N95", categoria: "Protección", stock: 450, estado: "Stock Alto" },
+        { nombre: "Paracetamol 500mg", categoria: "Fármacos", stock: 12, estado: "Crítico" },
+        { nombre: "Jeringas 5ml", categoria: "Insumos", stock: 85, estado: "Por agotar" }
+    ]
+};
+
+/**
+ * 2. MÓDULO DE TABLAS (Renderizado dinámico)
+ */
+function renderizarInventario() {
+    const tableBody = document.querySelector(".admin-table tbody");
+    if (!tableBody) return;
+
+    tableBody.innerHTML = ""; // Limpiar tabla
+
+    dataERP.inventario.forEach(item => {
+        const badgeClass = item.estado === 'Crítico' ? 'admin-badge-danger' : 
+                          (item.estado === 'Por agotar' ? 'admin-badge-warning' : 'admin-badge-success');
+        
+        const row = `
+            <tr>
+                <td>${item.nombre}</td>
+                <td>${item.categoria}</td>
+                <td>${item.stock} Unidades</td>
+                <td><span class="admin-badge ${badgeClass}">${item.estado}</span></td>
+            </tr>
+        `;
+        tableBody.innerHTML += row;
+    });
+}
+
+/**
+ * 3. MÓDULO DE GRÁFICOS (Chart.js)
+ */
+function inicializarGrafico() {
+    const ctx = document.getElementById("admissionsChart");
+    if (!ctx) return;
+
+    const isDarkMode = document.body.classList.contains("dark-mode");
+    const gridColor = isDarkMode ? "rgba(255, 255, 255, 0.08)" : "rgba(0, 0, 0, 0.05)";
+    const textColor = isDarkMode ? "#94a3b8" : "#64748b";
+
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Emergencia', 'Pediatría', 'Ginecología', 'Cardiología', 'Odontología', 'Med. General'],
+            datasets: [{
+                label: 'Admisiones',
+                data: [65, 45, 30, 25, 18, 55],
+                backgroundColor: [
+                    'rgba(239, 68, 68, 0.85)', 'rgba(0, 153, 204, 0.85)', 
+                    'rgba(46, 196, 182, 0.85)', 'rgba(255, 159, 28, 0.85)', 
+                    'rgba(148, 163, 184, 0.85)', 'rgba(139, 92, 246, 0.85)'
+                ],
+                borderRadius: 6
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: {
+                y: { grid: { color: gridColor }, ticks: { color: textColor } },
+                x: { grid: { display: false }, ticks: { color: textColor } }
+            }
+        }
+    });
+}
