@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRM Correo - Hospital La Caleta</title>
+    <!-- FontAwesome para Iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Estilos Compartidos Base -->
+    <link rel="stylesheet" href="css/shared.css">
+    <!-- Estilos Específicos del CRM Correo -->
+    <link rel="stylesheet" href="css/crm-email.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- BARRA LATERAL COMÚN -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <img src="../assets/logo_caleta.png" alt="Logo" class="sidebar-logo">
+                <span class="sidebar-title">INTRANET</span>
+            </div>
+            
+            <ul class="sidebar-menu">
+                <li class="sidebar-item">
+                    <a href="dashboard.html">
+                        <i class="fa-solid fa-chart-line"></i>
+                        <span>ERP Dashboard</span>
+                    </a>
+                </li>
+                <li class="sidebar-item active">
+                    <a href="crm-email.html">
+                        <i class="fa-regular fa-envelope"></i>
+                        <span>CRM Correo</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="crm-fidelidad.html">
+                        <i class="fa-solid fa-heart-pulse"></i>
+                        <span>CRM Fidelización</span>
+                    </a>
+                </li>
+                <li class="sidebar-item" style="margin-top: auto;">
+                    <a href="index.html" id="btnLogout">
+                        <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                        <span>Cerrar Sesión</span>
+                    </a>
+                </li>
+            </ul>
+            
+            <div class="sidebar-footer">
+                <div class="user-profile-summary">
+                    <div class="user-avatar" id="avatarText">U</div>
+                    <div class="user-info-text">
+                        <h5 id="sidebarUserName">Usuario Admin</h5>
+                        <span id="sidebarUserRole">Módulo CRM (Luis)</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- ÁREA DE CONTENIDO PRINCIPAL -->
+        <main class="main-content">
+            <!-- BARRA SUPERIOR -->
+            <header class="topbar">
+                <div class="page-title-area">
+                    <h1 class="page-title">CRM Correo</h1>
+                    <div class="breadcrumbs">
+                        <span>Intranet</span>
+                        <span>/</span>
+                        <span>CRM</span>
+                        <span>/</span>
+                        <span style="color: var(--primary);">Correo</span>
+                    </div>
+                </div>
+                
+                <div class="topbar-actions">
+                    <button class="icon-btn" id="themeToggleBtn" title="Cambiar Tema">
+                        <i class="fa-solid fa-moon"></i>
+                    </button>
+                    <button class="icon-btn" title="Notificaciones">
+                        <i class="fa-regular fa-bell"></i>
+                        <span class="notification-badge"></span>
+                    </button>
+                </div>
+            </header>
+
+            <!-- CUERPO DE CONTENIDO -->
+            <div class="content-body">
+                <!-- PANEL DEL INTEGRANTE 2: LUIS (USUARIO) -->
+                <div class="developer-badge">
+                    <i class="fa-solid fa-code"></i>
+                    <span>Módulo a cargo de: <strong>Luis (Tú - Integrante 2)</strong></span>
+                </div>
+
+                <!-- Contenedor del Correo (Estructura de Tres Columnas) -->
+                <div class="email-app-card admin-card">
+                    <!-- Columna 1: Carpetas -->
+                    <div class="email-folders">
+                        <button class="admin-btn admin-btn-primary btn-compose" id="btnCompose">
+                            <i class="fa-solid fa-pen"></i>
+                            <span>Redactar</span>
+                        </button>
+                        
+                        <ul class="folder-list">
+                            <li class="folder-item active" data-folder="inbox">
+                                <a href="#">
+                                    <i class="fa-solid fa-inbox"></i>
+                                    <span>Bandeja de Entrada</span>
+                                    <span class="folder-count">3</span>
+                                </a>
+                            </li>
+                            <li class="folder-item" data-folder="sent">
+                                <a href="#">
+                                    <i class="fa-regular fa-paper-plane"></i>
+                                    <span>Enviados</span>
+                                </a>
+                            </li>
+                            <li class="folder-item" data-folder="drafts">
+                                <a href="#">
+                                    <i class="fa-regular fa-file"></i>
+                                    <span>Borradores</span>
+                                </a>
+                            </li>
+                            <li class="folder-item" data-folder="trash">
+                                <a href="#">
+                                    <i class="fa-regular fa-trash-can"></i>
+                                    <span>Papelera</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Columna 2: Lista de Correos -->
+                    <div class="email-list-container">
+                        <div class="email-search-bar">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <input type="text" placeholder="Buscar correos de pacientes...">
+                        </div>
+                        
+                        <div class="email-list" id="emailList">
+                            <!-- Correo 1 (Leído) -->
+                            <div class="email-item unread active" data-id="1">
+                                <div class="email-item-header">
+                                    <span class="email-sender">Carlos Mendoza (Paciente)</span>
+                                    <span class="email-time">Hace 15 min</span>
+                                </div>
+                                <h4 class="email-subject">Duda sobre reprogramación de cita de Cardiología</h4>
+                                <p class="email-snippet">Buenas tardes, quisiera saber si es posible reprogramar mi consulta del día viernes debido a un contratiempo familiar...</p>
+                            </div>
+                            
+                            <!-- Correo 2 (Leído) -->
+                            <div class="email-item" data-id="2">
+                                <div class="email-item-header">
+                                    <span class="email-sender">María Espinoza (Paciente)</span>
+                                    <span class="email-time">Hace 2 horas</span>
+                                </div>
+                                <h4 class="email-subject">Reclamación de resultados de análisis clínicos</h4>
+                                <p class="email-snippet">Estimados, me realicé unos exámenes de sangre el día de ayer y me indicaron que llegarían a mi correo, pero aún no recibo nada...</p>
+                            </div>
+                            
+                            <!-- Correo 3 (Leído) -->
+                            <div class="email-item" data-id="3">
+                                <div class="email-item-header">
+                                    <span class="email-sender">Dr. Alejandro Pérez</span>
+                                    <span class="email-time">Ayer</span>
+                                </div>
+                                <h4 class="email-subject">Solicitud de vacaciones - Área de Pediatría</h4>
+                                <p class="email-snippet">Estimados de Recursos Humanos, presento mi solicitud formal de vacaciones programadas del 15 al 30 de Julio...</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Columna 3: Panel de Lectura -->
+                    <div class="email-reading-pane" id="emailReadingPane">
+                        <div class="pane-content-wrapper" id="paneContent">
+                            <div class="email-pane-header">
+                                <div class="sender-profile">
+                                    <div class="sender-avatar-initial">C</div>
+                                    <div class="sender-detail">
+                                        <h3 id="readSender">Carlos Mendoza (Paciente)</h3>
+                                        <span id="readSenderEmail">carlos.mendoza@gmail.com</span>
+                                    </div>
+                                </div>
+                                <div class="email-meta-info">
+                                    <span id="readTime">Hoy, 4:15 PM</span>
+                                </div>
+                            </div>
+                            <h2 class="email-pane-subject" id="readSubject">Duda sobre reprogramación de cita de Cardiología</h2>
+                            
+                            <div class="email-pane-body" id="readBody">
+                                <p>Estimado equipo de atención del Hospital La Caleta,</p>
+                                <br>
+                                <p>Le escribo porque tengo una cita agendada para este viernes 12 de junio a las 9:00 AM con el cardiólogo. Lamentablemente, se me ha presentado una urgencia familiar y me será imposible asistir a esa hora.</p>
+                                <p>Quisiera solicitarles, por favor, si es posible reprogramar la cita para el próximo lunes por la tarde o algún horario disponible la siguiente semana.</p>
+                                <br>
+                                <p>Agradezco de antemano su atención.</p>
+                                <br>
+                                <p>Atentamente,<br><strong>Carlos Mendoza</strong><br>DNI: 47859612</p>
+                            </div>
+                            
+                            <div class="email-pane-actions">
+                                <button class="admin-btn admin-btn-primary">
+                                    <i class="fa-solid fa-reply"></i>
+                                    <span>Responder</span>
+                                </button>
+                                <button class="admin-btn admin-btn-secondary">
+                                    <i class="fa-regular fa-trash-can"></i>
+                                    <span>Eliminar</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal de Redactar Correo -->
+                <div class="modal-overlay hidden" id="composeModal">
+                    <div class="compose-modal admin-card">
+                        <div class="modal-header">
+                            <h3>Redactar Nuevo Mensaje</h3>
+                            <button class="close-modal-btn" id="btnCloseCompose">&times;</button>
+                        </div>
+                        <form id="composeForm" class="compose-form">
+                            <div class="form-group">
+                                <label for="toEmail">Para (Correo de Paciente):</label>
+                                <input type="email" id="toEmail" placeholder="paciente@ejemplo.com" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="subjectEmail">Asunto:</label>
+                                <input type="text" id="subjectEmail" placeholder="Asunto de la consulta" required>
+                            </div>
+                            <div class="form-group" style="flex: 1;">
+                                <label for="bodyEmail">Mensaje:</label>
+                                <textarea id="bodyEmail" placeholder="Escriba aquí el correo..." required></textarea>
+                            </div>
+                            <div class="modal-actions">
+                                <button type="button" class="admin-btn admin-btn-secondary" id="btnCancelCompose">Cancelar</button>
+                                <button type="submit" class="admin-btn admin-btn-primary">
+                                    <i class="fa-regular fa-paper-plane"></i>
+                                    <span>Enviar Correo</span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                
+                <!-- INSTRUCCIONES PARA LUIS -->
+                <div class="admin-card block-placeholder">
+                    <div class="placeholder-content">
+                        <i class="fa-solid fa-puzzle-piece"></i>
+                        <h4>Espacio de Trabajo para Luis (Tú)</h4>
+                        <p>Modifica <code>admin/crm-email.html</code>, <code>admin/css/crm-email.css</code> y <code>admin/js/crm-email.js</code> para añadir tus interacciones de correo, base de datos simulada de pacientes, etc.</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Lógica del CRM Correo -->
+    <script src="js/crm-email.js"></script>
+    <!-- Script de configuración de tema y perfil común -->
+    <script src="js/common.js"></script>
+</body>
+</html>

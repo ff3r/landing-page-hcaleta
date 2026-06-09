@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRM Fidelización - Hospital La Caleta</title>
+    <!-- FontAwesome para Iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Estilos Compartidos Base -->
+    <link rel="stylesheet" href="css/shared.css">
+    <!-- Estilos Específicos del CRM Fidelización -->
+    <link rel="stylesheet" href="css/crm-fidelidad.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- BARRA LATERAL COMÚN -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <img src="../assets/logo_caleta.png" alt="Logo" class="sidebar-logo">
+                <span class="sidebar-title">INTRANET</span>
+            </div>
+            
+            <ul class="sidebar-menu">
+                <li class="sidebar-item">
+                    <a href="dashboard.html">
+                        <i class="fa-solid fa-chart-line"></i>
+                        <span>ERP Dashboard</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="crm-email.html">
+                        <i class="fa-regular fa-envelope"></i>
+                        <span>CRM Correo</span>
+                    </a>
+                </li>
+                <li class="sidebar-item active">
+                    <a href="crm-fidelidad.html">
+                        <i class="fa-solid fa-heart-pulse"></i>
+                        <span>CRM Fidelización</span>
+                    </a>
+                </li>
+                <li class="sidebar-item" style="margin-top: auto;">
+                    <a href="index.html" id="btnLogout">
+                        <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                        <span>Cerrar Sesión</span>
+                    </a>
+                </li>
+            </ul>
+            
+            <div class="sidebar-footer">
+                <div class="user-profile-summary">
+                    <div class="user-avatar" id="avatarText">U</div>
+                    <div class="user-info-text">
+                        <h5 id="sidebarUserName">Usuario Admin</h5>
+                        <span id="sidebarUserRole">Módulo CRM (Integrante 3)</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- ÁREA DE CONTENIDO PRINCIPAL -->
+        <main class="main-content">
+            <!-- BARRA SUPERIOR -->
+            <header class="topbar">
+                <div class="page-title-area">
+                    <h1 class="page-title">CRM Fidelización</h1>
+                    <div class="breadcrumbs">
+                        <span>Intranet</span>
+                        <span>/</span>
+                        <span>CRM</span>
+                        <span>/</span>
+                        <span style="color: var(--primary);">Fidelización</span>
+                    </div>
+                </div>
+                
+                <div class="topbar-actions">
+                    <button class="icon-btn" id="themeToggleBtn" title="Cambiar Tema">
+                        <i class="fa-solid fa-moon"></i>
+                    </button>
+                    <button class="icon-btn" title="Notificaciones">
+                        <i class="fa-regular fa-bell"></i>
+                        <span class="notification-badge"></span>
+                    </button>
+                </div>
+            </header>
+
+            <!-- CUERPO DE CONTENIDO -->
+            <div class="content-body">
+                <!-- PANEL DEL INTEGRANTE 3 -->
+                <div class="developer-badge">
+                    <i class="fa-solid fa-code"></i>
+                    <span>Módulo a cargo de: <strong>Integrante 3</strong></span>
+                </div>
+
+                <!-- Tarjetas de Métricas de Fidelización -->
+                <div class="fidelidad-metrics-grid">
+                    <div class="admin-card metric-card">
+                        <div class="metric-icon primary-bg">
+                            <i class="fa-regular fa-face-smile"></i>
+                        </div>
+                        <div class="metric-details">
+                            <h3>94.8%</h3>
+                            <p>Índice CSAT (Satisfacción)</p>
+                        </div>
+                    </div>
+
+                    <div class="admin-card metric-card">
+                        <div class="metric-icon success-bg">
+                            <i class="fa-solid fa-users"></i>
+                        </div>
+                        <div class="metric-details">
+                            <h3>1,250</h3>
+                            <p>Pacientes Afiliados</p>
+                        </div>
+                    </div>
+
+                    <div class="admin-card metric-card">
+                        <div class="metric-icon warning-bg">
+                            <i class="fa-solid fa-award"></i>
+                        </div>
+                        <div class="metric-details">
+                            <h3>24,500</h3>
+                            <p>Puntos de Salud Totales</p>
+                        </div>
+                    </div>
+
+                    <div class="admin-card metric-card">
+                        <div class="metric-icon danger-bg">
+                            <i class="fa-solid fa-gift"></i>
+                        </div>
+                        <div class="metric-details">
+                            <h3>142</h3>
+                            <p>Beneficios Canjeados este mes</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Gráfico de Satisfacción y Tabla de Pacientes -->
+                <div class="fidelidad-charts-grid">
+                    <!-- Evolución de Satisfacción (Línea) -->
+                    <div class="admin-card chart-container-card">
+                        <div class="admin-card-header">
+                            <h2 class="admin-card-title">Evolución Trimestral de Satisfacción</h2>
+                            <i class="fa-solid fa-ellipsis-vertical text-muted"></i>
+                        </div>
+                        <div class="chart-wrapper">
+                            <canvas id="satisfactionChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Canje de Beneficios Rápidos -->
+                    <div class="admin-card quick-action-card">
+                        <div class="admin-card-header">
+                            <h2 class="admin-card-title">Canje de Puntos de Salud</h2>
+                        </div>
+                        <form id="redemptionForm" class="redemption-form">
+                            <div class="form-group">
+                                <label for="patientDni">DNI del Paciente:</label>
+                                <input type="text" id="patientDni" placeholder="Ingrese DNI" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="benefitSelect">Beneficio a Canjear:</label>
+                                <select id="benefitSelect" required>
+                                    <option value="" disabled selected>Seleccione un beneficio</option>
+                                    <option value="checkup">Chequeo Preventivo Completo (500 pts)</option>
+                                    <option value="discount">Descuento 20% Farmacia (200 pts)</option>
+                                    <option value="nutrition">Consulta Nutrición Gratis (300 pts)</option>
+                                    <option value="vaccine">Vacuna Influenza Premium (400 pts)</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="admin-btn admin-btn-primary" style="margin-top: 10px;">
+                                <i class="fa-solid fa-ticket"></i>
+                                <span>Procesar Canje</span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Tabla de Tiers y Puntos de Pacientes -->
+                <div class="admin-card">
+                    <div class="admin-card-header">
+                        <h2 class="admin-card-title">Pacientes Destacados y Clasificación (Tiers)</h2>
+                        <a href="#" class="admin-btn admin-btn-secondary" style="padding: 6px 12px; font-size: 0.8rem;">Ver Todos</a>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>Paciente</th>
+                                    <th>Nivel (Tier)</th>
+                                    <th>Puntos de Salud</th>
+                                    <th>Última Visita</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Ana María Flores</td>
+                                    <td><span class="admin-badge admin-badge-danger">Nivel Platino</span></td>
+                                    <td>1,240 pts</td>
+                                    <td>08/06/2026</td>
+                                    <td><button class="admin-btn admin-btn-secondary" style="padding: 4px 8px; font-size: 0.75rem;">Detalle</button></td>
+                                </tr>
+                                <tr>
+                                    <td>Roberto Carlos Soto</td>
+                                    <td><span class="admin-badge admin-badge-warning">Nivel Oro</span></td>
+                                    <td>850 pts</td>
+                                    <td>05/06/2026</td>
+                                    <td><button class="admin-btn admin-btn-secondary" style="padding: 4px 8px; font-size: 0.75rem;">Detalle</button></td>
+                                </tr>
+                                <tr>
+                                    <td>Luisa Fernanda Ríos</td>
+                                    <td><span class="admin-badge admin-badge-info">Nivel Plata</span></td>
+                                    <td>420 pts</td>
+                                    <td>01/06/2026</td>
+                                    <td><button class="admin-btn admin-btn-secondary" style="padding: 4px 8px; font-size: 0.75rem;">Detalle</button></td>
+                                </tr>
+                                <tr>
+                                    <td>Juan Manuel Castro</td>
+                                    <td><span class="admin-badge admin-badge-success">Nivel Bronce</span></td>
+                                    <td>150 pts</td>
+                                    <td>28/05/2026</td>
+                                    <td><button class="admin-btn admin-btn-secondary" style="padding: 4px 8px; font-size: 0.75rem;">Detalle</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- ESPACIO PARA CONTENIDO INTEGRANTE 3 -->
+                <div class="admin-card block-placeholder">
+                    <div class="placeholder-content">
+                        <i class="fa-solid fa-puzzle-piece"></i>
+                        <h4>Espacio de Trabajo para Integrante 3</h4>
+                        <p>Modifica <code>admin/crm-fidelidad.html</code>, <code>admin/css/crm-fidelidad.css</code> y <code>admin/js/crm-fidelidad.js</code> para añadir la lógica del programa de fidelización.</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Librería Chart.js para los gráficos -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Lógica del CRM Fidelización -->
+    <script src="js/crm-fidelidad.js"></script>
+    <!-- Script de configuración de tema y perfil común -->
+    <script src="js/common.js"></script>
+</body>
+</html>

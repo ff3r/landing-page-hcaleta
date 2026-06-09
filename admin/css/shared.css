@@ -1,0 +1,448 @@
+/* ==========================================
+   SISTEMA DE DISEÑO INTERNO (INTRANET HCALETA)
+   ========================================== */
+
+:root {
+    /* Paleta de Colores Moderna (Modo Claro) */
+    --primary: #0099cc;
+    --primary-hover: #0086b8;
+    --primary-light: #e0f2fe;
+    --dark-blue: #0b2240;
+    --success: #2ec4b6;
+    --warning: #ff9f1c;
+    --danger: #ef4444;
+    
+    --bg-body: #f4f8fb;
+    --bg-card: #ffffff;
+    --bg-sidebar: #0b2240;
+    
+    --text-main: #1e293b;
+    --text-muted: #64748b;
+    --text-on-dark: #f8fafc;
+    
+    --border-color: #e2e8f0;
+    
+    /* Efectos y Elevación */
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -1px rgba(0, 0, 0, 0.04);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    
+    /* Layout */
+    --sidebar-width: 260px;
+    --topbar-height: 70px;
+}
+
+/* Modo Oscuro (Mapeado con la clase .dark-mode del body) */
+body.dark-mode {
+    --bg-body: #0f172a;
+    --bg-card: #1e293b;
+    --bg-sidebar: #020617;
+    
+    --text-main: #f1f5f9;
+    --text-muted: #94a3b8;
+    
+    --border-color: #334155;
+    
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
+    --primary-light: rgba(0, 153, 204, 0.15);
+}
+
+/* Reset Base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+
+body {
+    background-color: var(--bg-body);
+    color: var(--text-main);
+    min-height: 100vh;
+    display: flex;
+    overflow-x: hidden;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* ==========================================
+   ESTRUCTURA DE CONTENEDORES (LAYOUT)
+   ========================================== */
+
+/* Contenedor Principal */
+.app-container {
+    display: flex;
+    width: 100vw;
+    min-height: 100vh;
+}
+
+/* Área de Contenido Principal */
+.main-content {
+    flex: 1;
+    margin-left: var(--sidebar-width);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    transition: var(--transition);
+}
+
+/* ==========================================
+   BARRA LATERAL (SIDEBAR COMÚN)
+   ========================================== */
+.sidebar {
+    width: var(--sidebar-width);
+    background-color: var(--bg-sidebar);
+    color: var(--text-on-dark);
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid rgba(255, 255, 255, 0.05);
+    transition: var(--transition);
+}
+
+/* Encabezado Sidebar */
+.sidebar-brand {
+    padding: 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.sidebar-logo {
+    width: 35px;
+    height: auto;
+}
+
+.sidebar-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    color: white;
+}
+
+/* Menú de Navegación */
+.sidebar-menu {
+    list-style: none;
+    padding: 20px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex: 1;
+}
+
+.sidebar-item a {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 12px 16px;
+    color: rgba(248, 250, 252, 0.75);
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: var(--transition);
+}
+
+.sidebar-item a:hover {
+    background-color: rgba(255, 255, 255, 0.06);
+    color: white;
+}
+
+.sidebar-item.active a {
+    background-color: var(--primary);
+    color: white;
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(0, 153, 204, 0.25);
+}
+
+.sidebar-item i {
+    font-size: 1.1rem;
+    width: 20px;
+    text-align: center;
+}
+
+/* Pie del Sidebar */
+.sidebar-footer {
+    padding: 20px 16px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.user-profile-summary {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: var(--primary);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.user-info-text h5 {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: white;
+}
+
+.user-info-text span {
+    font-size: 0.75rem;
+    color: rgba(248, 250, 252, 0.5);
+}
+
+/* ==========================================
+   BARRA SUPERIOR (TOPBAR)
+   ========================================== */
+.topbar {
+    height: var(--topbar-height);
+    background-color: var(--bg-card);
+    border-bottom: 1px solid var(--border-color);
+    padding: 0 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 90;
+    transition: var(--transition);
+}
+
+/* Ruta / Migas de pan (Breadcrumbs) */
+.page-title-area {
+    display: flex;
+    flex-direction: column;
+}
+
+.page-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+.breadcrumbs {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    display: flex;
+    gap: 6px;
+}
+
+/* Acciones rápidas (Notificaciones, Modo oscuro, etc) */
+.topbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.icon-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid var(--border-color);
+    background: var(--bg-card);
+    color: var(--text-main);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 1.1rem;
+    transition: var(--transition);
+    position: relative;
+}
+
+.icon-btn:hover {
+    background-color: var(--primary-light);
+    color: var(--primary);
+    border-color: transparent;
+}
+
+.notification-badge {
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    width: 8px;
+    height: 8px;
+    background-color: var(--danger);
+    border-radius: 50%;
+}
+
+/* ==========================================
+   COMPONENTES COMUNES PREMIUM
+   ========================================== */
+
+/* Contenedor del contenido */
+.content-body {
+    padding: 30px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+/* Tarjetas (Cards) */
+.admin-card {
+    background-color: var(--bg-card);
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-md);
+    padding: 24px;
+    transition: var(--transition);
+}
+
+.admin-card:hover {
+    box-shadow: var(--shadow-lg);
+}
+
+.admin-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.admin-card-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-main);
+}
+
+/* Botones */
+.admin-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: var(--transition);
+    text-decoration: none;
+}
+
+.admin-btn-primary {
+    background-color: var(--primary);
+    color: white;
+}
+
+.admin-btn-primary:hover {
+    background-color: var(--primary-hover);
+    transform: translateY(-1px);
+}
+
+.admin-btn-secondary {
+    background-color: transparent;
+    border-color: var(--border-color);
+    color: var(--text-main);
+}
+
+.admin-btn-secondary:hover {
+    background-color: var(--border-color);
+}
+
+/* Tablas */
+.table-responsive {
+    overflow-x: auto;
+    width: 100%;
+}
+
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.admin-table th {
+    background-color: var(--bg-body);
+    color: var(--text-muted);
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 14px 18px;
+    border-bottom: 2px solid var(--border-color);
+}
+
+.admin-table td {
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-main);
+    font-size: 0.9rem;
+}
+
+.admin-table tr:hover {
+    background-color: rgba(0, 153, 204, 0.02);
+}
+
+/* Badges (Etiquetas de estado) */
+.admin-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-align: center;
+}
+
+.admin-badge-success {
+    background-color: rgba(46, 196, 182, 0.15);
+    color: var(--success);
+}
+
+.admin-badge-warning {
+    background-color: rgba(255, 159, 28, 0.15);
+    color: var(--warning);
+}
+
+.admin-badge-danger {
+    background-color: rgba(239, 68, 68, 0.15);
+    color: var(--danger);
+}
+
+.admin-badge-info {
+    background-color: rgba(0, 153, 204, 0.15);
+    color: var(--primary);
+}
+
+/* ==========================================
+   ADAPTABILIDAD MÓVIL (RESPONSIVO)
+   ========================================== */
+@media (max-width: 992px) {
+    .sidebar {
+        left: calc(-1 * var(--sidebar-width));
+    }
+    
+    .sidebar.active {
+        left: 0;
+    }
+    
+    .main-content {
+        margin-left: 0;
+    }
+    
+    .icon-btn.menu-toggle {
+        display: flex !important;
+    }
+}
+
+@media (min-width: 993px) {
+    .icon-btn.menu-toggle {
+        display: none;
+    }
+}

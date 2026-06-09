@@ -1,0 +1,121 @@
+/* ==========================================
+   ESTILOS ESPECÍFICOS: CRM FIDELIZACIÓN (Integrante 3)
+   ========================================== */
+
+/* Distintivo de Desarrollador */
+.developer-badge {
+    background-color: var(--primary-light);
+    color: var(--primary);
+    border: 1px solid rgba(0, 153, 204, 0.2);
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 5px;
+}
+
+.developer-badge i {
+    font-size: 1.1rem;
+}
+
+/* Grilla de Métricas */
+.fidelidad-metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+}
+
+/* Grilla de Gráficos y Formularios */
+.fidelidad-charts-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 25px;
+}
+
+@media (max-width: 992px) {
+    .fidelidad-charts-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.quick-action-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.redemption-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    flex: 1;
+    justify-content: center;
+}
+
+.redemption-form .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.redemption-form .form-group label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-main);
+}
+
+.redemption-form .form-group input,
+.redemption-form .form-group select {
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    background-color: var(--bg-body);
+    color: var(--text-main);
+    border-radius: 8px;
+    outline: none;
+    font-size: 0.9rem;
+    transition: var(--transition);
+}
+
+.redemption-form .form-group input:focus,
+.redemption-form .form-group select:focus {
+    border-color: var(--primary);
+    background-color: var(--bg-card);
+}
+
+/* Personalización de Badges de Nivel */
+.admin-badge-danger {
+    background-color: rgba(239, 68, 68, 0.1);
+    color: #ef4444; /* Platino / Rojo */
+}
+
+.admin-badge-warning {
+    background-color: rgba(255, 159, 28, 0.1);
+    color: #ff9f1c; /* Oro / Naranja */
+}
+
+.admin-badge-info {
+    background-color: rgba(0, 153, 204, 0.1);
+    color: #0099cc; /* Plata / Azul */
+}
+
+.admin-badge-success {
+    background-color: rgba(46, 196, 182, 0.1);
+    color: #2ec4b6; /* Bronce / Verde */
+}
+
+/* Marcador de posición (Placeholder) */
+.block-placeholder {
+    padding: 40px;
+    border: 2px dashed var(--border-color);
+    background-color: transparent;
+    box-shadow: none;
+    text-align: center;
+}
+.block-placeholder:hover { box-shadow: none; }
+.placeholder-content { display: flex; flex-direction: column; align-items: center; gap: 12px; color: var(--text-muted); }
+.placeholder-content i { font-size: 3rem; color: var(--primary); opacity: 0.6; }
+.placeholder-content h4 { font-size: 1.1rem; font-weight: 600; color: var(--text-main); }
+.placeholder-content p { font-size: 0.85rem; max-width: 400px; line-height: 1.5; }
+.placeholder-content code { background-color: var(--primary-light); color: var(--primary); padding: 2px 6px; border-radius: 4px; font-family: Consolas, monospace; }

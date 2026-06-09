@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERP Dashboard - Hospital La Caleta</title>
+    <!-- FontAwesome para Iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Estilos Compartidos Base -->
+    <link rel="stylesheet" href="css/shared.css">
+    <!-- Estilos Específicos del ERP Dashboard -->
+    <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- BARRA LATERAL COMÚN -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <img src="../assets/logo_caleta.png" alt="Logo" class="sidebar-logo">
+                <span class="sidebar-title">INTRANET</span>
+            </div>
+            
+            <ul class="sidebar-menu">
+                <li class="sidebar-item active">
+                    <a href="dashboard.html">
+                        <i class="fa-solid fa-chart-line"></i>
+                        <span>ERP Dashboard</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="crm-email.html">
+                        <i class="fa-regular fa-envelope"></i>
+                        <span>CRM Correo</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="crm-fidelidad.html">
+                        <i class="fa-solid fa-heart-pulse"></i>
+                        <span>CRM Fidelización</span>
+                    </a>
+                </li>
+                <li class="sidebar-item" style="margin-top: auto;">
+                    <a href="index.html" id="btnLogout">
+                        <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                        <span>Cerrar Sesión</span>
+                    </a>
+                </li>
+            </ul>
+            
+            <div class="sidebar-footer">
+                <div class="user-profile-summary">
+                    <div class="user-avatar" id="avatarText">U</div>
+                    <div class="user-info-text">
+                        <h5 id="sidebarUserName">Usuario Admin</h5>
+                        <span id="sidebarUserRole">Módulo ERP (@Gerardie)</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- ÁREA DE CONTENIDO PRINCIPAL -->
+        <main class="main-content">
+            <!-- BARRA SUPERIOR -->
+            <header class="topbar">
+                <div class="page-title-area">
+                    <h1 class="page-title">Dashboard ERP</h1>
+                    <div class="breadcrumbs">
+                        <span>Intranet</span>
+                        <span>/</span>
+                        <span>ERP</span>
+                        <span>/</span>
+                        <span style="color: var(--primary);">Dashboard</span>
+                    </div>
+                </div>
+                
+                <div class="topbar-actions">
+                    <button class="icon-btn" id="themeToggleBtn" title="Cambiar Tema">
+                        <i class="fa-solid fa-moon"></i>
+                    </button>
+                    <button class="icon-btn" title="Notificaciones">
+                        <i class="fa-regular fa-bell"></i>
+                        <span class="notification-badge"></span>
+                    </button>
+                </div>
+            </header>
+
+            <!-- CUERPO DE CONTENIDO -->
+            <div class="content-body">
+                <!-- PANEL DEL INTEGRANTE 1: GERARDIE -->
+                <div class="developer-badge">
+                    <i class="fa-solid fa-code"></i>
+                    <span>Módulo a cargo de: <strong>@Gerardie (Integrante 1)</strong></span>
+                </div>
+
+                <!-- Tarjetas de Métricas Rápidas (ERP Grid) -->
+                <div class="metrics-grid">
+                    <div class="admin-card metric-card">
+                        <div class="metric-icon success-bg">
+                            <i class="fa-solid fa-bed"></i>
+                        </div>
+                        <div class="metric-details">
+                            <h3>42 / 50</h3>
+                            <p>Camas Ocupadas</p>
+                        </div>
+                    </div>
+
+                    <div class="admin-card metric-card">
+                        <div class="metric-icon primary-bg">
+                            <i class="fa-solid fa-user-doctor"></i>
+                        </div>
+                        <div class="metric-details">
+                            <h3>14</h3>
+                            <p>Médicos de Turno</p>
+                        </div>
+                    </div>
+
+                    <div class="admin-card metric-card">
+                        <div class="metric-icon warning-bg">
+                            <i class="fa-solid fa-calendar-check"></i>
+                        </div>
+                        <div class="metric-details">
+                            <h3>128</h3>
+                            <p>Citas Programadas Hoy</p>
+                        </div>
+                    </div>
+
+                    <div class="admin-card metric-card">
+                        <div class="metric-icon danger-bg">
+                            <i class="fa-solid fa-truck-medical"></i>
+                        </div>
+                        <div class="metric-details">
+                            <h3>3</h3>
+                            <p>Urgencias en Camino</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Gráficos y Tablas Base -->
+                <div class="dashboard-charts-grid">
+                    <div class="admin-card chart-container-card">
+                        <div class="admin-card-header">
+                            <h2 class="admin-card-title">Admisiones por Especialidad (Semanal)</h2>
+                            <i class="fa-solid fa-ellipsis-vertical text-muted"></i>
+                        </div>
+                        <div class="chart-wrapper">
+                            <canvas id="admissionsChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="admin-card table-container-card">
+                        <div class="admin-card-header">
+                            <h2 class="admin-card-title">Monitoreo de Recursos ERP</h2>
+                            <a href="#" class="admin-btn admin-btn-secondary" style="padding: 6px 12px; font-size: 0.8rem;">Ver Inventario</a>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="admin-table">
+                               <thead>
+                                   <tr>
+                                       <th>Recurso</th>
+                                       <th>Categoría</th>
+                                       <th>Stock</th>
+                                       <th>Estado</th>
+                                   </tr>
+                               </thead>
+                               <tbody>
+                                   <tr>
+                                       <td>Oxígeno Médico (Balón)</td>
+                                       <td>Gases</td>
+                                       <td>120 Unidades</td>
+                                       <td><span class="admin-badge admin-badge-success">Stock Alto</span></td>
+                                   </tr>
+                                   <tr>
+                                       <td>Mascarillas N95</td>
+                                       <td>Protección</td>
+                                       <td>450 Unidades</td>
+                                       <td><span class="admin-badge admin-badge-success">Stock Alto</span></td>
+                                   </tr>
+                                   <tr>
+                                       <td>Paracetamol 500mg</td>
+                                       <td>Fármacos</td>
+                                       <td>12 Unidades</td>
+                                       <td><span class="admin-badge admin-badge-danger">Crítico</span></td>
+                                   </tr>
+                                   <tr>
+                                       <td>Jeringas 5ml</td>
+                                       <td>Insumos</td>
+                                       <td>85 Unidades</td>
+                                       <td><span class="admin-badge admin-badge-warning">Por agotar</span></td>
+                                   </tr>
+                               </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- ESPACIO PARA CONTENIDO DE GERARDO -->
+                <div class="admin-card block-placeholder">
+                    <div class="placeholder-content">
+                        <i class="fa-solid fa-puzzle-piece"></i>
+                        <h4>Espacio de Trabajo para @Gerardie</h4>
+                        <p>Modifica <code>admin/dashboard.html</code>, <code>admin/css/dashboard.css</code> y <code>admin/js/dashboard.js</code> para añadir el resto del ERP.</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Librería Chart.js para los gráficos -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Lógica del ERP Dashboard -->
+    <script src="js/dashboard.js"></script>
+    <!-- Script de configuración de tema y perfil común -->
+    <script src="js/common.js"></script>
+</body>
+</html>

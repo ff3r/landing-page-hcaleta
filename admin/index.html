@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intranet - Hospital La Caleta</title>
+    <!-- FontAwesome para Iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Estilos específicos de Login -->
+    <link rel="stylesheet" href="css/login.css">
+</head>
+<body>
+    <div class="login-wrapper">
+        <div class="login-bg-shapes">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+        </div>
+        
+        <div class="login-card-container">
+            <div class="login-card">
+                <div class="login-card-header">
+                    <img src="../assets/logo_caleta.png" alt="Logo Hospital La Caleta" class="login-logo">
+                    <h2>INTRANET</h2>
+                    <p>Hospital La Caleta</p>
+                </div>
+                
+                <form id="loginForm" class="login-form">
+                    <div class="form-group">
+                        <label for="username">Correo Institucional</label>
+                        <div class="input-icon-wrapper">
+                            <i class="fa-regular fa-envelope"></i>
+                            <input type="email" id="username" placeholder="ejemplo@hcaleta.gob.pe" required autocomplete="username">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password">Contraseña</label>
+                        <div class="input-icon-wrapper">
+                            <i class="fa-solid fa-lock"></i>
+                            <input type="password" id="password" placeholder="••••••••" required autocomplete="current-password">
+                            <button type="button" id="togglePassword" class="password-toggle-btn">
+                                <i class="fa-regular fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="form-options">
+                        <label class="remember-me">
+                            <input type="checkbox" id="remember">
+                            <span>Recordarme</span>
+                        </label>
+                        <a href="#" class="forgot-pass">¿Olvidó su contraseña?</a>
+                    </div>
+                    
+                    <div id="errorMessage" class="error-alert hidden">
+                        <i class="fa-solid fa-circle-exclamation"></i>
+                        <span>Usuario o contraseña incorrectos.</span>
+                    </div>
+                    
+                    <button type="submit" class="btn-login">
+                        <span>Iniciar Sesión</span>
+                        <i class="fa-solid fa-arrow-right-to-bracket"></i>
+                    </button>
+                </form>
+                
+                <div class="login-card-footer">
+                    <p>&copy; 2026 Hospital La Caleta - Área de TI</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script de control del Login -->
+    <script src="js/auth.js"></script>
+</body>
+</html>
