@@ -2,6 +2,7 @@
    LÓGICA DE CRM FIDELIZACIÓN (INTRANET HCALETA)
    ========================================== */
 
+
 document.addEventListener("DOMContentLoaded", () => {
     // 1. Inicializar Gráfico de Satisfacción Trimestral (Chart.js Line Chart)
     const ctx = document.getElementById("satisfactionChart");
