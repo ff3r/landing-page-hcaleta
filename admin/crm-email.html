@@ -86,12 +86,6 @@
 
             <!-- CUERPO DE CONTENIDO -->
             <div class="content-body">
-                <!-- PANEL DEL INTEGRANTE 2: LUIS (USUARIO) -->
-                <div class="developer-badge">
-                    <i class="fa-solid fa-code"></i>
-                    <span>Módulo a cargo de: <strong>Luis (Tú - Integrante 2)</strong></span>
-                </div>
-
                 <!-- Contenedor del Correo (Estructura de Tres Columnas) -->
                 <div class="email-app-card admin-card">
                     <!-- Columna 1: Carpetas -->
@@ -127,16 +121,28 @@
                                     <span>Papelera</span>
                                 </a>
                             </li>
+                            
+                            <!-- DIVISOR -->
+                            <li style="border-top: 1px solid var(--border-color); margin: 10px 0; list-style: none;"></li>
+                            
+                            <!-- NUEVA CARPETA: BASE DE DATOS DE PACIENTES -->
+                            <li class="folder-item" data-folder="patients" id="folderPatients">
+                                <a href="#">
+                                    <i class="fa-solid fa-address-book"></i>
+                                    <span>Base de Datos Pacientes</span>
+                                </a>
+                            </li>
                         </ul>
                     </div>
 
-                    <!-- Columna 2: Lista de Correos -->
+                    <!-- Columna 2: Lista de Correos / Pacientes -->
                     <div class="email-list-container">
                         <div class="email-search-bar">
                             <i class="fa-solid fa-magnifying-glass"></i>
-                            <input type="text" placeholder="Buscar correos de pacientes...">
+                            <input type="text" id="searchBarInput" placeholder="Buscar en la bandeja...">
                         </div>
                         
+                        <!-- Lista de Emails -->
                         <div class="email-list" id="emailList">
                             <!-- Correo 1 (Leído) -->
                             <div class="email-item unread active" data-id="1">
@@ -168,10 +174,16 @@
                                 <p class="email-snippet">Estimados de Recursos Humanos, presento mi solicitud formal de vacaciones programadas del 15 al 30 de Julio...</p>
                             </div>
                         </div>
+
+                        <!-- Lista de Pacientes (Oculta por defecto) -->
+                        <div class="patient-list hidden" id="patientList">
+                            <!-- Se renderizará dinámicamente desde js/crm-email.js -->
+                        </div>
                     </div>
 
-                    <!-- Columna 3: Panel de Lectura -->
+                    <!-- Columna 3: Panel de Lectura de Correos / Ficha de Paciente -->
                     <div class="email-reading-pane" id="emailReadingPane">
+                        <!-- VISTA DE CORREOS -->
                         <div class="pane-content-wrapper" id="paneContent">
                             <div class="email-pane-header">
                                 <div class="sender-profile">
@@ -209,6 +221,46 @@
                                 </button>
                             </div>
                         </div>
+
+                        <!-- VISTA DE FICHA DE PACIENTE (Oculta por defecto) -->
+                        <div class="pane-content-wrapper hidden" id="patientPaneContent">
+                            <div class="patient-pane-header">
+                                <div class="patient-profile-top">
+                                    <div class="patient-avatar-large" id="patientAvatar">C</div>
+                                    <div class="patient-meta-detail">
+                                        <h2 id="patientDetailName">Carlos Mendoza</h2>
+                                        <span id="patientDetailDni">DNI: 47859612</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="patient-pane-body">
+                                <div class="patient-info-card">
+                                    <div class="info-field">
+                                        <span class="field-label"><i class="fa-solid fa-cake-candles"></i> Edad</span>
+                                        <span class="field-value" id="patientAge">34 años</span>
+                                    </div>
+                                    <div class="info-field">
+                                        <span class="field-label"><i class="fa-solid fa-mobile-screen-button"></i> Teléfono</span>
+                                        <span class="field-value" id="patientPhone">987-654-321</span>
+                                    </div>
+                                    <div class="info-field">
+                                        <span class="field-label"><i class="fa-solid fa-location-dot"></i> Dirección</span>
+                                        <span class="field-value" id="patientAddress">Jr. Alfonso Ugarte 120, Chimbote</span>
+                                    </div>
+                                    <div class="info-field">
+                                        <span class="field-label"><i class="fa-solid fa-file-medical"></i> Alergias e Historial</span>
+                                        <span class="field-value" id="patientMedicalHistory">Asma. Sin alergias a medicamentos.</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="patient-visits-history">
+                                    <h3><i class="fa-solid fa-notes-medical"></i> Historial Clínico y CRM (Citas y Exámenes)</h3>
+                                    <ul class="visits-timeline" id="patientVisitsTimeline">
+                                        <!-- Cargado dinámicamente -->
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -240,15 +292,6 @@
                                 </button>
                             </div>
                         </form>
-                    </div>
-                </div>
-                
-                <!-- INSTRUCCIONES PARA LUIS -->
-                <div class="admin-card block-placeholder">
-                    <div class="placeholder-content">
-                        <i class="fa-solid fa-puzzle-piece"></i>
-                        <h4>Espacio de Trabajo para Luis (Tú)</h4>
-                        <p>Modifica <code>admin/crm-email.html</code>, <code>admin/css/crm-email.css</code> y <code>admin/js/crm-email.js</code> para añadir tus interacciones de correo, base de datos simulada de pacientes, etc.</p>
                     </div>
                 </div>
             </div>
