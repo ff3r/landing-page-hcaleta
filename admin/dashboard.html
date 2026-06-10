@@ -145,7 +145,7 @@
                     <div class="admin-card table-container-card">
                         <div class="admin-card-header">
                             <h2 class="admin-card-title">Monitoreo de Recursos ERP</h2>
-                            <a href="#" class="admin-btn admin-btn-secondary" style="padding: 6px 12px; font-size: 0.8rem;">Ver Inventario</a>
+                            <a href="#" id="btnVerInventario" class="admin-btn admin-btn-secondary" style="padding: 6px 12px; font-size: 0.8rem;">Ver Inventario</a>
                         </div>
                         <div class="table-responsive">
                             <table class="admin-table">
@@ -209,11 +209,35 @@
                         </table>
                     </div>
                 </div>
-                
+
+                <div id="modalInventario" class="modal">
+                    <div class="modal-content">
+                        <span class="close-btn">&times;</span>
+                        <h2>Gestión de Inventario</h2>
+                        
+                        <!-- Formulario para agregar -->
+                        <div class="form-group">
+                            <input type="text" id="nombreRecurso" placeholder="Nombre del recurso">
+                            <input type="number" id="cantidadStock" placeholder="Cantidad">
+                            <button onclick="agregarRecurso()" class="btn-primary">Agregar Recurso</button>
+                        </div>
+
+                        <!-- Tabla completa -->
+                        <table class="admin-table">
+                            <thead><tr><th>Recurso</th><th>Stock</th><th>Acción</th></tr></thead>
+                            <tbody id="lista-inventario-completa"></tbody>
+                        </table>
+                    </div>
+                </div>
+
 
             </div>
         </main>
     </div>
+
+
+
+
 
     <!-- Librería Chart.js para los gráficos -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -221,5 +245,6 @@
     <script src="js/dashboard.js"></script>
     <!-- Script de configuración de tema y perfil común -->
     <script src="js/common.js"></script>
+
 </body>
 </html>
