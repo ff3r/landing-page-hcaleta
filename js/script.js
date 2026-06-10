@@ -382,3 +382,85 @@ window.addEventListener('scroll', function() {
         socialBar.style.pointerEvents = 'auto';
     }
 });
+
+// ==========================================
+// MENÚ MÓVIL DINÁMICO (RESPONSIVO)
+// ==========================================
+document.addEventListener("DOMContentLoaded", () => {
+    const mainNav = document.querySelector('.main-nav');
+    if (mainNav) {
+        const navList = mainNav.querySelector('ul');
+        
+        // 1. Crear botón hamburguesa
+        const toggleBtn = document.createElement('button');
+        toggleBtn.className = 'mobile-nav-toggle';
+        toggleBtn.id = 'mobileNavToggle';
+        toggleBtn.innerHTML = '<i class="fas fa-bars"></i>';
+        
+        // Mover el botón de tema al main-nav en móvil para que sea siempre visible
+        const themeToggle = document.getElementById('theme-toggle');
+        if (themeToggle && window.innerWidth <= 992) {
+            mainNav.appendChild(themeToggle);
+        }
+        
+        mainNav.appendChild(toggleBtn);
+        
+        // 2. Crear overlay de fondo
+        const backdrop = document.createElement('div');
+        backdrop.className = 'nav-backdrop';
+        backdrop.id = 'navBackdrop';
+        document.body.appendChild(backdrop);
+        
+        // 3. Crear botón de cerrar dentro de la lista
+        const closeBtn = document.createElement('button');
+        closeBtn.className = 'mobile-nav-close';
+        closeBtn.id = 'mobileNavClose';
+        closeBtn.innerHTML = '&times;';
+        navList.appendChild(closeBtn);
+        
+        // 4. Funciones de apertura y cierre
+        const openMenu = () => {
+            mainNav.classList.add('mobile-active');
+            backdrop.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        };
+        
+        const closeMenu = () => {
+            mainNav.classList.remove('mobile-active');
+            backdrop.classList.remove('active');
+            document.body.style.overflow = '';
+        };
+        
+        toggleBtn.addEventListener('click', openMenu);
+        closeBtn.addEventListener('click', closeMenu);
+        backdrop.addEventListener('click', closeMenu);
+        
+        // 5. Manejar desplegables (dropdowns) en móvil
+        const dropdowns = mainNav.querySelectorAll('.dropdown');
+        dropdowns.forEach(drop => {
+            const link = drop.querySelector('a');
+            const menu = drop.querySelector('.dropdown-menu');
+            
+            link.addEventListener('click', (e) => {
+                if (window.innerWidth <= 992) {
+                    e.preventDefault(); // Evitar navegación del enlace padre
+                    
+                    const isActive = menu.classList.toggle('mobile-open');
+                    const arrow = link.querySelector('.arrow');
+                    
+                    if (arrow) {
+                        arrow.style.transition = 'transform 0.3s';
+                        arrow.style.transform = isActive ? 'rotate(180deg)' : '';
+                    }
+                    
+                    // Toggle slide effect
+                    if (isActive) {
+                        menu.style.display = 'block';
+                    } else {
+                        menu.style.display = 'none';
+                    }
+                }
+            });
+        });
+    }
+});

@@ -99,6 +99,86 @@ document.addEventListener("DOMContentLoaded", () => {
                    <p>Solicito la copia fedateada de mi historial clínico de atenciones del año pasado en ginecología para presentarlo en mi centro laboral. ¿Cuál es el trámite o tasa que debo pagar en caja?</p>`,
             unread: false
         },
+        {
+            id: "8",
+            folder: "inbox",
+            sender: "Luis Alberto Ruiz",
+            email: "luis.ruiz@hotmail.com",
+            time: "03 Jun",
+            subject: "Consulta de resultados de ecografía",
+            body: `<p>Buenas tardes,</p><p>Me realicé una ecografía abdominal el pasado lunes y aún no me llega el resultado a mi correo. ¿Podrían revisarlo por favor?</p>`,
+            unread: true
+        },
+        {
+            id: "9",
+            folder: "inbox",
+            sender: "Carmen Rosa Mendoza",
+            email: "carmen.mendoza@gmail.com",
+            time: "02 Jun",
+            subject: "Reprogramación de cita odontológica",
+            body: `<p>Estimados,</p><p>Quisiera reprogramar mi cita de odontología para la siguiente semana debido a un cruce con mi horario laboral. Quedo atento.</p>`,
+            unread: false
+        },
+        {
+            id: "10",
+            folder: "inbox",
+            sender: "Daniel Alcides Carrión",
+            email: "daniel.carrion@yahoo.com",
+            time: "01 Jun",
+            subject: "Consulta sobre dosis de Metformina",
+            body: `<p>Hola doctor,</p><p>Quisiera saber si debo tomar la metformina antes o después de los alimentos. Muchas gracias.</p>`,
+            unread: true
+        },
+        {
+            id: "11",
+            folder: "inbox",
+            sender: "Patricia Benavides",
+            email: "patricia.b@gmail.com",
+            time: "30 May",
+            subject: "Cita de control de endocrinología",
+            body: `<p>Buenas,</p><p>Tengo una consulta de control el próximo mes y quería confirmar si la fecha registrada en el sistema es la correcta.</p>`,
+            unread: false
+        },
+        {
+            id: "12",
+            folder: "inbox",
+            sender: "Sofía Vergara Díaz",
+            email: "sofia.vergara@outlook.com",
+            time: "28 May",
+            subject: "Resultado de resonancia magnética",
+            body: `<p>Estimado doctor,</p><p>Quisiera saber si mis resultados de resonancia magnética ya están en el sistema para ir a recogerlos.</p>`,
+            unread: false
+        },
+        {
+            id: "13",
+            folder: "inbox",
+            sender: "Miguel Ángel Guerrero",
+            email: "mguerrero@gmail.com",
+            time: "25 May",
+            subject: "Duda sobre dieta para hígado graso",
+            body: `<p>Buenas,</p><p>El nutricionista me indicó una dieta pero tengo dudas sobre qué frutas comer por las noches. ¿Podrían orientarme?</p>`,
+            unread: true
+        },
+        {
+            id: "14",
+            folder: "inbox",
+            sender: "Luisa Fernanda Ríos",
+            email: "luisa.rios@gmail.com",
+            time: "22 May",
+            subject: "Consulta por rinitis alérgica severa",
+            body: `<p>Hola,</p><p>El tratamiento con antihistamínicos que me recetaron no está dando resultados para mi rinitis. ¿Qué procede?</p>`,
+            unread: false
+        },
+        {
+            id: "15",
+            folder: "inbox",
+            sender: "Juan Manuel Castro",
+            email: "jmcastro@gmail.com",
+            time: "20 May",
+            subject: "Terapia física de rodilla",
+            body: `<p>Buenas tardes,</p><p>Quisiera saber los horarios de atención del área de fisioterapia para programar mis sesiones de rodilla.</p>`,
+            unread: false
+        },
         // Correos en Enviados
         {
             id: "101",
@@ -307,6 +387,110 @@ document.addEventListener("DOMContentLoaded", () => {
                 { date: "24/05/2026", desc: "Examen de Densitometría Ósea", doctor: "Lic. Roberto Ruiz - Imagenología" },
                 { date: "10/03/2026", desc: "Consulta de reumatología", doctor: "Dra. Silvia Torres - Reumatología" }
             ]
+        },
+        {
+            id: "13",
+            name: "Luis Alberto Ruiz",
+            dni: "44556677",
+            age: 39,
+            phone: "988-776-655",
+            address: "Jr. Tacna 340, Chimbote",
+            history: "Hipertensión leve. Alergia al polen.",
+            summary: "Paciente de control por Medicina General.",
+            visits: [
+                { date: "03/06/2026", desc: "Control de Presión Arterial", doctor: "Dra. Elena Ramos - Medicina General" }
+            ]
+        },
+        {
+            id: "14",
+            name: "Estela Marina Solís",
+            dni: "41122334",
+            age: 55,
+            phone: "912-345-678",
+            address: "Av. Buenos Aires 120, Nuevo Chimbote",
+            history: "Sin antecedentes patológicos. No reporta alergias.",
+            summary: "Paciente afiliada al programa de prevención oncológica.",
+            visits: [
+                { date: "15/05/2026", desc: "Chequeo ginecológico preventivo", doctor: "Dra. Lucía Castro - Ginecología" }
+            ]
+        },
+        {
+            id: "15",
+            name: "Fernando Torres Paz",
+            dni: "45566778",
+            age: 48,
+            phone: "945-123-456",
+            address: "Jr. José Balta 890, Chimbote",
+            history: "Fractura de fémur izquierdo (2024). Rehabilitado por completo.",
+            summary: "Control regular en Consulta Externa de Traumatología.",
+            visits: [
+                { date: "10/04/2026", desc: "Evaluación traumatológica y placas", doctor: "Dr. Marcos Reyes - Traumatología" }
+            ]
+        },
+        {
+            id: "16",
+            name: "Diana Carolina Rey",
+            dni: "46677889",
+            age: 26,
+            phone: "967-456-123",
+            address: "Urb. El Bosque Mz A Lt 8, Nuevo Chimbote",
+            history: "Migraña tensional crónica. Sin alergias registradas.",
+            summary: "Paciente en seguimiento médico por Neurología.",
+            visits: [
+                { date: "05/05/2026", desc: "Consulta por cefalea recurrente", doctor: "Dr. Hugo Morán - Neurología" }
+            ]
+        },
+        {
+            id: "17",
+            name: "Héctor Raúl Benítez",
+            dni: "48899001",
+            age: 62,
+            phone: "990-789-456",
+            address: "P.J. San Pedro Jr. Áncash 450, Chimbote",
+            history: "Artrosis de cadera. Tratamiento analgésico activo.",
+            summary: "Paciente de la tercera edad en programa de terapia física.",
+            visits: [
+                { date: "12/05/2026", desc: "Terapia física de cadera y calor", doctor: "Lic. Pedro Castillo - Fisioterapia" }
+            ]
+        },
+        {
+            id: "18",
+            name: "Gisela Patricia Ortiz",
+            dni: "49900112",
+            age: 33,
+            phone: "911-456-789",
+            address: "Jr. Huallaga 124, Chimbote",
+            history: "Asma bronquial leve controlada. No reporta alergias.",
+            summary: "Paciente regular en Consulta de Neumología.",
+            visits: [
+                { date: "20/05/2026", desc: "Examen de Espirometría y control", doctor: "Dr. Alejandro Pérez - Neumología" }
+            ]
+        },
+        {
+            id: "19",
+            name: "Ramón Alejandro Ortiz",
+            dni: "40011223",
+            age: 70,
+            phone: "922-567-890",
+            address: "Av. Meiggs 1550, Chimbote",
+            history: "Insuficiencia renal leve. Dieta e hidratación controlada.",
+            summary: "Paciente crónico en seguimiento de Nefrología y Nutrición.",
+            visits: [
+                { date: "22/05/2026", desc: "Control de perfil renal completo", doctor: "Dr. Carlos Valdivia - Endocrinología" }
+            ]
+        },
+        {
+            id: "20",
+            name: "Clara Inés Beltrán",
+            dni: "42233445",
+            age: 29,
+            phone: "933-678-901",
+            address: "Jr. Iquitos 210, Chimbote",
+            history: "Primigesta. No reporta alergias a medicamentos.",
+            summary: "Paciente en control del programa materno-perinatal.",
+            visits: [
+                { date: "28/05/2026", desc: "Ecografía del primer trimestre de embarazo", doctor: "Dra. Juana Aguilar - Ginecología" }
+            ]
         }
     ];
 
@@ -405,6 +589,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
 
                 loadEmailIntoPane(email.id);
+
+                // Soporte responsivo para móvil (mostrar panel de lectura)
+                const appCard = document.querySelector(".email-app-card");
+                if (appCard) {
+                    appCard.classList.add("show-reading");
+                }
             });
 
             emailList.appendChild(item);
@@ -489,6 +679,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 document.querySelectorAll(".patient-item").forEach(p => p.classList.remove("active"));
                 item.classList.add("active");
                 loadPatientDetails(patient.id);
+
+                // Soporte responsivo para móvil (mostrar panel de lectura)
+                const appCard = document.querySelector(".email-app-card");
+                if (appCard) {
+                    appCard.classList.add("show-reading");
+                }
             });
 
             patientList.appendChild(item);
@@ -598,6 +794,13 @@ document.addEventListener("DOMContentLoaded", () => {
             folderItems.forEach(f => f.classList.remove("active"));
             folder.classList.add("active");
 
+            // Ocultar carpetas en móvil para volver a ver la lista correspondiente
+            const appCard = document.querySelector(".email-app-card");
+            if (appCard) {
+                appCard.classList.remove("show-folders");
+                appCard.classList.remove("show-reading");
+            }
+
             const folderName = folder.getAttribute("data-folder");
             currentFolder = folderName;
             
@@ -702,6 +905,27 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
     }
+
+    // 12. CONTROLES DE PORTABILIDAD MÓVIL (TABS/Toggles)
+    const btnShowFolders = document.getElementById("btnShowFolders");
+    if (btnShowFolders) {
+        btnShowFolders.addEventListener("click", () => {
+            const appCard = document.querySelector(".email-app-card");
+            if (appCard) {
+                appCard.classList.toggle("show-folders");
+            }
+        });
+    }
+
+    const backButtons = document.querySelectorAll(".btn-back-to-list");
+    backButtons.forEach(btn => {
+        btn.addEventListener("click", () => {
+            const appCard = document.querySelector(".email-app-card");
+            if (appCard) {
+                appCard.classList.remove("show-reading");
+            }
+        });
+    });
 
     // Inicializar bandeja
     updateFolderBadges();

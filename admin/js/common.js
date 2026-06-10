@@ -71,4 +71,24 @@ document.addEventListener("DOMContentLoaded", () => {
             themeToggleBtn.setAttribute("title", "Cambiar a Modo Oscuro");
         }
     }
+
+    // 4. Alternancia del menú lateral (Sidebar) en móviles
+    const adminSidebarToggle = document.getElementById("adminSidebarToggle");
+    const sidebar = document.querySelector(".sidebar");
+
+    if (adminSidebarToggle && sidebar) {
+        adminSidebarToggle.addEventListener("click", (e) => {
+            e.stopPropagation();
+            sidebar.classList.toggle("active");
+        });
+
+        document.addEventListener("click", (e) => {
+            if (window.innerWidth <= 992 && sidebar.classList.contains("active")) {
+                // Si el clic no fue dentro del sidebar ni en el botón de alternancia
+                if (!sidebar.contains(e.target) && !adminSidebarToggle.contains(e.target)) {
+                    sidebar.classList.remove("active");
+                }
+            }
+        });
+    }
 });

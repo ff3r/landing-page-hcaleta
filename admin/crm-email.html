@@ -62,6 +62,9 @@
         <main class="main-content">
             <!-- BARRA SUPERIOR -->
             <header class="topbar">
+                <button class="icon-btn menu-toggle" id="adminSidebarToggle" title="Abrir Menú" style="display: none;">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
                 <div class="page-title-area">
                     <h1 class="page-title">CRM Correo</h1>
                     <div class="breadcrumbs">
@@ -134,6 +137,9 @@
                     <!-- Columna 2: Lista de Correos / Pacientes -->
                     <div class="email-list-container">
                         <div class="email-search-bar">
+                            <button class="icon-btn" id="btnShowFolders" title="Ver Bandejas" style="display: none; width: 36px; height: 36px; flex-shrink: 0; margin-right: 8px;">
+                                <i class="fa-solid fa-folder"></i>
+                            </button>
                             <i class="fa-solid fa-magnifying-glass"></i>
                             <input type="text" id="searchBarInput" placeholder="Buscar en la bandeja...">
                         </div>
@@ -182,6 +188,9 @@
                         <!-- VISTA DE CORREOS -->
                         <div class="pane-content-wrapper" id="paneContent">
                             <div class="email-pane-header">
+                                <button class="icon-btn btn-back-to-list" title="Volver" style="display: none; margin-right: 12px; flex-shrink: 0; width: 36px; height: 36px; align-items: center; justify-content: center;">
+                                    <i class="fa-solid fa-arrow-left"></i>
+                                </button>
                                 <div class="sender-profile">
                                     <div class="sender-avatar-initial">C</div>
                                     <div class="sender-detail">
@@ -222,6 +231,9 @@
                         <div class="pane-content-wrapper hidden" id="patientPaneContent">
                             <div class="patient-pane-header">
                                 <div class="patient-profile-top">
+                                    <button class="icon-btn btn-back-to-list" title="Volver" style="display: none; margin-right: 12px; flex-shrink: 0; width: 36px; height: 36px; align-items: center; justify-content: center; align-self: center;">
+                                        <i class="fa-solid fa-arrow-left"></i>
+                                    </button>
                                     <div class="patient-avatar-large" id="patientAvatar">C</div>
                                     <div class="patient-meta-detail">
                                         <h2 id="patientDetailName">Carlos Mendoza</h2>

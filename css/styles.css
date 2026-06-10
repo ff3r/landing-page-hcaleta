@@ -41,7 +41,45 @@ body { background-color: var(--bg-light); transition: background-color 0.3s ease
 .info-text strong { font-size: 0.85rem; color: #111; font-weight: 700; letter-spacing: 0.5px; }
 .info-text span { font-size: 0.8rem; color: #555; margin-top: 2px; }
 .highlight-red { color: var(--red-alert); font-weight: bold; }
-@media (max-width: 992px) { .top-header { flex-direction: column; gap: 15px; text-align: center; } .contact-info { flex-direction: column; gap: 15px; } .info-item { flex-direction: column; } }
+@media (max-width: 992px) {
+    .top-header {
+        display: flex !important;
+        flex-direction: row !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        padding: 10px 24px !important;
+        gap: 10px !important;
+    }
+    .logo-container {
+        display: flex !important;
+        align-items: center !important;
+    }
+    .hospital-logo-img {
+        height: 48px !important;
+        width: auto !important;
+    }
+    .contact-info {
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        gap: 0 !important;
+        margin: 0 !important;
+    }
+    .contact-info .info-item:not(.admin-access-group) {
+        display: none !important;
+    }
+    .admin-access-group {
+        width: auto !important;
+        margin: 0 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+    .btn-admin-access {
+        padding: 8px 14px !important;
+        font-size: 0.8rem !important;
+    }
+}
 
 /* ==========================================
    BARRA DE NAVEGACIÓN
@@ -2059,5 +2097,226 @@ body.dark-mode .intranet-btn:hover {
         width: 100%;
         justify-content: center;
         margin-top: 5px;
+    }
+}
+
+/* ==========================================
+   MENÚ MÓVIL RESPONSIVO (HAMBURGER / DRAWER)
+   ========================================== */
+.mobile-nav-toggle {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 1.6rem;
+    color: var(--gray-text);
+    cursor: pointer;
+    padding: 10px;
+    transition: color 0.3s;
+}
+
+.mobile-nav-toggle:hover {
+    color: var(--primary-blue);
+}
+
+.mobile-nav-close {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 2.2rem;
+    color: var(--gray-text);
+    cursor: pointer;
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    padding: 10px;
+}
+
+.mobile-nav-close:hover {
+    color: var(--red-alert);
+}
+
+.nav-backdrop {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(11, 34, 64, 0.4);
+    backdrop-filter: blur(3px);
+    z-index: 999;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+.nav-backdrop.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* Reglas responsivas para pantallas <= 992px */
+@media (max-width: 992px) {
+    .mobile-nav-toggle {
+        display: block;
+        margin-left: 10px !important;
+    }
+    
+    #theme-toggle {
+        display: flex !important;
+        margin-left: auto !important;
+        background: none;
+        border: none;
+        color: var(--gray-text) !important;
+        font-size: 1.3rem;
+        cursor: pointer;
+        padding: 10px;
+        align-items: center;
+        justify-content: center;
+        z-index: 990;
+    }
+
+    body.dark-mode #theme-toggle {
+        color: #ffd700 !important;
+    }
+    
+    .mobile-nav-close {
+        display: block;
+    }
+    
+    .nav-backdrop {
+        display: block;
+    }
+
+    .main-nav {
+        display: flex;
+        align-items: center;
+        padding: 5px 20px !important;
+    }
+
+    .main-nav ul {
+        position: fixed;
+        top: 0;
+        right: 0;
+        height: 100vh;
+        width: 280px;
+        background-color: #ffffff;
+        flex-direction: column !important;
+        padding: 70px 20px 20px 20px !important;
+        gap: 8px !important;
+        z-index: 1000;
+        box-shadow: -5px 0 20px rgba(0, 0, 0, 0.15);
+        transform: translateX(100%);
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        overflow-y: auto;
+    }
+
+    body.dark-mode .main-nav ul {
+        background-color: #1a1a1a !important;
+        box-shadow: -5px 0 20px rgba(0, 0, 0, 0.5);
+    }
+
+    .main-nav.mobile-active {
+        z-index: 1000 !important;
+    }
+
+    .main-nav.mobile-active ul {
+        transform: translateX(0);
+    }
+
+    .main-nav ul li {
+        width: 100%;
+    }
+
+    .main-nav a {
+        padding: 12px 16px !important;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 0.95rem !important;
+        border-radius: 6px;
+    }
+
+    /* Ocultar el logo y luna empujados en móvil */
+    .nav-img-item.push-right {
+        display: none !important;
+    }
+    
+    .theme-li {
+        margin-top: 15px;
+        border-top: 1px solid var(--border-color);
+        padding-top: 15px;
+        width: 100%;
+    }
+
+    /* Dropdowns en Móvil (Se expanden hacia abajo) */
+    .dropdown-menu {
+        position: static !important;
+        display: none;
+        opacity: 1 !important;
+        visibility: visible !important;
+        box-shadow: none !important;
+        transform: none !important;
+        min-width: 100% !important;
+        padding-left: 15px !important;
+        border-top: none !important;
+        background-color: rgba(0, 153, 204, 0.03) !important;
+        border-left: 2px solid var(--primary-blue) !important;
+        margin-top: 4px;
+        border-radius: 0 0 6px 6px !important;
+    }
+
+    body.dark-mode .dropdown-menu {
+        background-color: rgba(51, 181, 229, 0.05) !important;
+        border-left: 2px solid var(--primary-blue) !important;
+    }
+}
+
+/* ==========================================
+   OPTIMIZACIONES DE BANNER (MÓVIL)
+   ========================================== */
+@media (max-width: 768px) {
+    .main-banner {
+        height: 45vh;
+    }
+    .slide-content {
+        left: 20px;
+        bottom: 30px;
+        right: 20px;
+    }
+    .slide-content h2 {
+        font-size: 1.8rem;
+        line-height: 1.2;
+    }
+    .slide-content p {
+        font-size: 0.9rem;
+    }
+    .btn-slide {
+        padding: 8px 16px;
+        font-size: 0.85rem;
+        margin-top: 10px;
+    }
+    .emergency-float-banner {
+        left: 20px;
+        font-size: 0.8rem;
+        padding: 6px 12px;
+    }
+}
+
+/* ==========================================
+   CHATBOT OPTIMIZACIÓN EN MÓVILES PEQUEÑOS
+   ========================================== */
+@media (max-width: 480px) {
+    .chatbot-container {
+        bottom: 20px;
+        right: 20px;
+    }
+    .chatbot-window {
+        width: calc(100vw - 40px);
+        height: calc(100vh - 120px);
+        bottom: 0;
+        right: 0;
+        border-radius: 12px;
     }
 }
