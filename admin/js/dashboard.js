@@ -2,53 +2,121 @@
    LÓGICA DEL ERP DASHBOARD - Hospital La Caleta
    ========================================================================= */
 
+// Cargar de LocalStorage si existe o usar por defecto
+const defaultInventario = [
+    { nombre: "Oxígeno Médico (Balón)", categoria: "Gases", stock: 120, estado: "Stock Alto" },
+    { nombre: "Mascarillas N95", categoria: "Protección", stock: 450, estado: "Stock Alto" },
+    { nombre: "Paracetamol 500mg", categoria: "Fármacos", stock: 12, estado: "Crítico" },
+    { nombre: "Jeringas 5ml", categoria: "Insumos", stock: 85, estado: "Por agotar" }
+];
+let dataERP = {
+    inventario: JSON.parse(localStorage.getItem('erp_inventario')) || defaultInventario
+};
+if (!localStorage.getItem('erp_inventario')) localStorage.setItem('erp_inventario', JSON.stringify(dataERP.inventario));
+
+const defaultCitas = [
+    { hora: "08:00", paciente: "Juan Pérez", especialidad: "Cardiología", estado: "Confirmado" },
+    { hora: "08:30", paciente: "María López", especialidad: "Pediatría", estado: "En Espera" },
+    { hora: "09:15", paciente: "Carlos Ruiz", especialidad: "Med. General", estado: "En Consulta" },
+    { hora: "10:00", paciente: "Ana Torres", especialidad: "Odontología", estado: "Pendiente" },
+    { hora: "10:45", paciente: "Luis Solís", especialidad: "Ginecología", estado: "Confirmado" }
+];
+let citasProgramadas = JSON.parse(localStorage.getItem('erp_citas')) || defaultCitas;
+if (!localStorage.getItem('erp_citas')) localStorage.setItem('erp_citas', JSON.stringify(citasProgramadas));
+
 document.addEventListener("DOMContentLoaded", () => {
-    // 1. Inicialización de componentes principales
-    inicializarGrafico();
-    renderizarInventario(); 
-    
-    // Aquí puedes llamar futuras funciones como:
-    // configurarAlertasCamas();
-    // actualizarRelojTiempoReal();
+    // Capturar la vista por defecto (Dashboard inicial)
+    const mainContent = document.getElementById("main-content");
+    if (mainContent) {
+        vistasPlantillas.dashboard = mainContent.innerHTML;
+        // Agregar listener global usando delegación de eventos
+        mainContent.addEventListener("click", manejarEventosMainContent);
+        // Inicializar
+        renderizarVista('dashboard');
+    }
 });
 
-/**
- * DATOS DINÁMICOS
- * Modifica esta sección para conectar con tu futura base de datos o API.
- */
-const dataERP = {
-    inventario: [
-        { nombre: "Oxígeno Médico (Balón)", categoria: "Gases", stock: 120, estado: "Stock Alto" },
-        { nombre: "Mascarillas N95", categoria: "Protección", stock: 450, estado: "Stock Alto" },
-        { nombre: "Paracetamol 500mg", categoria: "Fármacos", stock: 12, estado: "Crítico" },
-        { nombre: "Jeringas 5ml", categoria: "Insumos", stock: 85, estado: "Por agotar" }
-    ]
-};
+function manejarEventosMainContent(event) {
+    // 1. NAVEGACIÓN
+    if (event.target.id === 'btnVerInventario' || event.target.closest('#btnVerInventario')) {
+        event.preventDefault();
+        renderizarVista('inventario');
+    }
+    else if (event.target.id === 'btnVerCitas' || event.target.closest('#btnVerCitas')) {
+        renderizarVista('citas');
+    }
+    else if (event.target.id === 'btnVolverDashboard' || event.target.closest('#btnVolverDashboard')) {
+        renderizarVista('dashboard');
+    }
+    
+    // 2. CRUD INVENTARIO COMPLETO
+    else if (event.target.id === 'btnAgregarRecursoView') {
+        agregarRecursoVistaCompleta();
+    }
+    else if (event.target.closest('.btn-eliminar-recurso')) {
+        const btn = event.target.closest('.btn-eliminar-recurso');
+        eliminarRecurso(btn.dataset.index);
+    }
+    else if (event.target.closest('.btn-editar-recurso')) {
+        const btn = event.target.closest('.btn-editar-recurso');
+        habilitarEdicionRecurso(btn.dataset.index);
+    }
+    else if (event.target.closest('.btn-guardar-recurso')) {
+        const btn = event.target.closest('.btn-guardar-recurso');
+        guardarEdicionRecurso(btn.dataset.index);
+    }
+}
 
-// Cargar de LocalStorage si existe
-const savedInventario = localStorage.getItem('erp_inventario');
-if (savedInventario) {
-    dataERP.inventario = JSON.parse(savedInventario);
-} else {
-    localStorage.setItem('erp_inventario', JSON.stringify(dataERP.inventario));
+function renderizarVista(vista) {
+    const mainContent = document.getElementById("main-content");
+    if (!mainContent) return;
+
+    // Actualizar clase activa en sidebar
+    const items = document.querySelectorAll('.sidebar-item');
+    items.forEach(item => item.classList.remove('active'));
+    // Como estamos en un SPA parcial, mantenemos ERP Dashboard encendido siempre que estemos en sus vistas
+    const dashboardLink = document.querySelector('.sidebar-menu .sidebar-item a[href="dashboard.html"]');
+    if (dashboardLink && (vista === 'dashboard' || vista === 'inventario' || vista === 'citas')) {
+        dashboardLink.parentElement.classList.add('active');
+    }
+
+    // Inyectar HTML
+    mainContent.innerHTML = vistasPlantillas[vista];
+
+    // Inicializar lógica según la vista
+    if (vista === 'dashboard') {
+        inicializarGrafico();
+        renderizarInventarioDashboard();
+        renderizarCitasDashboard();
+        
+        // Re-vincular el submit de Admisión
+        const formAdmision = document.getElementById('formAdmision');
+        if (formAdmision) {
+            formAdmision.addEventListener('submit', registrarAdmision);
+        }
+    } else if (vista === 'inventario') {
+        renderizarInventarioCompleto();
+    } else if (vista === 'citas') {
+        renderizarCitasCompleto();
+    }
 }
 
 /**
- * MÓDULO DE TABLA DE INVENTARIO
+ * =======================================================
+ * LÓGICA VISTA: DASHBOARD
+ * =======================================================
  */
-function renderizarInventario() {
-    const tables = document.querySelectorAll(".admin-table tbody");
-    const mainTableBody = tables[0];
-    const modalTableBody = document.getElementById("lista-inventario-completa");
+function renderizarInventarioDashboard() {
+    const inventarioTable = document.querySelector('.table-container-card .admin-table tbody');
+    if (!inventarioTable) return;
+    inventarioTable.innerHTML = "";
 
-    if (mainTableBody) mainTableBody.innerHTML = "";
-    if (modalTableBody) modalTableBody.innerHTML = "";
-
-    dataERP.inventario.forEach((item, index) => {
+    // Mostrar solo los primeros 4 en el dashboard
+    dataERP.inventario.slice(0, 4).forEach((item) => {
         const badgeClass = item.estado === 'Crítico' ? 'admin-badge-danger' : 
                           (item.estado === 'Por agotar' ? 'admin-badge-warning' : 'admin-badge-success');
         
-        const row = `
+        inventarioTable.innerHTML += `
             <tr>
                 <td>${item.nombre}</td>
                 <td>${item.categoria}</td>
@@ -56,61 +124,62 @@ function renderizarInventario() {
                 <td><span class="admin-badge ${badgeClass}">${item.estado}</span></td>
             </tr>
         `;
-        if (mainTableBody) mainTableBody.innerHTML += row;
-        
-        const rowModal = `
-            <tr>
-                <td>${item.nombre}</td>
-                <td>${item.stock}</td>
-                <td><button onclick="eliminarRecurso(${index})" class="admin-btn admin-badge-danger" style="border:none; border-radius:4px; padding: 4px 8px; font-size: 0.8rem; cursor:pointer;">X</button></td>
-            </tr>
-        `;
-        if (modalTableBody) modalTableBody.innerHTML += rowModal;
     });
 }
 
-function agregarRecurso() {
-    const nombre = document.getElementById("nombreRecurso").value;
-    const stock = parseInt(document.getElementById("cantidadStock").value);
+function renderizarCitasDashboard() {
+    const tbody = document.getElementById("lista-citas-dinamica");
+    if (!tbody) return;
+    tbody.innerHTML = "";
+
+    citasProgramadas.slice(0,5).forEach(cita => {
+        let claseBadge = 'admin-badge-muted';
+        if (cita.estado === 'Confirmado' || cita.estado === 'Bajo') claseBadge = 'admin-badge-success';
+        else if (cita.estado === 'En Consulta' || cita.estado === 'Medio') claseBadge = 'admin-badge-warning';
+        else if (cita.estado === 'Crítico') claseBadge = 'admin-badge-danger';
+
+        tbody.innerHTML += `
+            <tr>
+                <td><strong>${cita.hora}</strong></td>
+                <td>${cita.paciente}</td>
+                <td>${cita.especialidad}</td>
+                <td><span class="admin-badge ${claseBadge}">${cita.estado}</span></td>
+            </tr>
+        `;
+    });
+}
+
+function registrarAdmision(event) {
+    event.preventDefault();
+    const nombre = document.getElementById("nombrePaciente").value.trim();
+    const dni = document.getElementById("dniPaciente").value.trim();
+    const motivo = document.getElementById("motivoConsulta").value.trim();
+    const prioridad = document.getElementById("prioridadPaciente").value;
     
-    if (!nombre || isNaN(stock)) {
-        alert("Por favor ingrese un nombre y una cantidad válida.");
+    // Validación para no guardar filas en blanco
+    if (!nombre || !dni || !motivo || !prioridad) {
         return;
     }
     
-    let estado = "Stock Alto";
-    if (stock <= 20) estado = "Crítico";
-    else if (stock <= 85) estado = "Por agotar";
-
-    dataERP.inventario.push({
-        nombre: nombre,
-        categoria: "Añadido", // Categoría genérica para nuevos
-        stock: stock,
-        estado: estado
-    });
-
-    localStorage.setItem('erp_inventario', JSON.stringify(dataERP.inventario));
-    renderizarInventario();
+    const ahora = new Date();
+    const hora = ahora.getHours().toString().padStart(2, '0') + ":" + ahora.getMinutes().toString().padStart(2, '0');
     
-    // Limpiar formulario
-    document.getElementById("nombreRecurso").value = "";
-    document.getElementById("cantidadStock").value = "";
+    citasProgramadas.unshift({
+        hora: hora,
+        paciente: nombre,
+        especialidad: motivo,
+        estado: prioridad
+    });
+    
+    localStorage.setItem('erp_citas', JSON.stringify(citasProgramadas));
+    renderizarCitasDashboard();
+    event.target.reset();
 }
 
-function eliminarRecurso(index) {
-    dataERP.inventario.splice(index, 1);
-    localStorage.setItem('erp_inventario', JSON.stringify(dataERP.inventario));
-    renderizarInventario();
-}
-
-/**
- * MÓDULO DE GRÁFICOS (Chart.js)
- */
 function inicializarGrafico() {
     const ctx = document.getElementById("admissionsChart");
     if (!ctx) return;
 
-    // Detectar tema actual para colores consistentes
     const isDarkMode = document.body.classList.contains("dark-mode");
     const gridColor = isDarkMode ? "rgba(255, 255, 255, 0.08)" : "rgba(0, 0, 0, 0.05)";
     const textColor = isDarkMode ? "#94a3b8" : "#64748b";
@@ -142,29 +211,117 @@ function inicializarGrafico() {
     });
 }
 
-// TABLA DE CITAS
-let citasProgramadas = [
-    { hora: "08:00", paciente: "Juan Pérez", especialidad: "Cardiología", estado: "Confirmado" },
-    { hora: "08:30", paciente: "María López", especialidad: "Pediatría", estado: "En Espera" },
-    { hora: "09:15", paciente: "Carlos Ruiz", especialidad: "Med. General", estado: "En Consulta" },
-    { hora: "10:00", paciente: "Ana Torres", especialidad: "Odontología", estado: "Pendiente" },
-    { hora: "10:45", paciente: "Luis Solís", especialidad: "Ginecología", estado: "Confirmado" }
-];
-
-const savedCitas = localStorage.getItem('erp_citas');
-if (savedCitas) {
-    citasProgramadas = JSON.parse(savedCitas);
-} else {
-    localStorage.setItem('erp_citas', JSON.stringify(citasProgramadas));
+/**
+ * =======================================================
+ * LÓGICA VISTA: INVENTARIO COMPLETO (CRUD)
+ * =======================================================
+ */
+function calcularEstadoStock(stock) {
+    if (stock <= 20) return "Crítico";
+    if (stock <= 85) return "Por agotar";
+    return "Stock Alto";
 }
 
-function renderizarCitas() {
-    const tbody = document.getElementById("lista-citas-dinamica");
+function renderizarInventarioCompleto() {
+    const tbody = document.getElementById("lista-inventario-vista-completa");
+    if (!tbody) return;
+    tbody.innerHTML = "";
+
+    dataERP.inventario.forEach((item, index) => {
+        const badgeClass = item.estado === 'Crítico' ? 'admin-badge-danger' : 
+                          (item.estado === 'Por agotar' ? 'admin-badge-warning' : 'admin-badge-success');
+        
+        tbody.innerHTML += `
+            <tr id="fila-inventario-${index}">
+                <td>${item.nombre}</td>
+                <td>${item.categoria}</td>
+                <td class="col-stock">${item.stock} Unidades</td>
+                <td><span class="admin-badge ${badgeClass}">${item.estado}</span></td>
+                <td style="text-align: right; white-space: nowrap;">
+                    <button class="admin-btn admin-btn-secondary btn-editar-recurso" data-index="${index}" style="padding: 4px 8px; margin-right: 5px;" title="Editar">
+                        <i class="fa-solid fa-pen"></i>
+                    </button>
+                    <button class="admin-btn admin-badge-danger btn-eliminar-recurso" data-index="${index}" style="padding: 4px 8px; border:none; border-radius:4px; cursor:pointer;" title="Eliminar">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                </td>
+            </tr>
+        `;
+    });
+}
+
+function agregarRecursoVistaCompleta() {
+    const nombre = document.getElementById("nuevoNombreRecurso").value;
+    const stock = parseInt(document.getElementById("nuevoCantidadStock").value);
+    
+    if (!nombre || isNaN(stock)) {
+        alert("Por favor ingrese un nombre y una cantidad válida.");
+        return;
+    }
+    
+    dataERP.inventario.push({
+        nombre: nombre,
+        categoria: "Añadido",
+        stock: stock,
+        estado: calcularEstadoStock(stock)
+    });
+
+    localStorage.setItem('erp_inventario', JSON.stringify(dataERP.inventario));
+    renderizarInventarioCompleto();
+}
+
+function eliminarRecurso(index) {
+    if(confirm("¿Estás seguro de eliminar este recurso?")) {
+        dataERP.inventario.splice(index, 1);
+        localStorage.setItem('erp_inventario', JSON.stringify(dataERP.inventario));
+        renderizarInventarioCompleto();
+    }
+}
+
+function habilitarEdicionRecurso(index) {
+    const fila = document.getElementById(`fila-inventario-${index}`);
+    if (!fila) return;
+    
+    const item = dataERP.inventario[index];
+    
+    fila.innerHTML = `
+        <td>${item.nombre}</td>
+        <td>${item.categoria}</td>
+        <td>
+            <input type="number" id="edit-stock-${index}" value="${item.stock}" style="width: 80px; padding: 4px; border: 1px solid var(--border-color); border-radius: 4px; background: var(--card-bg); color: var(--text-color);">
+        </td>
+        <td><span class="admin-badge admin-badge-muted">Editando...</span></td>
+        <td style="text-align: right;">
+            <button class="admin-btn admin-badge-success btn-guardar-recurso" data-index="${index}" style="padding: 4px 8px; border:none; border-radius:4px; cursor:pointer;">Guardar</button>
+        </td>
+    `;
+}
+
+function guardarEdicionRecurso(index) {
+    const nuevoStock = parseInt(document.getElementById(`edit-stock-${index}`).value);
+    if (isNaN(nuevoStock) || nuevoStock < 0) {
+        alert("Cantidad inválida");
+        return;
+    }
+    
+    dataERP.inventario[index].stock = nuevoStock;
+    dataERP.inventario[index].estado = calcularEstadoStock(nuevoStock);
+    
+    localStorage.setItem('erp_inventario', JSON.stringify(dataERP.inventario));
+    renderizarInventarioCompleto();
+}
+
+/**
+ * =======================================================
+ * LÓGICA VISTA: CITAS COMPLETAS
+ * =======================================================
+ */
+function renderizarCitasCompleto() {
+    const tbody = document.getElementById("lista-citas-vista-completa");
     if (!tbody) return;
     tbody.innerHTML = "";
 
     citasProgramadas.forEach(cita => {
-        // Asignar color al badge según el estado o prioridad
         let claseBadge = 'admin-badge-muted';
         if (cita.estado === 'Confirmado' || cita.estado === 'Bajo') claseBadge = 'admin-badge-success';
         else if (cita.estado === 'En Consulta' || cita.estado === 'Medio') claseBadge = 'admin-badge-warning';
@@ -180,55 +337,6 @@ function renderizarCitas() {
         `;
     });
 }
-
-function registrarAdmision(event) {
-    event.preventDefault();
-    const nombre = document.getElementById("nombrePaciente").value;
-    const motivo = document.getElementById("motivoConsulta").value;
-    const prioridad = document.getElementById("prioridadPaciente").value;
-    
-    const ahora = new Date();
-    const hora = ahora.getHours().toString().padStart(2, '0') + ":" + ahora.getMinutes().toString().padStart(2, '0');
-    
-    // Agregar al inicio del array
-    citasProgramadas.unshift({
-        hora: hora,
-        paciente: nombre,
-        especialidad: motivo,
-        estado: prioridad
-    });
-    
-    localStorage.setItem('erp_citas', JSON.stringify(citasProgramadas));
-    renderizarCitas();
-    event.target.reset();
-}
-
-// Ejecutar al cargar
-document.addEventListener("DOMContentLoaded", renderizarCitas);
-
-// BOTON VER INVENTARIO
-document.addEventListener("DOMContentLoaded", function() {
-    const btnVer = document.getElementById("btnVerInventario");
-    const modal = document.getElementById("modalInventario");
-    const spanClose = document.querySelector(".close-btn");
-
-    if (btnVer) {
-        btnVer.addEventListener("click", function(event) {
-            event.preventDefault(); // Evita que el enlace # recargue la página
-            if (modal) {
-                modal.style.display = "block";
-            } else {
-                console.error("El elemento con id 'modalInventario' no existe en tu HTML.");
-            }
-        });
-    }
-
-    if (spanClose) {
-        spanClose.addEventListener("click", function() {
-            modal.style.display = "none";
-        });
-    }
-});
 
 
 
