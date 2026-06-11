@@ -188,6 +188,31 @@
                     </div>
                 </div>
 
+                <!-- Sección Admisión de Emergencia -->
+                <div class="admin-card" style="margin-bottom: 2rem;">
+                    <div class="admin-card-header">
+                        <h2 class="admin-card-title">Admisión de Emergencia</h2>
+                    </div>
+                    <div class="form-container" style="padding: 1.5rem;">
+                        <form id="formAdmision" onsubmit="registrarAdmision(event)" style="display: flex; flex-direction: column; gap: 1rem;">
+                            <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                                <input type="text" id="nombrePaciente" placeholder="Nombre del Paciente" required style="flex: 1; min-width: 200px; padding: 10px; border: 1px solid var(--border-color, #ccc); border-radius: 6px; background-color: var(--card-bg, #fff); color: var(--text-color, #333);">
+                                <input type="text" id="dniPaciente" placeholder="DNI" required style="flex: 1; min-width: 150px; padding: 10px; border: 1px solid var(--border-color, #ccc); border-radius: 6px; background-color: var(--card-bg, #fff); color: var(--text-color, #333);">
+                            </div>
+                            <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                                <input type="text" id="motivoConsulta" placeholder="Motivo de Consulta" required style="flex: 2; min-width: 200px; padding: 10px; border: 1px solid var(--border-color, #ccc); border-radius: 6px; background-color: var(--card-bg, #fff); color: var(--text-color, #333);">
+                                <select id="prioridadPaciente" required style="flex: 1; min-width: 150px; padding: 10px; border: 1px solid var(--border-color, #ccc); border-radius: 6px; background-color: var(--card-bg, #fff); color: var(--text-color, #333);">
+                                    <option value="" disabled selected>Seleccione Prioridad</option>
+                                    <option value="Bajo">Bajo (Verde)</option>
+                                    <option value="Medio">Medio (Amarillo)</option>
+                                    <option value="Crítico">Crítico (Rojo)</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="admin-btn admin-btn-primary" style="align-self: flex-start; padding: 10px 20px; font-weight: bold; cursor: pointer;">Registrar Paciente</button>
+                        </form>
+                    </div>
+                </div>
+
                 <div class="admin-card">
                     <div class="admin-card-header">
                         <h2 class="admin-card-title">Agenda de Citas (Hoy)</h2>
