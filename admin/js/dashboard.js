@@ -24,6 +24,19 @@ const defaultCitas = [
 let citasProgramadas = JSON.parse(localStorage.getItem('erp_citas')) || defaultCitas;
 if (!localStorage.getItem('erp_citas')) localStorage.setItem('erp_citas', JSON.stringify(citasProgramadas));
 
+// Configuración Global de Notificaciones (Toast)
+const Toast = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+        toast.addEventListener('mouseenter', Swal.stopTimer)
+        toast.addEventListener('mouseleave', Swal.resumeTimer)
+    }
+});
+
 document.addEventListener("DOMContentLoaded", () => {
     // Capturar la vista por defecto (Dashboard inicial)
     const mainContent = document.getElementById("main-content");
@@ -251,11 +264,17 @@ function renderizarInventarioCompleto() {
 }
 
 function agregarRecursoVistaCompleta() {
-    const nombre = document.getElementById("nuevoNombreRecurso").value;
-    const stock = parseInt(document.getElementById("nuevoCantidadStock").value);
+    const nombre = document.getElementById("nuevoNombreRecurso").value.trim();
+    const stockStr = document.getElementById("nuevoCantidadStock").value;
+    const stock = parseInt(stockStr);
     
-    if (!nombre || isNaN(stock)) {
-        alert("Por favor ingrese un nombre y una cantidad válida.");
+    if (!nombre || isNaN(stock) || stockStr === "") {
+        Swal.fire({
+            icon: 'error',
+            title: 'Error de entrada',
+            text: 'Por favor ingrese un nombre y una cantidad válida.',
+            confirmButtonColor: '#0099cc'
+        });
         return;
     }
     
@@ -268,14 +287,36 @@ function agregarRecursoVistaCompleta() {
 
     localStorage.setItem('erp_inventario', JSON.stringify(dataERP.inventario));
     renderizarInventarioCompleto();
+    
+    // Notificación de éxito
+    Toast.fire({
+        icon: 'success',
+        title: 'Recurso añadido con éxito'
+    });
 }
 
 function eliminarRecurso(index) {
-    if(confirm("¿Estás seguro de eliminar este recurso?")) {
-        dataERP.inventario.splice(index, 1);
-        localStorage.setItem('erp_inventario', JSON.stringify(dataERP.inventario));
-        renderizarInventarioCompleto();
-    }
+    Swal.fire({
+        title: '¿Estás seguro?',
+        text: "¡Esta acción no se puede deshacer!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#ef4444',
+        cancelButtonColor: '#64748b',
+        confirmButtonText: 'Sí, eliminar',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            dataERP.inventario.splice(index, 1);
+            localStorage.setItem('erp_inventario', JSON.stringify(dataERP.inventario));
+            renderizarInventarioCompleto();
+            
+            Toast.fire({
+                icon: 'success',
+                title: 'Recurso eliminado correctamente'
+            });
+        }
+    });
 }
 
 function habilitarEdicionRecurso(index) {
@@ -300,7 +341,12 @@ function habilitarEdicionRecurso(index) {
 function guardarEdicionRecurso(index) {
     const nuevoStock = parseInt(document.getElementById(`edit-stock-${index}`).value);
     if (isNaN(nuevoStock) || nuevoStock < 0) {
-        alert("Cantidad inválida");
+        Swal.fire({
+            icon: 'error',
+            title: 'Cantidad inválida',
+            text: 'La cantidad debe ser un número mayor o igual a cero.',
+            confirmButtonColor: '#0099cc'
+        });
         return;
     }
     
@@ -309,6 +355,11 @@ function guardarEdicionRecurso(index) {
     
     localStorage.setItem('erp_inventario', JSON.stringify(dataERP.inventario));
     renderizarInventarioCompleto();
+    
+    Toast.fire({
+        icon: 'success',
+        title: 'Stock actualizado'
+    });
 }
 
 /**
