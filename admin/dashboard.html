@@ -130,6 +130,16 @@
                             <p>Urgencias en Camino</p>
                         </div>
                     </div>
+
+                    <div class="admin-card metric-card">
+                        <div class="metric-icon info-bg" style="background-color: rgba(14, 165, 233, 0.15); color: #0ea5e9;">
+                            <i class="fa-solid fa-cash-register"></i>
+                        </div>
+                        <div class="metric-details">
+                            <h3 id="metricPendientesPago">0</h3>
+                            <p>Pendientes de Pago</p>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Gráficos y Tablas Base -->
@@ -203,6 +213,14 @@
                             </div>
                             <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
                                 <input type="text" id="motivoConsulta" placeholder="Motivo de Consulta" required style="flex: 2; min-width: 200px; padding: 10px; border: 1px solid var(--border-color, #ccc); border-radius: 6px; background-color: var(--card-bg, #fff); color: var(--text-color, #333);">
+                                
+                                <select id="tipoSeguro" required style="flex: 1; min-width: 150px; padding: 10px; border: 1px solid var(--border-color, #ccc); border-radius: 6px; background-color: var(--card-bg, #fff); color: var(--text-color, #333);">
+                                    <option value="" disabled selected>Tipo de Seguro</option>
+                                    <option value="Paciente Particular (Pagante)">Paciente Particular (Pagante)</option>
+                                    <option value="SIS (Seguro Integral de Salud)">SIS (Seguro Integral de Salud)</option>
+                                    <option value="Seguro Externo (EsSalud/Privado)">Seguro Externo (EsSalud/Privado)</option>
+                                </select>
+
                                 <select id="prioridadPaciente" required style="flex: 1; min-width: 150px; padding: 10px; border: 1px solid var(--border-color, #ccc); border-radius: 6px; background-color: var(--card-bg, #fff); color: var(--text-color, #333);">
                                     <option value="" disabled selected>Seleccione Prioridad</option>
                                     <option value="Bajo">Bajo (Verde)</option>
@@ -227,7 +245,8 @@
                                     <th>Hora</th>
                                     <th>Paciente</th>
                                     <th>Especialidad</th>
-                                    <th>Estado</th>
+                                    <th>Prioridad</th>
+                                    <th>Estado de Pago</th>
                                 </tr>
                             </thead>
                             <tbody id="lista-citas-dinamica">

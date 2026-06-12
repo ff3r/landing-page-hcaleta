@@ -15,11 +15,11 @@ let dataERP = {
 if (!localStorage.getItem('erp_inventario')) localStorage.setItem('erp_inventario', JSON.stringify(dataERP.inventario));
 
 const defaultCitas = [
-    { hora: "08:00", paciente: "Juan Pérez", especialidad: "Cardiología", estado: "Confirmado" },
-    { hora: "08:30", paciente: "María López", especialidad: "Pediatría", estado: "En Espera" },
-    { hora: "09:15", paciente: "Carlos Ruiz", especialidad: "Med. General", estado: "En Consulta" },
-    { hora: "10:00", paciente: "Ana Torres", especialidad: "Odontología", estado: "Pendiente" },
-    { hora: "10:45", paciente: "Luis Solís", especialidad: "Ginecología", estado: "Confirmado" }
+    { hora: "08:00", paciente: "Juan Pérez", especialidad: "Cardiología", estado: "Confirmado", flujoPago: "Pendiente de Pago en Caja" },
+    { hora: "08:30", paciente: "María López", especialidad: "Pediatría", estado: "En Espera", flujoPago: "Exento de Pago / SIS" },
+    { hora: "09:15", paciente: "Carlos Ruiz", especialidad: "Med. General", estado: "En Consulta", flujoPago: "Pendiente de Pago en Caja" },
+    { hora: "10:00", paciente: "Ana Torres", especialidad: "Odontología", estado: "Pendiente", flujoPago: "Exento de Pago / SIS" },
+    { hora: "10:45", paciente: "Luis Solís", especialidad: "Ginecología", estado: "Confirmado", flujoPago: "Pendiente de Pago en Caja" }
 ];
 let citasProgramadas = JSON.parse(localStorage.getItem('erp_citas')) || defaultCitas;
 if (!localStorage.getItem('erp_citas')) localStorage.setItem('erp_citas', JSON.stringify(citasProgramadas));
@@ -150,6 +150,8 @@ function renderizarCitasDashboard() {
         if (cita.estado === 'Confirmado' || cita.estado === 'Bajo') claseBadge = 'admin-badge-success';
         else if (cita.estado === 'En Consulta' || cita.estado === 'Medio') claseBadge = 'admin-badge-warning';
         else if (cita.estado === 'Crítico') claseBadge = 'admin-badge-danger';
+        
+        let clasePago = cita.flujoPago === 'Exento de Pago / SIS' ? 'admin-badge-success' : 'admin-badge-info';
 
         tbody.innerHTML += `
             <tr>
@@ -157,9 +159,17 @@ function renderizarCitasDashboard() {
                 <td>${cita.paciente}</td>
                 <td>${cita.especialidad}</td>
                 <td><span class="admin-badge ${claseBadge}">${cita.estado}</span></td>
+                <td><span class="admin-badge ${clasePago}">${cita.flujoPago || 'Pendiente'}</span></td>
             </tr>
         `;
     });
+    
+    // Actualizar Métrica Financiera en el Dashboard
+    const metricElement = document.getElementById("metricPendientesPago");
+    if (metricElement) {
+        const pendientes = citasProgramadas.filter(c => c.flujoPago === 'Pendiente de Pago en Caja').length;
+        metricElement.innerText = pendientes;
+    }
 }
 
 function registrarAdmision(event) {
@@ -167,25 +177,41 @@ function registrarAdmision(event) {
     const nombre = document.getElementById("nombrePaciente").value.trim();
     const dni = document.getElementById("dniPaciente").value.trim();
     const motivo = document.getElementById("motivoConsulta").value.trim();
+    const seguro = document.getElementById("tipoSeguro").value;
     const prioridad = document.getElementById("prioridadPaciente").value;
     
     // Validación para no guardar filas en blanco
-    if (!nombre || !dni || !motivo || !prioridad) {
+    if (!nombre || !dni || !motivo || !seguro || !prioridad) {
         return;
+    }
+    
+    // Lógica del flujo de pago
+    let flujoPago = "Pendiente de Pago en Caja";
+    if (seguro === "SIS (Seguro Integral de Salud)") {
+        flujoPago = "Exento de Pago / SIS";
     }
     
     const ahora = new Date();
     const hora = ahora.getHours().toString().padStart(2, '0') + ":" + ahora.getMinutes().toString().padStart(2, '0');
     
+    // Agregar al inicio del array
     citasProgramadas.unshift({
         hora: hora,
         paciente: nombre,
         especialidad: motivo,
-        estado: prioridad
+        estado: prioridad,
+        seguro: seguro,
+        flujoPago: flujoPago
     });
     
     localStorage.setItem('erp_citas', JSON.stringify(citasProgramadas));
     renderizarCitasDashboard();
+    
+    Toast.fire({
+        icon: 'success',
+        title: 'Paciente registrado exitosamente'
+    });
+    
     event.target.reset();
 }
 
@@ -377,6 +403,8 @@ function renderizarCitasCompleto() {
         if (cita.estado === 'Confirmado' || cita.estado === 'Bajo') claseBadge = 'admin-badge-success';
         else if (cita.estado === 'En Consulta' || cita.estado === 'Medio') claseBadge = 'admin-badge-warning';
         else if (cita.estado === 'Crítico') claseBadge = 'admin-badge-danger';
+        
+        let clasePago = cita.flujoPago === 'Exento de Pago / SIS' ? 'admin-badge-success' : 'admin-badge-info';
 
         tbody.innerHTML += `
             <tr>
@@ -384,6 +412,7 @@ function renderizarCitasCompleto() {
                 <td>${cita.paciente}</td>
                 <td>${cita.especialidad}</td>
                 <td><span class="admin-badge ${claseBadge}">${cita.estado}</span></td>
+                <td><span class="admin-badge ${clasePago}">${cita.flujoPago || 'Pendiente'}</span></td>
             </tr>
         `;
     });

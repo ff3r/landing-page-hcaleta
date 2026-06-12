@@ -58,7 +58,8 @@ const vistasPlantillas = {
                             <th>Hora</th>
                             <th>Paciente</th>
                             <th>Especialidad</th>
-                            <th>Estado</th>
+                            <th>Prioridad</th>
+                            <th>Estado de Pago</th>
                         </tr>
                     </thead>
                     <tbody id="lista-citas-vista-completa">
