@@ -797,3 +797,32 @@
 .modal-header { display: flex; justify-content: space-between; margin-bottom: 20px; }
 .close-btn { cursor: pointer; font-size: 24px; font-weight: bold; }
 .form-group { display: flex; gap: 10px; margin-bottom: 20px; }
+
+/* Asegurar que los inputs y selects sigan el modo oscuro */
+body.dark-mode input,
+body.dark-mode select,
+body.dark-mode textarea {
+    background-color: #1e293b !important; /* Mismo color oscuro de tus tarjetas */
+    color: #f8fafc !important;            /* Texto claro */
+    border: 1px solid #334155 !important; /* Borde sutil */
+}
+
+/* Efecto al hacer clic (focus) */
+body.dark-mode input:focus,
+body.dark-mode select:focus,
+body.dark-mode textarea:focus {
+    border-color: #0099cc !important;     /* El azul de tus botones */
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(0, 153, 204, 0.2);
+}
+
+/* Ajuste para el texto dentro del select */
+body.dark-mode select option {
+    background-color: #1e293b;
+    color: #f8fafc;
+}
+
+/* Placeholder (el texto gris de "Ingrese DNI") */
+body.dark-mode ::placeholder {
+    color: #94a3b8 !important;
+}
