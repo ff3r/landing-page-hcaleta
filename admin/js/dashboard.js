@@ -24,6 +24,20 @@ const defaultCitas = [
 let citasProgramadas = JSON.parse(localStorage.getItem('erp_citas')) || defaultCitas;
 if (!localStorage.getItem('erp_citas')) localStorage.setItem('erp_citas', JSON.stringify(citasProgramadas));
 
+const defaultFinanzas = [
+    { fecha: new Date().toISOString().split('T')[0], tipo: "Ingreso", concepto: "Consulta Particular", categoria: "Cardiología", monto: 50.00 },
+    { fecha: new Date().toISOString().split('T')[0], tipo: "Egreso", concepto: "Compra Insumos", categoria: "Operativo", monto: 120.00 }
+];
+let finanzasData = JSON.parse(localStorage.getItem('erp_finanzas')) || defaultFinanzas;
+if (!localStorage.getItem('erp_finanzas')) localStorage.setItem('erp_finanzas', JSON.stringify(finanzasData));
+
+const defaultPersonal = [
+    { nombre: "Juan Pérez", especialidad: "Cardiología", comision: 30, asistencia: "Presente" },
+    { nombre: "María López", especialidad: "Pediatría", comision: 25, asistencia: "Pendiente" }
+];
+let personalData = JSON.parse(localStorage.getItem('erp_personal')) || defaultPersonal;
+if (!localStorage.getItem('erp_personal')) localStorage.setItem('erp_personal', JSON.stringify(personalData));
+
 // Configuración Global de Notificaciones (Toast)
 const Toast = Swal.mixin({
     toast: true,
@@ -42,15 +56,34 @@ document.addEventListener("DOMContentLoaded", () => {
     const mainContent = document.getElementById("main-content");
     if (mainContent) {
         vistasPlantillas.dashboard = mainContent.innerHTML;
-        // Agregar listener global usando delegación de eventos
+        // Agregar listener global usando delegación de eventos para contenido dinámico
         mainContent.addEventListener("click", manejarEventosMainContent);
+        
+        // Agregar listener global para navegación (Sidebar está fuera de main-content)
+        document.body.addEventListener("click", manejarNavegacionGlobal);
+        
         // Inicializar
         renderizarVista('dashboard');
     }
 });
 
+function manejarNavegacionGlobal(event) {
+    if (event.target.id === 'sidebarFinanzas' || event.target.closest('#sidebarFinanzas')) {
+        event.preventDefault();
+        renderizarVista('finanzas');
+    }
+    else if (event.target.id === 'sidebarRRHH' || event.target.closest('#sidebarRRHH')) {
+        event.preventDefault();
+        renderizarVista('rrhh');
+    }
+    else if (event.target.closest('.sidebar-item a[href="dashboard.html"]')) {
+        event.preventDefault();
+        renderizarVista('dashboard');
+    }
+}
+
 function manejarEventosMainContent(event) {
-    // 1. NAVEGACIÓN
+    // 1. NAVEGACIÓN INTERNA
     if (event.target.id === 'btnVerInventario' || event.target.closest('#btnVerInventario')) {
         event.preventDefault();
         renderizarVista('inventario');
@@ -78,9 +111,15 @@ function manejarEventosMainContent(event) {
         const btn = event.target.closest('.btn-guardar-recurso');
         guardarEdicionRecurso(btn.dataset.index);
     }
+    // 3. ACCIONES CITAS
+    else if (event.target.closest('.btn-cobrar-cita')) {
+        const btn = event.target.closest('.btn-cobrar-cita');
+        cobrarCita(btn.dataset.index);
+    }
 }
 
 function renderizarVista(vista) {
+    console.log('Cargando vista:', vista);
     const mainContent = document.getElementById("main-content");
     if (!mainContent) return;
 
@@ -91,6 +130,12 @@ function renderizarVista(vista) {
     const dashboardLink = document.querySelector('.sidebar-menu .sidebar-item a[href="dashboard.html"]');
     if (dashboardLink && (vista === 'dashboard' || vista === 'inventario' || vista === 'citas')) {
         dashboardLink.parentElement.classList.add('active');
+    } else if (vista === 'finanzas') {
+        const finanzasLink = document.getElementById('sidebarFinanzas');
+        if (finanzasLink) finanzasLink.parentElement.classList.add('active');
+    } else if (vista === 'rrhh') {
+        const rrhhLink = document.getElementById('sidebarRRHH');
+        if (rrhhLink) rrhhLink.parentElement.classList.add('active');
     }
 
     // Inyectar HTML
@@ -111,6 +156,10 @@ function renderizarVista(vista) {
         renderizarInventarioCompleto();
     } else if (vista === 'citas') {
         renderizarCitasCompleto();
+    } else if (vista === 'finanzas') {
+        renderizarFinanzas();
+    } else if (vista === 'rrhh') {
+        renderizarRRHH();
     }
 }
 
@@ -398,13 +447,20 @@ function renderizarCitasCompleto() {
     if (!tbody) return;
     tbody.innerHTML = "";
 
-    citasProgramadas.forEach(cita => {
+    citasProgramadas.forEach((cita, index) => {
         let claseBadge = 'admin-badge-muted';
         if (cita.estado === 'Confirmado' || cita.estado === 'Bajo') claseBadge = 'admin-badge-success';
         else if (cita.estado === 'En Consulta' || cita.estado === 'Medio') claseBadge = 'admin-badge-warning';
         else if (cita.estado === 'Crítico') claseBadge = 'admin-badge-danger';
         
-        let clasePago = cita.flujoPago === 'Exento de Pago / SIS' ? 'admin-badge-success' : 'admin-badge-info';
+        let clasePago = cita.flujoPago === 'Exento de Pago / SIS' || cita.flujoPago === 'Pagado' ? 'admin-badge-success' : 'admin-badge-info';
+        
+        let btnAccion = '';
+        if (cita.flujoPago === 'Pendiente de Pago en Caja') {
+            btnAccion = `<button class="admin-btn admin-btn-primary btn-cobrar-cita" data-index="${index}" style="padding: 4px 8px; font-size: 0.8rem;">Cobrar (S/ 50)</button>`;
+        } else {
+            btnAccion = `<span class="text-muted" style="font-size:0.8rem;">-</span>`;
+        }
 
         tbody.innerHTML += `
             <tr>
@@ -413,9 +469,259 @@ function renderizarCitasCompleto() {
                 <td>${cita.especialidad}</td>
                 <td><span class="admin-badge ${claseBadge}">${cita.estado}</span></td>
                 <td><span class="admin-badge ${clasePago}">${cita.flujoPago || 'Pendiente'}</span></td>
+                <td style="text-align: right;">${btnAccion}</td>
             </tr>
         `;
     });
+}
+
+function cobrarCita(index) {
+    const cita = citasProgramadas[index];
+    if (!cita) return;
+    
+    // Actualizar estado de la cita
+    cita.flujoPago = 'Pagado';
+    localStorage.setItem('erp_citas', JSON.stringify(citasProgramadas));
+    
+    // Inyectar a finanzas
+    finanzasData.push({
+        fecha: new Date().toISOString().split('T')[0],
+        tipo: 'Ingreso',
+        concepto: 'Consulta Particular (' + cita.paciente + ')',
+        categoria: cita.especialidad,
+        monto: 50.00
+    });
+    localStorage.setItem('erp_finanzas', JSON.stringify(finanzasData));
+    
+    // Renderizar de nuevo
+    renderizarCitasCompleto();
+    
+    Toast.fire({
+        icon: 'success',
+        title: 'Pago registrado y comisión calculada'
+    });
+}
+
+/**
+ * =======================================================
+ * LÓGICA VISTA: FINANZAS
+ * =======================================================
+ */
+let finanzasChartInstance = null;
+
+function renderizarFinanzas() {
+    let ingresos = 0;
+    let egresos = 0;
+    let ingresosPorEspecialidad = {};
+
+    const tbody = document.getElementById("lista-movimientos-finanzas");
+    if (tbody) tbody.innerHTML = "";
+
+    // Ordenamos por los más recientes (simulado empujando al inicio visualmente)
+    const datosReversos = [...finanzasData].reverse();
+    
+    datosReversos.forEach(mov => {
+        if (mov.tipo === 'Ingreso') {
+            ingresos += mov.monto;
+            if (!ingresosPorEspecialidad[mov.categoria]) ingresosPorEspecialidad[mov.categoria] = 0;
+            ingresosPorEspecialidad[mov.categoria] += mov.monto;
+        } else {
+            egresos += mov.monto;
+        }
+
+        if (tbody) {
+            const badgeTipo = mov.tipo === 'Ingreso' ? 'admin-badge-success' : 'admin-badge-danger';
+            tbody.innerHTML += `
+                <tr>
+                    <td>${mov.fecha}</td>
+                    <td><span class="admin-badge ${badgeTipo}">${mov.tipo}</span></td>
+                    <td>${mov.concepto}</td>
+                    <td>${mov.categoria}</td>
+                    <td><strong>S/ ${mov.monto.toFixed(2)}</strong></td>
+                </tr>
+            `;
+        }
+    });
+
+    const balance = ingresos - egresos;
+
+    document.getElementById("finanzasIngresosTotales").innerText = "S/ " + ingresos.toFixed(2);
+    document.getElementById("finanzasEgresosTotales").innerText = "S/ " + egresos.toFixed(2);
+    document.getElementById("finanzasBalanceBruto").innerText = "S/ " + balance.toFixed(2);
+
+    // Gráfico Chart.js
+    const ctx = document.getElementById('finanzasChart');
+    if (ctx) {
+        if (finanzasChartInstance) {
+            finanzasChartInstance.destroy();
+        }
+        
+        const isDarkMode = document.body.classList.contains("dark-mode");
+        const textColor = isDarkMode ? "#94a3b8" : "#64748b";
+
+        finanzasChartInstance = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: Object.keys(ingresosPorEspecialidad),
+                datasets: [{
+                    data: Object.values(ingresosPorEspecialidad),
+                    backgroundColor: [
+                        'rgba(46, 196, 182, 0.85)', 'rgba(0, 153, 204, 0.85)', 
+                        'rgba(139, 92, 246, 0.85)', 'rgba(239, 68, 68, 0.85)', 
+                        'rgba(255, 159, 28, 0.85)'
+                    ],
+                    borderWidth: 1,
+                    borderColor: isDarkMode ? '#1e293b' : '#ffffff'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'right',
+                        labels: { color: textColor }
+                    }
+                }
+            }
+        });
+    }
+}
+
+function registrarEgreso(event) {
+    event.preventDefault();
+    const concepto = document.getElementById("egresoConcepto").value.trim();
+    const monto = parseFloat(document.getElementById("egresoMonto").value);
+
+    if (!concepto || isNaN(monto) || monto <= 0) {
+        Swal.fire({ icon: 'error', title: 'Error', text: 'Datos inválidos' });
+        return;
+    }
+
+    finanzasData.push({
+        fecha: new Date().toISOString().split('T')[0],
+        tipo: 'Egreso',
+        concepto: concepto,
+        categoria: 'Operativo',
+        monto: monto
+    });
+
+    localStorage.setItem('erp_finanzas', JSON.stringify(finanzasData));
+    renderizarFinanzas();
+    event.target.reset();
+    Toast.fire({ icon: 'success', title: 'Egreso registrado' });
+}
+
+/**
+ * =======================================================
+ * LÓGICA VISTA: RRHH
+ * =======================================================
+ */
+function calcularComisiones() {
+    let comisionesTotales = {};
+    
+    // Filtrar citas que están 'Pagadas'
+    const citasPagadas = citasProgramadas.filter(c => c.flujoPago === 'Pagado');
+    
+    // Contar por especialidad. (En un caso real se ligaría al médico por nombre/ID, aquí simulamos que el doctor cobra todo lo de su especialidad)
+    citasPagadas.forEach(cita => {
+        if (!comisionesTotales[cita.especialidad]) {
+            comisionesTotales[cita.especialidad] = 0;
+        }
+        comisionesTotales[cita.especialidad] += 50.00; // Ingreso estándar
+    });
+
+    return comisionesTotales;
+}
+
+function renderizarRRHH() {
+    const tbody = document.getElementById("lista-personal-rrhh");
+    if (!tbody) return;
+    tbody.innerHTML = "";
+
+    const comisionesMontoBase = calcularComisiones();
+
+    personalData.forEach((persona, index) => {
+        let badgeAsistencia = persona.asistencia === 'Presente' ? 'admin-badge-success' : 'admin-badge-warning';
+        
+        // Monto base generado por su especialidad
+        let montoGenerado = comisionesMontoBase[persona.especialidad] || 0;
+        let comisionCalculada = (montoGenerado * (persona.comision / 100)).toFixed(2);
+
+        tbody.innerHTML += `
+            <tr>
+                <td><strong>${persona.nombre}</strong></td>
+                <td>${persona.especialidad}</td>
+                <td>${persona.comision}%</td>
+                <td>
+                    <select class="asistencia-select" data-index="${index}" style="padding: 4px; border-radius: 4px; background: var(--card-bg); color: var(--text-color); border: 1px solid var(--border-color);">
+                        <option value="Pendiente" ${persona.asistencia==='Pendiente'?'selected':''}>Pendiente</option>
+                        <option value="Presente" ${persona.asistencia==='Presente'?'selected':''}>Presente</option>
+                        <option value="Ausente" ${persona.asistencia==='Ausente'?'selected':''}>Ausente</option>
+                    </select>
+                </td>
+                <td><span class="text-success" style="font-weight:bold;">S/ ${comisionCalculada}</span> (de S/ ${montoGenerado})</td>
+                <td style="text-align: right;">
+                    <button class="admin-btn admin-badge-danger btn-eliminar-personal" data-index="${index}" style="padding: 4px 8px; border:none; border-radius:4px; cursor:pointer;"><i class="fa-solid fa-trash"></i></button>
+                </td>
+            </tr>
+        `;
+    });
+
+    // Delegar eventos solo para esta tabla
+    document.querySelectorAll('.asistencia-select').forEach(sel => {
+        sel.addEventListener('change', (e) => {
+            const i = e.target.dataset.index;
+            personalData[i].asistencia = e.target.value;
+            localStorage.setItem('erp_personal', JSON.stringify(personalData));
+            Toast.fire({ icon: 'success', title: 'Asistencia actualizada' });
+            renderizarRRHH();
+        });
+    });
+
+    document.querySelectorAll('.btn-eliminar-personal').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const i = e.target.closest('.btn-eliminar-personal').dataset.index;
+            Swal.fire({
+                title: '¿Eliminar personal?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#ef4444',
+                cancelButtonText: 'Cancelar'
+            }).then((res) => {
+                if (res.isConfirmed) {
+                    personalData.splice(i, 1);
+                    localStorage.setItem('erp_personal', JSON.stringify(personalData));
+                    renderizarRRHH();
+                    Toast.fire({ icon: 'success', title: 'Eliminado' });
+                }
+            });
+        });
+    });
+}
+
+function registrarPersonal(event) {
+    event.preventDefault();
+    const nombre = document.getElementById("personalNombre").value.trim();
+    const especialidad = document.getElementById("personalEspecialidad").value.trim();
+    const comision = parseFloat(document.getElementById("personalComision").value);
+
+    if (!nombre || !especialidad || isNaN(comision)) {
+        Swal.fire({ icon: 'error', title: 'Datos incompletos' });
+        return;
+    }
+
+    personalData.push({
+        nombre: nombre,
+        especialidad: especialidad,
+        comision: comision,
+        asistencia: "Pendiente"
+    });
+
+    localStorage.setItem('erp_personal', JSON.stringify(personalData));
+    renderizarRRHH();
+    event.target.reset();
+    Toast.fire({ icon: 'success', title: 'Personal registrado' });
 }
 
 
