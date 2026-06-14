@@ -724,5 +724,3 @@ function registrarPersonal(event) {
     Toast.fire({ icon: 'success', title: 'Personal registrado' });
 }
 
-
-

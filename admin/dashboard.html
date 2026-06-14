@@ -23,11 +23,28 @@
             </div>
             
             <ul class="sidebar-menu">
-                <li class="sidebar-item active">
-                    <a href="dashboard.html">
-                        <i class="fa-solid fa-chart-line"></i>
-                        <span>ERP Dashboard</span>
-                    </a>
+                <li class="sidebar-item has-submenu" id="erpDashboardItem">
+                    <div class="submenu-header">
+                        <a href="dashboard.html" class="submenu-link">
+                            <i class="fa-solid fa-chart-line"></i>
+                            <span>ERP Dashboard</span>
+                        </a>
+                        <button class="submenu-toggle" id="toggleErpSubmenu">
+                            <i class="fa-solid fa-chevron-down" id="submenuIcon"></i>
+                        </button>
+                    </div>
+                    <ul class="submenu" id="erpSubmenu">
+                        <li class="sidebar-item">
+                            <a href="#" id="sidebarFinanzas">
+                                <i class="fa-solid fa-sack-dollar"></i> <span>Finanzas</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="#" id="sidebarRRHH">
+                                <i class="fa-solid fa-users"></i> <span>RRHH</span>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
                 <li class="sidebar-item">
                     <a href="crm-email.html">
@@ -39,18 +56,6 @@
                     <a href="crm-fidelidad.html">
                         <i class="fa-solid fa-heart-pulse"></i>
                         <span>CRM Fidelización</span>
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a href="#" id="sidebarFinanzas">
-                        <i class="fa-solid fa-sack-dollar"></i>
-                        <span>Finanzas</span>
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a href="#" id="sidebarRRHH">
-                        <i class="fa-solid fa-users"></i>
-                        <span>RRHH</span>
                     </a>
                 </li>
                 <li class="sidebar-item" style="margin-top: auto;">

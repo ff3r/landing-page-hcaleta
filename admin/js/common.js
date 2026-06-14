@@ -92,3 +92,36 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 });
+    // 5. Lógica del Submenú ERP Dashboard
+    const toggleErpSubmenu = document.getElementById("toggleErpSubmenu");
+    const erpSubmenu = document.getElementById("erpSubmenu");
+
+    if (toggleErpSubmenu && erpSubmenu) {
+        // Restaurar estado desde localStorage
+        const sidebarState = localStorage.getItem("sidebarState");
+        if (sidebarState === "open") {
+            erpSubmenu.classList.add("open");
+            toggleErpSubmenu.setAttribute("aria-expanded", "true");
+        } else {
+            erpSubmenu.classList.remove("open");
+            toggleErpSubmenu.setAttribute("aria-expanded", "false");
+        }
+
+        toggleErpSubmenu.addEventListener("click", (e) => {
+            e.preventDefault(); // Evitar cualquier navegación o salto
+            e.stopPropagation(); // Evitar que el clic burbujee al enlace
+            
+            const isOpen = erpSubmenu.classList.contains("open");
+            
+            if (isOpen) {
+                erpSubmenu.classList.remove("open");
+                toggleErpSubmenu.setAttribute("aria-expanded", "false");
+                localStorage.setItem("sidebarState", "closed");
+            } else {
+                erpSubmenu.classList.add("open");
+                toggleErpSubmenu.setAttribute("aria-expanded", "true");
+                localStorage.setItem("sidebarState", "open");
+            }
+        });
+    }
+
