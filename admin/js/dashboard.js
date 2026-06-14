@@ -62,22 +62,29 @@ document.addEventListener("DOMContentLoaded", () => {
         // Agregar listener global para navegación (Sidebar está fuera de main-content)
         document.body.addEventListener("click", manejarNavegacionGlobal);
         
+        // Comprobar si se solicitó una vista específica por URL (ej. ?view=finanzas)
+        const urlParams = new URLSearchParams(window.location.search);
+        const viewToRender = urlParams.get('view') || 'dashboard';
+        
         // Inicializar
-        renderizarVista('dashboard');
+        renderizarVista(viewToRender);
     }
 });
 
 function manejarNavegacionGlobal(event) {
     if (event.target.id === 'sidebarFinanzas' || event.target.closest('#sidebarFinanzas')) {
         event.preventDefault();
+        window.history.pushState({}, '', 'dashboard.html?view=finanzas');
         renderizarVista('finanzas');
     }
     else if (event.target.id === 'sidebarRRHH' || event.target.closest('#sidebarRRHH')) {
         event.preventDefault();
+        window.history.pushState({}, '', 'dashboard.html?view=rrhh');
         renderizarVista('rrhh');
     }
-    else if (event.target.closest('.sidebar-item a[href="dashboard.html"]')) {
+    else if (event.target.closest('.sidebar-item a[href="dashboard.html"]') || event.target.closest('.submenu-link[href="dashboard.html"]')) {
         event.preventDefault();
+        window.history.pushState({}, '', 'dashboard.html');
         renderizarVista('dashboard');
     }
 }
