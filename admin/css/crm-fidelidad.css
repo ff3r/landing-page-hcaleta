@@ -34,12 +34,15 @@
     gap: 20px;
 }
 
-@media (max-width: 992px) {
-    .fidelidad-charts-grid {
-        grid-template-columns: 1fr;
+@media (max-width: 1200px){
+    .fidelidad-charts-grid{
+        grid-template-columns:1fr;
+    }
+
+    .fidelidad-actions-grid{
+        grid-template-columns:1fr;
     }
 }
-
 
 
 .quick-action-card {
@@ -276,14 +279,31 @@
     gap: 20px;
 }
 
-.actions-grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:20px;
-}
-
 .fidelidad-actions-grid{
     display:grid;
     grid-template-columns:1fr 1fr;
     gap:20px;
 }
+
+@media (max-width:1200px){
+    .fidelidad-actions-grid{
+        grid-template-columns:1fr;
+    }
+}
+
+.chart-container-card{
+    display:flex;
+    flex-direction:column;
+    min-width:0;
+}
+
+.chart-wrapper{
+    width:100%;
+    min-width:0;
+    position:relative;
+}
+
+.levels-card{
+    min-width:0;
+}
+
