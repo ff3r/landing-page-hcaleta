@@ -138,53 +138,61 @@ const vistasPlantillas = {
     `,
 
     rrhh: `
-        <div class="admin-card" style="margin-bottom: 2rem;">
-            <div class="admin-card-header">
-                <h2 class="admin-card-title"><i class="fa-solid fa-users" style="margin-right:8px; color:var(--primary);"></i>Recursos Humanos — Gestión de Personal</h2>
-                <button class="admin-btn admin-btn-secondary" id="btnVerHistorialAsistencia" style="padding: 6px 14px; font-size: 0.9rem; display:flex; align-items:center; gap:6px;">
-                    <i class="fa-solid fa-calendar-check"></i> Ver Historial de Asistencia
-                </button>
-            </div>
-
-            <div style="display: flex; gap: 2rem; margin: 1.5rem; flex-wrap: wrap;">
-                <div style="flex: 1; min-width: 280px;">
-                    <h3 style="margin-top: 0; margin-bottom: 1rem; font-size: 1rem; color: var(--text-color);">Añadir Personal</h3>
-                    <form id="formPersonal" onsubmit="registrarPersonal(event)" style="display: flex; flex-direction: column; gap: 1rem;">
-                        <input type="text" id="personalNombre" placeholder="Nombre completo" required style="padding: 10px; border: 1px solid var(--border-color, #ccc); border-radius: 6px; background-color: var(--card-bg, #fff); color: var(--text-color, #333);">
-                        <input type="text" id="personalEspecialidad" placeholder="Especialidad / Cargo" required style="padding: 10px; border: 1px solid var(--border-color, #ccc); border-radius: 6px; background-color: var(--card-bg, #fff); color: var(--text-color, #333);">
-                        <button type="submit" class="admin-btn admin-btn-primary" style="padding: 10px 20px; font-weight: bold; cursor: pointer;">Registrar Personal</button>
-                    </form>
-                </div>
-
-                <div style="flex: 1; min-width: 280px; display:flex; flex-direction:column; justify-content:flex-end;">
-                    <div style="background: var(--primary-light, rgba(0,153,204,0.1)); border-radius:8px; padding:14px 16px; display:flex; align-items:center; gap:12px; border: 1px solid rgba(0,153,204,0.2);">
-                        <i class="fa-solid fa-circle-info" style="font-size:1.3rem; color:var(--primary);"></i>
-                        <div>
-                            <strong style="display:block; font-size:0.95rem;">Registro de hoy</strong>
-                            <span id="rrhhFechaHoy" style="font-size:0.85rem; color:var(--text-muted, #64748b);"></span>
-                        </div>
-                    </div>
-                    <button class="admin-btn admin-btn-primary" id="btnGuardarAsistencia" style="margin-top: 1rem; padding: 10px 20px; font-weight: bold; cursor: pointer; display:flex; align-items:center; justify-content:center; gap:8px;">
-                        <i class="fa-solid fa-floppy-disk"></i> Guardar Asistencia del Día
+        <!-- CONTENEDOR PRINCIPAL: GESTIÓN DE PERSONAL -->
+        <div id="rrhh-main-view">
+            <div class="admin-card" style="margin-bottom: 2rem;">
+                <div class="admin-card-header">
+                    <h2 class="admin-card-title"><i class="fa-solid fa-users" style="margin-right:8px; color:var(--primary);"></i>Recursos Humanos — Gestión de Personal</h2>
+                    <button class="admin-btn admin-btn-secondary" id="btnVerHistorialAsistencia" style="padding: 6px 14px; font-size: 0.9rem; display:flex; align-items:center; gap:6px;">
+                        <i class="fa-solid fa-calendar-check"></i> Ver Historial de Asistencia
                     </button>
                 </div>
-            </div>
 
-            <div class="table-responsive" style="max-height: 45vh; overflow-y: auto; border-top: 1px solid var(--border-color, #e2e8f0);">
-                <table class="admin-table">
-                    <thead style="position: sticky; top: 0; background-color: var(--card-bg); z-index: 10;">
-                        <tr>
-                            <th>Nombre</th>
-                            <th>Especialidad / Cargo</th>
-                            <th>Asistencia Hoy</th>
-                            <th style="text-align: right;">Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody id="lista-personal-rrhh">
-                        <!-- Renderizado por JS -->
-                    </tbody>
-                </table>
+                <div style="display: flex; gap: 2rem; margin: 1.5rem; flex-wrap: wrap;">
+                    <div style="flex: 1; min-width: 280px;">
+                        <h3 style="margin-top: 0; margin-bottom: 1rem; font-size: 1rem; color: var(--text-color);">Añadir Personal</h3>
+                        <form id="formPersonal" onsubmit="registrarPersonal(event)" style="display: flex; flex-direction: column; gap: 1rem;">
+                            <input type="text" id="personalNombre" placeholder="Nombre completo" required style="padding: 10px; border: 1px solid var(--border-color, #ccc); border-radius: 6px; background-color: var(--card-bg, #fff); color: var(--text-color, #333);">
+                            <input type="text" id="personalEspecialidad" placeholder="Especialidad / Cargo" required style="padding: 10px; border: 1px solid var(--border-color, #ccc); border-radius: 6px; background-color: var(--card-bg, #fff); color: var(--text-color, #333);">
+                            <button type="submit" class="admin-btn admin-btn-primary" style="padding: 10px 20px; font-weight: bold; cursor: pointer;">Registrar Personal</button>
+                        </form>
+                    </div>
+
+                    <div style="flex: 1; min-width: 280px; display:flex; flex-direction:column; justify-content:flex-end;">
+                        <div style="background: var(--primary-light, rgba(0,153,204,0.1)); border-radius:8px; padding:14px 16px; display:flex; align-items:center; gap:12px; border: 1px solid rgba(0,153,204,0.2);">
+                            <i class="fa-solid fa-circle-info" style="font-size:1.3rem; color:var(--primary);"></i>
+                            <div>
+                                <strong style="display:block; font-size:0.95rem;">Registro de hoy</strong>
+                                <span id="rrhhFechaHoy" style="font-size:0.85rem; color:var(--text-muted, #64748b);"></span>
+                            </div>
+                        </div>
+                        <button class="admin-btn admin-btn-primary" id="btnGuardarAsistencia" style="margin-top: 1rem; padding: 10px 20px; font-weight: bold; cursor: pointer; display:flex; align-items:center; justify-content:center; gap:8px;">
+                            <i class="fa-solid fa-floppy-disk"></i> Guardar Asistencia del Día
+                        </button>
+                    </div>
+                </div>
+
+                <div class="table-responsive" style="max-height: 45vh; overflow-y: auto; border-top: 1px solid var(--border-color, #e2e8f0);">
+                    <table class="admin-table">
+                        <thead style="position: sticky; top: 0; background-color: var(--card-bg); z-index: 10;">
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Especialidad / Cargo</th>
+                                <th>Asistencia Hoy</th>
+                                <th style="text-align: right;">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="lista-personal-rrhh">
+                            <!-- Renderizado por JS -->
+                        </tbody>
+                    </table>
+                </div>
             </div>
+        </div>
+
+        <!-- CONTENEDOR SECUNDARIO: HISTORIAL A PANTALLA COMPLETA -->
+        <div id="rrhh-history-view" style="display: none;">
+            <!-- Contenido inyectado por dashboard.js -->
         </div>
     `
 };

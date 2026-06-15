@@ -647,7 +647,8 @@ function obtenerFechaHoy() {
 
 /**
  * Guarda el estado actual de los selectores de asistencia en localStorage
- * bajo la clave del día de hoy. No modifica los perfiles de personalData.
+ * bajo la clave del día de hoy. Guarda el estado para todas las horas (8-15)
+ * para mantener la compatibilidad con el modal de historial Gantt.
  */
 function guardarAsistencia() {
     const { iso } = obtenerFechaHoy();
@@ -655,7 +656,15 @@ function guardarAsistencia() {
 
     document.querySelectorAll('.asistencia-select').forEach(sel => {
         const nombre = personalData[sel.dataset.index]?.nombre;
-        if (nombre) registroHoy[nombre] = sel.value;
+        if (nombre) {
+            const estado = sel.value;
+            // Guardar en formato detallado por horas
+            registroHoy[nombre] = {};
+            const MODAL_HORAS = [8, 9, 10, 11, 12, 13, 14, 15];
+            MODAL_HORAS.forEach(h => {
+                registroHoy[nombre][String(h)] = estado === 'Pendiente' ? '' : estado;
+            });
+        }
     });
 
     localStorage.setItem(claveAsistencia(iso), JSON.stringify(registroHoy));
@@ -663,52 +672,215 @@ function guardarAsistencia() {
 }
 
 /**
- * Muestra un modal SweetAlert2 con el historial de asistencias de todos los días.
+ * Convierte registros diarios antiguos (ej. {"Pepe":"Presente"})
+ * a formato detallado por horas (ej. {"Pepe": {"8":"Presente", ..., "15":"Presente"}})
+ * para mantener la compatibilidad con el nuevo cronograma.
  */
-function mostrarHistorialAsistencia() {
-    // Recopilar todas las claves de asistencia del localStorage
-    const registros = [];
+function migrarAsistenciasAntiguas() {
     for (let i = 0; i < localStorage.length; i++) {
         const key = localStorage.key(i);
         if (key && key.startsWith('asistencias_')) {
-            const fecha = key.replace('asistencias_', '');
-            const data = JSON.parse(localStorage.getItem(key)) || {};
-            registros.push({ fecha, data });
+            let data = JSON.parse(localStorage.getItem(key)) || {};
+            let modificado = false;
+            
+            Object.keys(data).forEach(emp => {
+                // Si el valor es un string (formato antiguo)
+                if (typeof data[emp] === 'string') {
+                    const estadoAnterior = data[emp];
+                    data[emp] = {};
+                    // Crear horas de 8 a 15
+                    for (let h = 8; h <= 15; h++) {
+                        data[emp][String(h)] = estadoAnterior;
+                    }
+                    modificado = true;
+                }
+            });
+
+            if (modificado) {
+                localStorage.setItem(key, JSON.stringify(data));
+            }
         }
     }
+}
 
-    // Ordenar por fecha descendente
-    registros.sort((a, b) => b.fecha.localeCompare(a.fecha));
+// Ejecutar migración al cargar
+migrarAsistenciasAntiguas();
 
-    if (registros.length === 0) {
-        Swal.fire({ icon: 'info', title: 'Sin historial', text: 'No se han guardado registros de asistencia todavía.' });
-        return;
-    }
+const VIEW_RRHH_HORAS = [8, 9, 10, 11, 12, 13, 14, 15];
+const VIEW_RRHH_ESTADOS = ['', 'Presente', 'Ausente', 'Permiso'];
+const VIEW_RRHH_COLORES = {
+    '':          { bg: 'transparent',               borde: 'var(--border-color, #334155)', emoji: '' },
+    'Presente':  { bg: 'rgba(34,197,94,0.18)',      borde: '#22c55e',                      emoji: '✓' },
+    'Ausente':   { bg: 'rgba(239,68,68,0.18)',       borde: '#ef4444',                      emoji: '✗' },
+    'Permiso':   { bg: 'rgba(245,158,11,0.18)',      borde: '#f59e0b',                      emoji: '◐' }
+};
 
-    let html = `<div style="max-height:400px; overflow-y:auto; text-align:left;">`;
-    registros.forEach(({ fecha, data }) => {
-        html += `<div style="margin-bottom:1.2rem; border-bottom:1px solid #e2e8f0; padding-bottom:0.8rem;">`;
-        html += `<strong style="display:block; margin-bottom:6px; color:var(--primary,#0099cc); font-size:0.95rem;"><i class="fa-solid fa-calendar-day" style="margin-right:6px;"></i>${fecha}</strong>`;
-        html += `<table style="width:100%; border-collapse:collapse; font-size:0.88rem;">`;
-        Object.entries(data).forEach(([nombre, estado]) => {
-            const color = estado === 'Presente' ? '#22c55e' : estado === 'Ausente' ? '#ef4444' : '#f59e0b';
-            html += `<tr>
-                <td style="padding:3px 8px;">${nombre}</td>
-                <td style="padding:3px 8px;"><span style="background:${color}22; color:${color}; padding:2px 8px; border-radius:12px; font-weight:600;">${estado}</span></td>
-            </tr>`;
+function generarHtmlGridVista(fechaIso) {
+    const data = JSON.parse(localStorage.getItem(claveAsistencia(fechaIso))) || {};
+    
+    let html = `
+    <div class="admin-card" style="margin-bottom: 2rem;">
+        <div class="admin-card-header">
+            <h2 class="admin-card-title"><i class="fa-solid fa-calendar-days" style="margin-right:8px; color:var(--primary);"></i>Historial de Asistencia Detallado</h2>
+            <button class="admin-btn admin-btn-secondary" onclick="volverAGestionPersonal()" style="padding: 6px 14px; font-size: 0.9rem; display:flex; align-items:center; gap:6px;">
+                <i class="fa-solid fa-arrow-left"></i> Volver a Gestión de Personal
+            </button>
+        </div>
+
+        <div style="margin: 1.5rem; display:flex; justify-content:space-between; align-items:center;">
+            <div class="view-rrhh-header" style="display:flex; align-items:center; gap: 15px;">
+                <strong style="color: var(--text-main); font-size:1rem;">Seleccione Fecha:</strong>
+                <input type="date" id="viewRrhhDate" value="${fechaIso}" max="${obtenerFechaHoy().iso}" style="background: var(--bg-body, #0f172a); color: var(--text-main, #f1f5f9); border: 1px solid var(--border-color, #334155); padding: 8px 14px; border-radius: 6px; outline: none;">
+            </div>
+            <button class="admin-btn admin-btn-primary" onclick="guardarHistorialVista()" style="padding: 8px 16px; font-weight: bold; cursor: pointer; display:flex; align-items:center; gap:8px;">
+                <i class="fa-solid fa-save"></i> Guardar Cambios
+            </button>
+        </div>
+
+        <div style="margin: 0 1.5rem 1.5rem 1.5rem;">
+            <div class="view-rrhh-grid-container">
+                <div class="view-rrhh-time-header">
+                    <div class="view-rrhh-hour-label emp-col">Empleado</div>`;
+            
+    VIEW_RRHH_HORAS.forEach(h => {
+        html += `<div class="view-rrhh-hour-label">${h}:00</div>`;
+    });
+    
+    html += `</div><div class="view-rrhh-grid-body" id="viewRrhhGridBody">`;
+
+    if (personalData.length === 0) {
+        html += `<div style="padding: 30px; text-align:center; color: var(--text-muted);">No hay personal registrado.</div>`;
+    } else {
+        const coloresAvatar = ['#0099cc','#8b5cf6','#ec4899','#f59e0b','#10b981','#3b82f6','#ef4444','#14b8a6'];
+        
+        personalData.forEach((p, idx) => {
+            const inic = p.nombre.split(' ').map(n=>n[0]).slice(0,2).join('').toUpperCase();
+            const color = coloresAvatar[idx % coloresAvatar.length];
+            
+            html += `<div class="view-rrhh-row">
+                <div class="view-rrhh-emp-cell" title="${p.nombre}">
+                    <div class="view-rrhh-avatar" style="background:${color};">${inic}</div>
+                    <span class="view-rrhh-emp-name">${p.nombre}</span>
+                </div>`;
+                
+            VIEW_RRHH_HORAS.forEach(h => {
+                const estado = (data[p.nombre] && data[p.nombre][String(h)]) || '';
+                const style = VIEW_RRHH_COLORES[estado] || VIEW_RRHH_COLORES[''];
+                html += `<div class="view-rrhh-cell" 
+                            data-emp="${p.nombre}" 
+                            data-hora="${h}" 
+                            data-estado="${estado}"
+                            style="background:${style.bg}; border-color:${style.borde}; color:${style.borde};">
+                            <span class="view-rrhh-cell-label">${style.emoji}</span>
+                        </div>`;
+            });
+            html += `</div>`;
         });
-        html += `</table></div>`;
-    });
-    html += `</div>`;
+    }
+    
+    html += `</div></div></div></div>`;
+    return html;
+}
 
-    Swal.fire({
-        title: 'Historial de Asistencia',
-        html,
-        width: 560,
-        showConfirmButton: true,
-        confirmButtonText: 'Cerrar',
-        confirmButtonColor: '#0099cc'
+/**
+ * Muestra la vista a pantalla completa del historial interactivo.
+ */
+function mostrarVistaHistorial() {
+    const isoHoy = obtenerFechaHoy().iso;
+    
+    const mainView = document.getElementById('rrhh-main-view');
+    const historyView = document.getElementById('rrhh-history-view');
+    if (!mainView || !historyView) return;
+    
+    mainView.style.display = 'none';
+    historyView.style.display = 'block';
+    
+    renderizarContenidoVistaHistorial(isoHoy);
+}
+
+function renderizarContenidoVistaHistorial(fecha) {
+    const historyView = document.getElementById('rrhh-history-view');
+    if (!historyView) return;
+    
+    historyView.innerHTML = generarHtmlGridVista(fecha);
+    
+    const dateInput = document.getElementById('viewRrhhDate');
+    const gridBody = document.getElementById('viewRrhhGridBody');
+    
+    // Refrescar al cambiar la fecha
+    if (dateInput) {
+        dateInput.addEventListener('change', (e) => {
+            const newDate = e.target.value;
+            if (newDate) {
+                renderizarContenidoVistaHistorial(newDate);
+            }
+        });
+    }
+    
+    // Interacción con las celdas
+    if (gridBody) {
+        gridBody.querySelectorAll('.view-rrhh-cell').forEach(cell => {
+            cell.addEventListener('click', () => {
+                const actual = cell.dataset.estado;
+                const idx = VIEW_RRHH_ESTADOS.indexOf(actual);
+                const next = VIEW_RRHH_ESTADOS[(idx + 1) % VIEW_RRHH_ESTADOS.length];
+                
+                cell.dataset.estado = next;
+                const style = VIEW_RRHH_COLORES[next];
+                cell.style.background = style.bg;
+                cell.style.borderColor = style.borde;
+                cell.style.color = style.borde;
+                cell.innerHTML = `<span class="view-rrhh-cell-label">${style.emoji}</span>`;
+            });
+        });
+    }
+}
+
+/**
+ * Guarda los datos directamente desde la vista del historial y muestra una notificación
+ */
+function guardarHistorialVista() {
+    const dateInput = document.getElementById('viewRrhhDate');
+    if (!dateInput) return;
+    const fecha = dateInput.value;
+    const newData = {};
+    
+    document.querySelectorAll('.view-rrhh-cell').forEach(cell => {
+        const emp = cell.dataset.emp;
+        const hora = cell.dataset.hora;
+        const estado = cell.dataset.estado;
+        
+        if (!newData[emp]) newData[emp] = {};
+        newData[emp][hora] = estado;
     });
+    
+    localStorage.setItem(claveAsistencia(fecha), JSON.stringify(newData));
+    Toast.fire({ icon: 'success', title: 'Historial guardado exitosamente' });
+    
+    // Si la fecha coincide con hoy, re-renderizar la vista principal silenciosamente
+    if (fecha === obtenerFechaHoy().iso) {
+        // Almacenamos temporalmente el estado actual y luego restauramos
+        const isHistoryVisible = document.getElementById('rrhh-history-view').style.display !== 'none';
+        renderizarRRHH();
+        if (isHistoryVisible) {
+            document.getElementById('rrhh-main-view').style.display = 'none';
+        }
+    }
+}
+
+/**
+ * Retorna a la vista principal de Gestión de Personal
+ */
+function volverAGestionPersonal() {
+    const mainView = document.getElementById('rrhh-main-view');
+    const historyView = document.getElementById('rrhh-history-view');
+    if (!mainView || !historyView) return;
+    
+    historyView.style.display = 'none';
+    mainView.style.display = 'block';
+    
+    // Asegurarse de que la vista principal tenga los datos más frescos
+    renderizarRRHH();
 }
 
 function renderizarRRHH() {
@@ -725,8 +897,33 @@ function renderizarRRHH() {
     const asistenciasHoy = JSON.parse(localStorage.getItem(claveAsistencia(iso))) || {};
 
     personalData.forEach((persona, index) => {
-        // Prioridad: asistencia guardada hoy > valor por defecto
-        const estadoHoy = asistenciasHoy[persona.nombre] || 'Pendiente';
+        // Calcular el estado diario más frecuente basado en el formato de horas
+        let estadoHoy = 'Pendiente';
+        const horas = asistenciasHoy[persona.nombre];
+        
+        if (horas) {
+            if (typeof horas === 'string') {
+                estadoHoy = horas; // Respaldo por si quedó algún dato sin migrar
+            } else {
+                // Contar ocurrencias de cada estado en las horas
+                const conteo = { 'Presente': 0, 'Ausente': 0, 'Permiso': 0, '': 0 };
+                Object.values(horas).forEach(v => {
+                    if (conteo[v] !== undefined) conteo[v]++;
+                });
+                
+                // Determinar el estado más frecuente
+                let max = 0;
+                let estadoMax = 'Pendiente';
+                for (const [est, num] of Object.entries(conteo)) {
+                    if (est !== '' && num > max) {
+                        max = num;
+                        estadoMax = est;
+                    }
+                }
+                estadoHoy = max > 0 ? estadoMax : 'Pendiente';
+            }
+        }
+
         const badgeColor = estadoHoy === 'Presente' ? '#22c55e' : estadoHoy === 'Ausente' ? '#ef4444' : '#f59e0b';
 
         tbody.innerHTML += `
@@ -756,7 +953,7 @@ function renderizarRRHH() {
     // Botón: Ver historial
     const btnHistorial = document.getElementById('btnVerHistorialAsistencia');
     if (btnHistorial) {
-        btnHistorial.onclick = mostrarHistorialAsistencia;
+        btnHistorial.onclick = mostrarVistaHistorial;
     }
 
     // Eliminar personal

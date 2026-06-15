@@ -951,3 +951,133 @@ body.dark-mode ::placeholder {
     width: 20px;
     text-align: center;
 }
+
+/* ============================================================
+   MODAL RRHH — PLANIFICADOR HISTORICO (GANTT)
+   ============================================================ */
+
+.view-rrhh-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.view-rrhh-header input[type="date"] {
+    background: var(--bg-body, #0f172a);
+    color: var(--text-main, #f1f5f9);
+    border: 1px solid var(--border-color, #334155);
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 0.95rem;
+    outline: none;
+}
+
+.view-rrhh-header input[type="date"]:focus {
+    border-color: var(--primary, #0099cc);
+}
+
+.view-rrhh-grid-container {
+    background: var(--bg-body, #0f172a);
+    border: 1px solid var(--border-color, #334155);
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    max-height: 60vh;
+}
+
+.view-rrhh-time-header {
+    display: grid;
+    grid-template-columns: 120px repeat(8, 1fr);
+    background: var(--bg-card, #1e293b);
+    border-bottom: 1px solid var(--border-color, #334155);
+    position: sticky;
+    top: 0;
+    z-index: 5;
+}
+
+.view-rrhh-hour-label {
+    padding: 8px 2px;
+    text-align: center;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--text-muted, #64748b);
+    border-right: 1px solid var(--border-color, #334155);
+}
+
+.view-rrhh-hour-label:last-child { border-right: none; }
+.view-rrhh-hour-label.emp-col { text-align: left; padding-left: 10px; }
+
+.view-rrhh-grid-body {
+    overflow-y: auto;
+}
+
+.view-rrhh-row {
+    display: grid;
+    grid-template-columns: 120px repeat(8, 1fr);
+    border-bottom: 1px solid var(--border-color, #334155);
+}
+
+.view-rrhh-row:last-child { border-bottom: none; }
+
+.view-rrhh-emp-cell {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 10px;
+    border-right: 1px solid var(--border-color, #334155);
+    background: var(--bg-card, #1e293b);
+}
+
+.view-rrhh-avatar {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: #fff;
+    flex-shrink: 0;
+}
+
+.view-rrhh-emp-name {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-main, #f1f5f9);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.view-rrhh-cell {
+    border-right: 1px solid var(--border-color, #334155);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: filter 0.15s;
+    user-select: none;
+    height: 38px;
+}
+
+.view-rrhh-cell:last-child { border-right: none; }
+.view-rrhh-cell:hover { filter: brightness(1.3); }
+.view-rrhh-cell:active { transform: scale(0.95); }
+
+.view-rrhh-cell-label {
+    font-size: 0.85rem;
+    pointer-events: none;
+}
+
+.view-rrhh-grid-body::-webkit-scrollbar { width: 6px; }
+.view-rrhh-grid-body::-webkit-scrollbar-track { background: transparent; }
+.view-rrhh-grid-body::-webkit-scrollbar-thumb {
+    background: var(--border-color, #334155);
+    border-radius: 10px;
+}
+
+
