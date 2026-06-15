@@ -32,10 +32,12 @@ let finanzasData = JSON.parse(localStorage.getItem('erp_finanzas')) || defaultFi
 if (!localStorage.getItem('erp_finanzas')) localStorage.setItem('erp_finanzas', JSON.stringify(finanzasData));
 
 const defaultPersonal = [
-    { nombre: "Juan Pérez", especialidad: "Cardiología", comision: 30, asistencia: "Presente" },
-    { nombre: "María López", especialidad: "Pediatría", comision: 25, asistencia: "Pendiente" }
+    { nombre: "Juan Pérez", especialidad: "Cardiología" },
+    { nombre: "María López", especialidad: "Pediatría" }
 ];
 let personalData = JSON.parse(localStorage.getItem('erp_personal')) || defaultPersonal;
+// Migrar registros antiguos: eliminar campos 'comision' y 'asistencia' si existen
+personalData = personalData.map(({ nombre, especialidad }) => ({ nombre, especialidad }));
 if (!localStorage.getItem('erp_personal')) localStorage.setItem('erp_personal', JSON.stringify(personalData));
 
 // Configuración Global de Notificaciones (Toast)
@@ -621,24 +623,92 @@ function registrarEgreso(event) {
 
 /**
  * =======================================================
- * LÓGICA VISTA: RRHH
+ * LÓGICA VISTA: RRHH — PLANIFICADOR TIPO GANTT
  * =======================================================
  */
-function calcularComisiones() {
-    let comisionesTotales = {};
-    
-    // Filtrar citas que están 'Pagadas'
-    const citasPagadas = citasProgramadas.filter(c => c.flujoPago === 'Pagado');
-    
-    // Contar por especialidad. (En un caso real se ligaría al médico por nombre/ID, aquí simulamos que el doctor cobra todo lo de su especialidad)
-    citasPagadas.forEach(cita => {
-        if (!comisionesTotales[cita.especialidad]) {
-            comisionesTotales[cita.especialidad] = 0;
-        }
-        comisionesTotales[cita.especialidad] += 50.00; // Ingreso estándar
+
+/**
+ * Devuelve la clave de localStorage para las asistencias de una fecha dada.
+ * @param {string} fecha - Fecha en formato YYYY-MM-DD
+ */
+function claveAsistencia(fecha) {
+    return `asistencias_${fecha}`;
+}
+
+/**
+ * Devuelve la fecha actual en formato YYYY-MM-DD (para clave) y legible.
+ */
+function obtenerFechaHoy() {
+    const hoy = new Date();
+    const iso = hoy.toISOString().split('T')[0];           // "2026-06-15"
+    const legible = hoy.toLocaleDateString('es-PE', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+    return { iso, legible };
+}
+
+/**
+ * Guarda el estado actual de los selectores de asistencia en localStorage
+ * bajo la clave del día de hoy. No modifica los perfiles de personalData.
+ */
+function guardarAsistencia() {
+    const { iso } = obtenerFechaHoy();
+    const registroHoy = {};
+
+    document.querySelectorAll('.asistencia-select').forEach(sel => {
+        const nombre = personalData[sel.dataset.index]?.nombre;
+        if (nombre) registroHoy[nombre] = sel.value;
     });
 
-    return comisionesTotales;
+    localStorage.setItem(claveAsistencia(iso), JSON.stringify(registroHoy));
+    Toast.fire({ icon: 'success', title: `Asistencia del ${iso} guardada` });
+}
+
+/**
+ * Muestra un modal SweetAlert2 con el historial de asistencias de todos los días.
+ */
+function mostrarHistorialAsistencia() {
+    // Recopilar todas las claves de asistencia del localStorage
+    const registros = [];
+    for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key && key.startsWith('asistencias_')) {
+            const fecha = key.replace('asistencias_', '');
+            const data = JSON.parse(localStorage.getItem(key)) || {};
+            registros.push({ fecha, data });
+        }
+    }
+
+    // Ordenar por fecha descendente
+    registros.sort((a, b) => b.fecha.localeCompare(a.fecha));
+
+    if (registros.length === 0) {
+        Swal.fire({ icon: 'info', title: 'Sin historial', text: 'No se han guardado registros de asistencia todavía.' });
+        return;
+    }
+
+    let html = `<div style="max-height:400px; overflow-y:auto; text-align:left;">`;
+    registros.forEach(({ fecha, data }) => {
+        html += `<div style="margin-bottom:1.2rem; border-bottom:1px solid #e2e8f0; padding-bottom:0.8rem;">`;
+        html += `<strong style="display:block; margin-bottom:6px; color:var(--primary,#0099cc); font-size:0.95rem;"><i class="fa-solid fa-calendar-day" style="margin-right:6px;"></i>${fecha}</strong>`;
+        html += `<table style="width:100%; border-collapse:collapse; font-size:0.88rem;">`;
+        Object.entries(data).forEach(([nombre, estado]) => {
+            const color = estado === 'Presente' ? '#22c55e' : estado === 'Ausente' ? '#ef4444' : '#f59e0b';
+            html += `<tr>
+                <td style="padding:3px 8px;">${nombre}</td>
+                <td style="padding:3px 8px;"><span style="background:${color}22; color:${color}; padding:2px 8px; border-radius:12px; font-weight:600;">${estado}</span></td>
+            </tr>`;
+        });
+        html += `</table></div>`;
+    });
+    html += `</div>`;
+
+    Swal.fire({
+        title: 'Historial de Asistencia',
+        html,
+        width: 560,
+        showConfirmButton: true,
+        confirmButtonText: 'Cerrar',
+        confirmButtonColor: '#0099cc'
+    });
 }
 
 function renderizarRRHH() {
@@ -646,28 +716,30 @@ function renderizarRRHH() {
     if (!tbody) return;
     tbody.innerHTML = "";
 
-    const comisionesMontoBase = calcularComisiones();
+    // Mostrar fecha de hoy en la UI
+    const { iso, legible } = obtenerFechaHoy();
+    const labelFecha = document.getElementById('rrhhFechaHoy');
+    if (labelFecha) labelFecha.textContent = legible;
+
+    // Cargar asistencias guardadas del día de hoy (si existen)
+    const asistenciasHoy = JSON.parse(localStorage.getItem(claveAsistencia(iso))) || {};
 
     personalData.forEach((persona, index) => {
-        let badgeAsistencia = persona.asistencia === 'Presente' ? 'admin-badge-success' : 'admin-badge-warning';
-        
-        // Monto base generado por su especialidad
-        let montoGenerado = comisionesMontoBase[persona.especialidad] || 0;
-        let comisionCalculada = (montoGenerado * (persona.comision / 100)).toFixed(2);
+        // Prioridad: asistencia guardada hoy > valor por defecto
+        const estadoHoy = asistenciasHoy[persona.nombre] || 'Pendiente';
+        const badgeColor = estadoHoy === 'Presente' ? '#22c55e' : estadoHoy === 'Ausente' ? '#ef4444' : '#f59e0b';
 
         tbody.innerHTML += `
             <tr>
                 <td><strong>${persona.nombre}</strong></td>
                 <td>${persona.especialidad}</td>
-                <td>${persona.comision}%</td>
                 <td>
-                    <select class="asistencia-select" data-index="${index}" style="padding: 4px; border-radius: 4px; background: var(--card-bg); color: var(--text-color); border: 1px solid var(--border-color);">
-                        <option value="Pendiente" ${persona.asistencia==='Pendiente'?'selected':''}>Pendiente</option>
-                        <option value="Presente" ${persona.asistencia==='Presente'?'selected':''}>Presente</option>
-                        <option value="Ausente" ${persona.asistencia==='Ausente'?'selected':''}>Ausente</option>
+                    <select class="asistencia-select" data-index="${index}" style="padding: 5px 8px; border-radius: 6px; background: var(--card-bg); color: var(--text-color); border: 1px solid var(--border-color); font-size:0.9rem;">
+                        <option value="Pendiente" ${estadoHoy==='Pendiente'?'selected':''}>⏳ Pendiente</option>
+                        <option value="Presente" ${estadoHoy==='Presente'?'selected':''}>✅ Presente</option>
+                        <option value="Ausente" ${estadoHoy==='Ausente'?'selected':''}>❌ Ausente</option>
                     </select>
                 </td>
-                <td><span class="text-success" style="font-weight:bold;">S/ ${comisionCalculada}</span> (de S/ ${montoGenerado})</td>
                 <td style="text-align: right;">
                     <button class="admin-btn admin-badge-danger btn-eliminar-personal" data-index="${index}" style="padding: 4px 8px; border:none; border-radius:4px; cursor:pointer;"><i class="fa-solid fa-trash"></i></button>
                 </td>
@@ -675,17 +747,19 @@ function renderizarRRHH() {
         `;
     });
 
-    // Delegar eventos solo para esta tabla
-    document.querySelectorAll('.asistencia-select').forEach(sel => {
-        sel.addEventListener('change', (e) => {
-            const i = e.target.dataset.index;
-            personalData[i].asistencia = e.target.value;
-            localStorage.setItem('erp_personal', JSON.stringify(personalData));
-            Toast.fire({ icon: 'success', title: 'Asistencia actualizada' });
-            renderizarRRHH();
-        });
-    });
+    // Botón: Guardar asistencia del día
+    const btnGuardar = document.getElementById('btnGuardarAsistencia');
+    if (btnGuardar) {
+        btnGuardar.onclick = guardarAsistencia;
+    }
 
+    // Botón: Ver historial
+    const btnHistorial = document.getElementById('btnVerHistorialAsistencia');
+    if (btnHistorial) {
+        btnHistorial.onclick = mostrarHistorialAsistencia;
+    }
+
+    // Eliminar personal
     document.querySelectorAll('.btn-eliminar-personal').forEach(btn => {
         btn.addEventListener('click', (e) => {
             const i = e.target.closest('.btn-eliminar-personal').dataset.index;
@@ -711,23 +785,26 @@ function registrarPersonal(event) {
     event.preventDefault();
     const nombre = document.getElementById("personalNombre").value.trim();
     const especialidad = document.getElementById("personalEspecialidad").value.trim();
-    const comision = parseFloat(document.getElementById("personalComision").value);
 
-    if (!nombre || !especialidad || isNaN(comision)) {
-        Swal.fire({ icon: 'error', title: 'Datos incompletos' });
+    if (!nombre || !especialidad) {
+        Swal.fire({ icon: 'error', title: 'Datos incompletos', text: 'Por favor completa nombre y especialidad.' });
         return;
     }
 
-    personalData.push({
-        nombre: nombre,
-        especialidad: especialidad,
-        comision: comision,
-        asistencia: "Pendiente"
-    });
+    // Evitar nombres duplicados
+    if (personalData.some(p => p.nombre.toLowerCase() === nombre.toLowerCase())) {
+        Swal.fire({ icon: 'warning', title: 'Ya existe', text: `Ya hay un registro con el nombre "${nombre}".` });
+        return;
+    }
+
+    // Solo datos de perfil; la asistencia se guarda de forma independiente por día
+    personalData.push({ nombre, especialidad });
 
     localStorage.setItem('erp_personal', JSON.stringify(personalData));
     renderizarRRHH();
     event.target.reset();
-    Toast.fire({ icon: 'success', title: 'Personal registrado' });
+    Toast.fire({ icon: 'success', title: 'Personal registrado correctamente' });
 }
+
+
 
