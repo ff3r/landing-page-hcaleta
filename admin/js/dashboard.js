@@ -647,7 +647,7 @@ function obtenerFechaHoy() {
 
 /**
  * Guarda el estado actual de los selectores de asistencia en localStorage
- * bajo la clave del día de hoy. Guarda el estado para todas las horas (8-15)
+ * bajo la clave del día de hoy. Guarda el estado para todas las horas (0-23)
  * para mantener la compatibilidad con el modal de historial Gantt.
  */
 function guardarAsistencia() {
@@ -660,10 +660,9 @@ function guardarAsistencia() {
             const estado = sel.value;
             // Guardar en formato detallado por horas
             registroHoy[nombre] = {};
-            const MODAL_HORAS = [8, 9, 10, 11, 12, 13, 14, 15];
-            MODAL_HORAS.forEach(h => {
+            for (let h = 0; h <= 23; h++) {
                 registroHoy[nombre][String(h)] = estado === 'Pendiente' ? '' : estado;
-            });
+            }
         }
     });
 
@@ -688,8 +687,8 @@ function migrarAsistenciasAntiguas() {
                 if (typeof data[emp] === 'string') {
                     const estadoAnterior = data[emp];
                     data[emp] = {};
-                    // Crear horas de 8 a 15
-                    for (let h = 8; h <= 15; h++) {
+                    // Crear horas de 0 a 23
+                    for (let h = 0; h <= 23; h++) {
                         data[emp][String(h)] = estadoAnterior;
                     }
                     modificado = true;
@@ -706,7 +705,7 @@ function migrarAsistenciasAntiguas() {
 // Ejecutar migración al cargar
 migrarAsistenciasAntiguas();
 
-const VIEW_RRHH_HORAS = [8, 9, 10, 11, 12, 13, 14, 15];
+const VIEW_RRHH_HORAS = Array.from({length: 24}, (_, i) => i);
 const VIEW_RRHH_ESTADOS = ['', 'Presente', 'Ausente', 'Permiso'];
 const VIEW_RRHH_COLORES = {
     '':          { bg: 'transparent',               borde: 'var(--border-color, #334155)', emoji: '' },
@@ -737,8 +736,8 @@ function generarHtmlGridVista(fechaIso) {
             </button>
         </div>
 
-        <div style="margin: 0 1.5rem 1.5rem 1.5rem;">
-            <div class="view-rrhh-grid-container">
+        <div style="margin: 0 1.5rem 1.5rem 1.5rem; position: relative;">
+            <div class="view-rrhh-grid-container" style="max-width: 100%;">
                 <div class="view-rrhh-time-header">
                     <div class="view-rrhh-hour-label emp-col">Empleado</div>`;
             
@@ -803,6 +802,12 @@ function renderizarContenidoVistaHistorial(fecha) {
     if (!historyView) return;
     
     historyView.innerHTML = generarHtmlGridVista(fecha);
+    
+    // Posicionar scroll en las 8:00 AM (8 columnas x 60px)
+    const gridContainer = document.querySelector('.view-rrhh-grid-container');
+    if (gridContainer) {
+        
+    }
     
     const dateInput = document.getElementById('viewRrhhDate');
     const gridBody = document.getElementById('viewRrhhGridBody');
@@ -1002,6 +1007,8 @@ function registrarPersonal(event) {
     event.target.reset();
     Toast.fire({ icon: 'success', title: 'Personal registrado correctamente' });
 }
+
+
 
 
 
