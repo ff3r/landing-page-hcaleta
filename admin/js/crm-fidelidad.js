@@ -11,6 +11,37 @@ document.addEventListener("DOMContentLoaded", () => {
         { name: "Juan Manuel Castro", dni: "40789012", tier: "Bronce", badgeClass: "admin-badge-success", points: 150, lastVis: "28/05/2026" }
     ];
 
+    // beneficios costos
+
+    function getTier(points) {
+        if (points >= 1000) {
+            return {
+                tier: "Platino",
+                badgeClass: "admin-badge-danger"
+            };
+        }
+
+        if (points >= 700) {
+            return {
+                tier: "Oro",
+                badgeClass: "admin-badge-warning"
+            };
+        }
+
+        if (points >= 300) {
+            return {
+                tier: "Plata",
+                badgeClass: "admin-badge-info"
+            };
+        }
+
+        return {
+            tier: "Bronce",
+            badgeClass: "admin-badge-success"
+        };
+    }
+
+
     // 2. HISTORIAL DE CANJES DE BENEFICIOS SIMULADO (MOCK DB CANJES)
     let redemptionsLog = [
         { name: "Ana María Flores", dni: "42158932", benefit: "Chequeo Preventivo Completo", pointsCost: 500, date: "Hoy, 2:10 PM" },
@@ -23,6 +54,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const totalFidelityPointsEl = document.getElementById("totalFidelityPoints");
     const totalRedeemedBenefitsEl = document.getElementById("totalRedeemedBenefits");
     const redemptionForm = document.getElementById("redemptionForm");
+    const pointsAssignmentForm =document.getElementById("pointsAssignmentForm");
+
 
     // Costo de Puntos por Beneficios
     const benefitCosts = {
@@ -31,6 +64,31 @@ document.addEventListener("DOMContentLoaded", () => {
         "nutrition": { name: "Consulta Nutrición Gratis", cost: 300 },
         "vaccine": { name: "Vacuna Influenza Premium", cost: 400 }
     };
+
+    //agregacion de puntos
+    const pointRewards = {
+        consultation: {
+            name: "Consulta General",
+            points: 50
+        },
+
+        laboratory: {
+            name: "Laboratorio",
+            points: 30
+        },
+
+        vaccine: {
+            name: "Vacunación",
+            points: 20
+        },
+
+        nutrition: {
+            name: "Nutrición",
+            points: 40
+        }
+    };
+
+
 
     // 3. ACTUALIZAR LAS MÉTRICAS DE PUNTOS TOTALES
     const updateMetrics = () => {
@@ -47,9 +105,13 @@ document.addEventListener("DOMContentLoaded", () => {
     // 4. RENDERIZAR LA TABLA DE PACIENTES DE FIDELIDAD
     const renderPatientsTable = () => {
         if (!loyaltyPatientsTable) return;
+        // Ordenar de mayor a menor puntaje
+        loyaltyPatients.sort((a, b) => b.points - a.points);
+
         loyaltyPatientsTable.innerHTML = "";
 
         loyaltyPatients.forEach(patient => {
+
             const tr = document.createElement("tr");
             tr.innerHTML = `
                 <td>
@@ -92,6 +154,7 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     // 6. PROCESAR CANJE DESDE EL FORMULARIO (INTERACTIVO)
+
     if (redemptionForm) {
         redemptionForm.addEventListener("submit", (e) => {
             e.preventDefault();
@@ -124,9 +187,16 @@ document.addEventListener("DOMContentLoaded", () => {
                 alert(`Error de Canje:\n\nEl paciente ${patient.name} tiene ${patient.points} puntos, pero el beneficio "${benefit.name}" requiere ${benefit.cost} puntos.\n\nFaltan ${benefit.cost - patient.points} puntos.`);
                 return;
             }
-
             // Realizar débito de puntos
             patient.points -= benefit.cost;
+
+            const tierData = getTier(patient.points);
+
+            patient.tier = tierData.tier;
+            patient.badgeClass = tierData.badgeClass;
+
+
+
 
             // Agregar registro al historial de canjes
             const now = new Date();
@@ -150,6 +220,63 @@ document.addEventListener("DOMContentLoaded", () => {
             // Re-renderizar interfaces
             renderPatientsTable();
             renderRedemptionsLog();
+            updateMetrics();
+        });
+    }
+
+    if (pointsAssignmentForm) {
+        pointsAssignmentForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+
+            const dniInput =
+                document.getElementById("assignPatientDni")
+                    .value.trim();
+
+            const activityKey =
+                document.getElementById("activitySelect")
+                    .value;
+            // Validar DNI
+            if (!/^\d{8}$/.test(dniInput)) {
+                alert("Error: Ingrese un DNI válido.");
+                return;
+            }
+            // Buscar paciente
+            const patient =
+                loyaltyPatients.find(
+                    p => p.dni === dniInput
+                );
+
+            if (!patient) {
+                alert(
+                    `El paciente con DNI ${dniInput} no está registrado.`
+                );
+                return;
+            }
+            // Validar actividad
+            const activity =
+                pointRewards[activityKey];
+            if (!activity) {
+                alert(
+                    "Seleccione una actividad válida."
+                );
+                return;
+            }
+            // Sumar puntos
+            patient.points += activity.points;
+            // Actualizar nivel
+            const tierData =
+                getTier(patient.points);
+            patient.tier =
+                tierData.tier;
+            patient.badgeClass =
+                tierData.badgeClass;
+            // Mensaje
+            alert(`¡Puntos asignados con éxito! Paciente: ${patient.name} Actividad: ${activity.name} Puntos ganados:+${activity.points} Total actual: ${patient.points} pts`
+            );
+            // Limpiar formulario
+            pointsAssignmentForm.reset();
+            // Actualizar pantalla
+            renderPatientsTable();
             updateMetrics();
         });
     }

@@ -161,6 +161,114 @@
                         </div>
                     </div>
 
+
+                    <!--estadistica de puntos-->
+
+                    <div class="admin-card levels-card">
+                        <div class="admin-card-header">
+                            <h2 class="admin-card-title">Niveles de Fidelización</h2>
+                        </div>
+
+                        <div class="levels-content">
+                            <div class="level-item">
+                                <span class="admin-badge admin-badge-danger">
+                                    Platino
+                                </span>
+                                <span class="level-points">
+                                    1000+ pts
+                                </span>
+                            </div>
+
+                            <div class="level-item">
+                                <span class="admin-badge admin-badge-warning">
+                                    Oro
+                                </span>
+                                <span class="level-points">
+                                    700 - 999 pts
+                                </span>
+                            </div>
+
+                            <div class="level-item">
+                                <span class="admin-badge admin-badge-info">
+                                    Plata
+                                </span>
+                                <span class="level-points">
+                                    300 - 699 pts
+                                </span>
+                            </div>
+
+                            <div class="level-item">
+                                <span class="admin-badge admin-badge-success">
+                                    Bronce
+                                </span>
+                                <span class="level-points">
+                                    0 - 299 pts
+                                </span>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="fidelidad-actions-grid">
+                    <!--agregacion de puntos -->
+                    <div class="admin-card quick-action-card">
+                        <div class="admin-card-header">
+                            <h2 class="admin-card-title">Asignar Puntos de Salud</h2>
+                        </div>
+
+                        <form id="pointsAssignmentForm" class="redemption-form">
+
+                            <div class="form-group">
+                                <label for="assignPatientDni">DNI del Paciente:</label>
+                                <input type="text"
+                                       id="assignPatientDni"
+                                       placeholder="Ingrese DNI"
+                                       required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="activitySelect">
+                                    Actividad Realizada:
+                                </label>
+
+                                <select id="activitySelect" required>
+                                    <option value="" disabled selected>
+                                        Seleccione una actividad
+                                    </option>
+
+                                    <option value="consultation">
+                                        Consulta General (+50 pts)
+                                    </option>
+
+                                    <option value="laboratory">
+                                        Laboratorio (+30 pts)
+                                    </option>
+
+                                    <option value="vaccine">
+                                        Vacunación (+20 pts)
+                                    </option>
+
+                                    <option value="nutrition">
+                                        Nutrición (+40 pts)
+                                    </option>
+                                </select>
+                            </div>
+
+                            <button type="submit"
+                                    class="admin-btn admin-btn-primary"
+                                    style="margin-top:10px;">
+
+                                <i class="fa-solid fa-plus"></i>
+                                <span>Asignar Puntos</span>
+
+                            </button>
+                        </form>
+                    </div>
+
+
+
                     <!-- Canje de Beneficios Rápidos -->
                     <div class="admin-card quick-action-card">
                         <div class="admin-card-header">
@@ -248,3 +356,6 @@
     <script src="js/common.js"></script>
 </body>
 </html>
+
+
+

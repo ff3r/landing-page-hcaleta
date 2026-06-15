@@ -30,8 +30,8 @@
 /* Grilla de Gráficos y Formularios */
 .fidelidad-charts-grid {
     display: grid;
-    grid-template-columns: 1.2fr 0.8fr;
-    gap: 25px;
+    grid-template-columns: 2fr 0.55fr;
+    gap: 20px;
 }
 
 @media (max-width: 992px) {
@@ -246,4 +246,44 @@
 .submenu .sidebar-item a i {
     width: 20px;
     text-align: center;
+}
+
+/*tabla de puntos */
+
+.levels-content {
+    display: flex;
+    flex-direction: column;
+    gap: 18px; /* más espacio entre niveles */
+    padding: 10px 0;
+}
+
+.level-item {
+    display: flex;
+    align-items: center;
+    gap: 20px; /* separación entre badge y puntos */
+}
+
+.level-points {
+    font-size: 0.9rem;
+    font-weight: 450;
+    color: var(--text-main);
+}
+
+.level-item {
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    align-items: center;
+    gap: 20px;
+}
+
+.actions-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:20px;
+}
+
+.fidelidad-actions-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:20px;
 }
