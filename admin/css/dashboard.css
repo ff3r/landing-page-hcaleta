@@ -977,9 +977,8 @@ body.dark-mode ::placeholder {
 .view-rrhh-grid-container::-webkit-scrollbar-track { background: #1a1a1a; }
 
 .view-rrhh-time-header {
-    
     display: grid;
-    grid-template-columns: 130px repeat(24, 1fr);
+    grid-template-columns: 160px repeat(24, 60px);
     background: var(--bg-card, #1e293b);
     border-bottom: 1px solid var(--border-color, #334155);
     position: sticky;
@@ -998,7 +997,9 @@ body.dark-mode ::placeholder {
 
 .view-rrhh-hour-label:last-child { border-right: none; }
 
-.view-rrhh-hour-label.emp-col { min-width: 130px; max-width: 130px; 
+.view-rrhh-hour-label.emp-col { 
+    min-width: 160px; 
+    max-width: 160px; 
     text-align: left; 
     padding-left: 15px; 
     position: sticky; 
@@ -1022,15 +1023,16 @@ body.dark-mode ::placeholder {
 }
 
 .view-rrhh-row {
-    
     display: grid;
-    grid-template-columns: 130px repeat(24, 1fr);
+    grid-template-columns: 160px repeat(24, 60px);
     border-bottom: 1px solid var(--border-color, #334155);
 }
 
 .view-rrhh-row:last-child { border-bottom: none; }
 
-.view-rrhh-emp-cell { min-width: 130px; max-width: 130px;
+.view-rrhh-emp-cell { 
+    min-width: 160px; 
+    max-width: 160px;
     display: flex;
     align-items: center;
     gap: 8px;
@@ -1083,6 +1085,65 @@ body.dark-mode ::placeholder {
 .view-rrhh-cell-label {
     font-size: 0.9rem;
     pointer-events: none;
+}
+
+/* ============================================================
+   RESPONSIVE LAYOUT FIXES (FINANZAS & RRHH CONTROLS)
+   ============================================================ */
+
+.finance-metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin: 1.5rem;
+}
+
+.view-rrhh-controls-row {
+    margin: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+}
+
+@media (max-width: 992px) {
+    .finance-metrics-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .finance-metrics-grid {
+        grid-template-columns: 1fr;
+        margin: 15px 0;
+        gap: 15px;
+    }
+    
+    .view-rrhh-controls-row {
+        flex-direction: column;
+        align-items: stretch;
+        margin: 15px 0;
+        gap: 12px;
+    }
+    
+    .view-rrhh-controls-row .view-rrhh-header {
+        flex-direction: column;
+        align-items: stretch !important;
+        gap: 8px;
+    }
+    
+    .view-rrhh-controls-row .view-rrhh-header strong {
+        font-size: 0.9rem;
+    }
+    
+    .view-rrhh-controls-row .view-rrhh-header input[type="date"] {
+        width: 100% !important;
+    }
+    
+    .view-rrhh-controls-row .admin-btn {
+        width: 100% !important;
+        justify-content: center;
+    }
 }
 
 

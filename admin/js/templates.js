@@ -76,22 +76,22 @@ const vistasPlantillas = {
             <div class="admin-card-header">
                 <h2 class="admin-card-title">Dashboard de Finanzas (Tesorería)</h2>
             </div>
-            <div style="display: flex; gap: 1rem; margin: 1.5rem; flex-wrap: wrap;">
-                <div class="admin-card metric-card" style="flex: 1; min-width: 200px;">
+            <div class="finance-metrics-grid">
+                <div class="admin-card metric-card">
                     <div class="metric-icon success-bg"><i class="fa-solid fa-arrow-trend-up"></i></div>
                     <div class="metric-details">
                         <h3 id="finanzasIngresosTotales">S/ 0.00</h3>
                         <p>Ingresos Totales</p>
                     </div>
                 </div>
-                <div class="admin-card metric-card" style="flex: 1; min-width: 200px;">
+                <div class="admin-card metric-card">
                     <div class="metric-icon danger-bg"><i class="fa-solid fa-arrow-trend-down"></i></div>
                     <div class="metric-details">
                         <h3 id="finanzasEgresosTotales">S/ 0.00</h3>
                         <p>Egresos Totales</p>
                     </div>
                 </div>
-                <div class="admin-card metric-card" style="flex: 1; min-width: 200px;">
+                <div class="admin-card metric-card">
                     <div class="metric-icon primary-bg"><i class="fa-solid fa-scale-balanced"></i></div>
                     <div class="metric-details">
                         <h3 id="finanzasBalanceBruto">S/ 0.00</h3>

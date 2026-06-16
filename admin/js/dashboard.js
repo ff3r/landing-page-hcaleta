@@ -726,7 +726,7 @@ function generarHtmlGridVista(fechaIso) {
             </button>
         </div>
 
-        <div style="margin: 1.5rem; display:flex; justify-content:space-between; align-items:center;">
+        <div class="view-rrhh-controls-row">
             <div class="view-rrhh-header" style="display:flex; align-items:center; gap: 15px;">
                 <strong style="color: var(--text-main); font-size:1rem;">Seleccione Fecha:</strong>
                 <input type="date" id="viewRrhhDate" value="${fechaIso}" max="${obtenerFechaHoy().iso}" style="background: var(--bg-body, #0f172a); color: var(--text-main, #f1f5f9); border: 1px solid var(--border-color, #334155); padding: 8px 14px; border-radius: 6px; outline: none;">
