@@ -1023,3 +1023,58 @@ body.dark-mode .email-patient-sidebar {
         padding: 10px !important;
     }
 }
+
+/* Barra de acciones de Paciente (CRM) */
+.patient-actions-bar {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border-color);
+    background-color: var(--bg-body);
+    display: flex;
+    justify-content: center;
+    transition: var(--transition);
+}
+
+.patient-actions-bar.hidden {
+    display: none !important;
+}
+
+/* Correcciones para SweetAlert2 en Modo Oscuro */
+body.dark-mode .swal2-popup {
+    background: #1e293b !important;
+    color: #f1f5f9 !important;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5) !important;
+    border: 1px solid #334155 !important;
+}
+
+body.dark-mode .swal2-title {
+    color: #f1f5f9 !important;
+}
+
+body.dark-mode .swal2-html-container {
+    color: #cbd5e1 !important;
+}
+
+body.dark-mode .swal2-input, 
+body.dark-mode .swal2-select,
+body.dark-mode .swal2-textarea {
+    background-color: #0f172a !important;
+    color: #f1f5f9 !important;
+    border: 1px solid #334155 !important;
+}
+
+body.dark-mode .swal2-input:focus,
+body.dark-mode .swal2-select:focus,
+body.dark-mode .swal2-textarea:focus {
+    border-color: var(--primary) !important;
+    box-shadow: 0 0 0 2px rgba(0, 153, 204, 0.2) !important;
+}
+
+body.dark-mode .swal2-cancel {
+    background-color: #475569 !important;
+    color: #f1f5f9 !important;
+}
+
+body.dark-mode .swal2-validation-message {
+    background-color: rgba(239, 68, 68, 0.15) !important;
+    color: #fca5a5 !important;
+}

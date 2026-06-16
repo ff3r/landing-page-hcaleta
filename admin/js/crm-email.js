@@ -226,12 +226,13 @@ document.addEventListener("DOMContentLoaded", () => {
             age: 34,
             phone: "987-654-321",
             address: "Jr. Alfonso Ugarte 120, Chimbote",
-            history: "Asma crónica. No reporta alergias a medicamentos.",
+            history: "Asma crónica (Salbutamol condicionado). Tratamiento activo de hipertensión arterial leve (Enalapril 10mg diario). Sin alergias alimentarias o medicamentosas.",
             summary: "Paciente en control activo por Especialidad de Cardiología.",
             visits: [
                 { date: "12/06/2026", desc: "Cita programada (Reprogramación solicitada)", doctor: "Dr. Roberto Díaz - Cardiología" },
                 { date: "05/04/2026", desc: "Chequeo Preventivo Anual", doctor: "Dra. Elena Ramos - Medicina General" },
-                { date: "10/01/2026", desc: "Consulta externa por arritmia leve", doctor: "Dr. Roberto Díaz - Cardiología" }
+                { date: "10/01/2026", desc: "Consulta externa por arritmia leve", doctor: "Dr. Roberto Díaz - Cardiología" },
+                { date: "15/11/2025", desc: "Electrocardiograma de esfuerzo y Holter", doctor: "Dr. Roberto Díaz - Cardiología" }
             ]
         },
         {
@@ -241,11 +242,12 @@ document.addEventListener("DOMContentLoaded", () => {
             age: 28,
             phone: "954-123-789",
             address: "Av. Pardo 840, Chimbote",
-            history: "Alérgica a la Penicilina. Gastritis leve en tratamiento.",
+            history: "Alérgica a la Penicilina (reacción cutánea severa). Gastritis crónica en tratamiento con Omeprazol 20mg. Anemia ferropénica en recuperación (Sulfato Ferroso 300mg diarios).",
             summary: "Paciente en espera de resultados clínicos de laboratorio.",
             visits: [
                 { date: "08/06/2026", desc: "Toma de muestras - Laboratorio Clínico", doctor: "Lic. Clara Flores - Patología" },
-                { date: "15/02/2026", desc: "Chequeo ginecológico y papanicolau", doctor: "Dra. Lucía Castro - Ginecología" }
+                { date: "15/02/2026", desc: "Chequeo ginecológico y papanicolau", doctor: "Dra. Lucía Castro - Ginecología" },
+                { date: "05/01/2026", desc: "Ecografía pélvica transvaginal de control", doctor: "Dra. Lucía Castro - Ginecología" }
             ]
         },
         {
@@ -255,11 +257,12 @@ document.addEventListener("DOMContentLoaded", () => {
             age: 52,
             phone: "923-456-789",
             address: "Urb. Buenos Aires H-21, Nuevo Chimbote",
-            history: "Hipertensión arterial controlada. Obesidad Grado I.",
+            history: "Hipertensión arterial Grado II (Losartán 50mg + Amlodipino 5mg diarios). Obesidad Grado I. Antecedente familiar directo de diabetes mellitus tipo 2.",
             summary: "Paciente regular de programas preventivos de hipertensión.",
             visits: [
                 { date: "22/05/2026", desc: "Control Trimestral de Presión Arterial", doctor: "Dr. Alejandro Pérez - Medicina General" },
-                { date: "14/12/2025", desc: "Examen de agudeza visual y refracción", doctor: "Dra. Sofía Véliz - Oftalmología" }
+                { date: "14/12/2025", desc: "Examen de agudeza visual y refracción", doctor: "Dra. Sofía Véliz - Oftalmología" },
+                { date: "10/08/2025", desc: "Descarte metabólico completo (Perfil Lipídico, Glucosa, HbA1c)", doctor: "Lic. Clara Flores - Laboratorio" }
             ]
         },
         {
@@ -269,11 +272,12 @@ document.addEventListener("DOMContentLoaded", () => {
             age: 41,
             phone: "934-567-890",
             address: "Urb. Casuarinas Mz E Lt 4, Nuevo Chimbote",
-            history: "Ninguna alergia conocida. Cesárea previa (2018).",
+            history: "Embarazo de 24 semanas (primigesta). Ninguna alergia conocida. Cesárea previa (2018) por distocia de presentación. Suplementada con Hierro y Ácido Fólico.",
             summary: "Paciente regular del programa de Control Materno.",
             visits: [
                 { date: "30/05/2026", desc: "Monitoreo y ecografía obstétrica", doctor: "Dra. Juana Aguilar - Ginecología" },
-                { date: "12/04/2026", desc: "Consulta externa de control prenatal", doctor: "Dra. Juana Aguilar - Ginecología" }
+                { date: "12/04/2026", desc: "Consulta externa de control prenatal", doctor: "Dra. Juana Aguilar - Ginecología" },
+                { date: "15/02/2026", desc: "Ecografía del primer trimestre y analíticas", doctor: "Dra. Juana Aguilar - Ginecología" }
             ]
         },
         {
@@ -283,11 +287,12 @@ document.addEventListener("DOMContentLoaded", () => {
             age: 47,
             phone: "945-678-901",
             address: "Pueblo Joven Miraflores Alto, Chimbote",
-            history: "Diabetes Mellitus Tipo II en tratamiento con Metformina.",
+            history: "Diabetes Mellitus Tipo II (Metformina 850mg c/12h + Glibenclamida 5mg mañana). Neuropatía diabética leve en miembros inferiores. Sin alergias reportadas.",
             summary: "Paciente crónico del programa de Endocrinología.",
             visits: [
                 { date: "03/06/2026", desc: "Control de Glucosa y ajuste de dosis", doctor: "Dr. Carlos Valdivia - Endocrinología" },
-                { date: "10/03/2026", desc: "Examen de perfil renal y glucosa", doctor: "Lic. Clara Flores - Laboratorio" }
+                { date: "10/03/2026", desc: "Examen de perfil renal y glucosa", doctor: "Lic. Clara Flores - Laboratorio" },
+                { date: "15/11/2025", desc: "Evaluación de pie diabético y sensibilidad", doctor: "Dr. Carlos Valdivia - Endocrinología" }
             ]
         },
         {
@@ -297,11 +302,12 @@ document.addEventListener("DOMContentLoaded", () => {
             age: 31,
             phone: "956-789-012",
             address: "Jr. Leoncio Prado 451, Chimbote",
-            history: "Rinitis alérgica estacional. Operada de apendicitis en 2021.",
+            history: "Rinitis alérgica severa a ácaros y polen de gramíneas (Cetirizina 10mg / Fluticasona nasal). Operada de apendicitis aguda en 2021. Alérgica a las sulfas.",
             summary: "Fidelización de paciente: Nivel Plata en servicios clínicos.",
             visits: [
                 { date: "01/06/2026", desc: "Consulta por alergia severa", doctor: "Dr. Javier Solís - Inmunología" },
-                { date: "24/04/2026", desc: "Examen de descarte alérgico", doctor: "Lic. Clara Flores - Laboratorio" }
+                { date: "24/04/2026", desc: "Examen de descarte alérgico", doctor: "Lic. Clara Flores - Laboratorio" },
+                { date: "12/12/2025", desc: "Espirometría de control pulmonar", doctor: "Dr. Javier Solís - Inmunología" }
             ]
         },
         {
@@ -311,11 +317,12 @@ document.addEventListener("DOMContentLoaded", () => {
             age: 65,
             phone: "967-890-123",
             address: "Pueblo Joven 2 de Mayo Mz C Lt 12, Chimbote",
-            history: "Artrosis de rodilla derecha. Gastropatía erosiva.",
+            history: "Artrosis moderada de rodilla derecha (Grado II). Gastropatía erosiva por uso crónico de AINEs. Prescripción: Celecoxib 200mg y Glucosamina + Condroitina diaria.",
             summary: "Paciente de la tercera edad afiliado al programa de Rehabilitación.",
             visits: [
                 { date: "28/05/2026", desc: "Sesión de terapia física de rodilla", doctor: "Lic. Pedro Castillo - Fisioterapia" },
-                { date: "15/04/2026", desc: "Consulta por dolor articular crónico", doctor: "Dr. Marcos Reyes - Traumatología" }
+                { date: "15/04/2026", desc: "Consulta por dolor articular crónico", doctor: "Dr. Marcos Reyes - Traumatología" },
+                { date: "10/02/2026", desc: "Infiltración intraarticular con ácido hialurónico", doctor: "Dr. Marcos Reyes - Traumatología" }
             ]
         },
         {
@@ -325,11 +332,12 @@ document.addEventListener("DOMContentLoaded", () => {
             age: 29,
             phone: "978-901-234",
             address: "Urb. Los Álamos C-14, Nuevo Chimbote",
-            history: "Hipotiroidismo (Levotiroxina 100mcg). Alergia a las sulfas.",
+            history: "Hipotiroidismo primario (Levotiroxina sódica 100mcg c/24h en ayunas). Alergia a las sulfas y al Ibuprofeno. Ansiedad generalizada en psicoterapia.",
             summary: "Control regular en Consulta Externa de Endocrinología.",
             visits: [
                 { date: "27/05/2026", desc: "Examen de TSH y T4 libre", doctor: "Lic. Clara Flores - Laboratorio" },
-                { date: "12/03/2026", desc: "Consulta endocrinológica de control", doctor: "Dr. Carlos Valdivia - Endocrinología" }
+                { date: "12/03/2026", desc: "Consulta endocrinológica de control", doctor: "Dr. Carlos Valdivia - Endocrinología" },
+                { date: "08/01/2026", desc: "Terapia de soporte emocional - Psicología", doctor: "Lic. Martín Ortiz - Psicología" }
             ]
         },
         {
@@ -339,11 +347,12 @@ document.addEventListener("DOMContentLoaded", () => {
             age: 38,
             phone: "989-012-345",
             address: "Jr. Caraz 214, Chimbote",
-            history: "Obesidad Grado II. Hígado graso en tratamiento nutricional.",
+            history: "Obesidad Grado II (IMC 36.2). Hígado graso moderado (Esteatosis hepática). Ácido úrico elevado (Hiperuricemia). Dieta hipocalórica y ejercicio guiado.",
             summary: "Paciente en el programa de Estilo de Vida Saludable.",
             visits: [
                 { date: "02/06/2026", desc: "Evaluación corporal y plan dietético", doctor: "Lic. Sandra Medina - Nutrición" },
-                { date: "18/04/2026", desc: "Control general y descarte lipídico", doctor: "Dra. Elena Ramos - Medicina General" }
+                { date: "18/04/2026", desc: "Control general y descarte lipídico", doctor: "Dra. Elena Ramos - Medicina General" },
+                { date: "12/01/2026", desc: "Ecografía hepatobiliar de control", doctor: "Lic. Roberto Ruiz - Imagenología" }
             ]
         },
         {
@@ -353,11 +362,12 @@ document.addEventListener("DOMContentLoaded", () => {
             age: 44,
             phone: "990-123-456",
             address: "P.J. Florida Alta Jr. Ica 320, Chimbote",
-            history: "Migraña crónica. No registra alergias.",
+            history: "Migraña con aura recurrente (tratamiento preventivo con Topiramato 50mg / crisis con Sumatriptán 50mg). Hernia discal lumbar L4-L5 sin indicación quirúrgica.",
             summary: "Paciente en control por Neurología.",
             visits: [
                 { date: "05/06/2026", desc: "Evaluación y ajuste de analgésicos", doctor: "Dr. Hugo Morán - Neurología" },
-                { date: "22/02/2026", desc: "Resonancia magnética de cráneo", doctor: "Lic. Roberto Ruiz - Imagenología" }
+                { date: "22/02/2026", desc: "Resonancia magnética de cráneo", doctor: "Lic. Roberto Ruiz - Imagenología" },
+                { date: "14/10/2025", desc: "Consulta externa de Neurología por cefalea", doctor: "Dr. Hugo Morán - Neurología" }
             ]
         },
         {
@@ -667,16 +677,19 @@ document.addEventListener("DOMContentLoaded", () => {
                 // Vincular Acción: Reprogramar Cita Rápida
                 document.getElementById("btnSidebarReprogram").onclick = () => {
                     const currentDateVal = nextVisit ? nextVisit.date : "";
+                    const isDark = document.body.classList.contains("dark-mode");
                     
                     Swal.fire({
                         title: 'Reprogramar Consulta Externa',
+                        background: isDark ? '#1e293b' : '#fff',
+                        color: isDark ? '#f1f5f9' : '#1e293b',
                         html: `
-                            <div style="text-align: left; font-size: 0.95rem; color: var(--text-main, #333);">
+                            <div style="text-align: left; font-size: 0.95rem; color: inherit;">
                                 <p style="margin-bottom: 8px;"><strong>Paciente:</strong> ${patient.name}</p>
                                 <p style="margin-bottom: 8px;"><strong>Médico/Servicio:</strong> ${nextVisit ? nextVisit.doctor : 'Consulta General'}</p>
                                 <hr style="border-color: var(--border-color, #e2e8f0); margin: 12px 0;">
                                 <label for="swalNewDate" style="display:block; font-weight:600; margin-bottom: 6px;">Seleccione Nueva Fecha:</label>
-                                <input type="date" id="swalNewDate" class="swal2-input" style="width: 100%; margin: 0;" value="${currentDateVal.split('/').reverse().join('-')}">
+                                <input type="date" id="swalNewDate" class="swal2-input" style="width: 100%; margin: 0; background: ${isDark ? '#0f172a' : '#fff'}; color: ${isDark ? '#f1f5f9' : '#1e293b'}; border: 1px solid var(--border-color);" value="${currentDateVal.split('/').reverse().join('-')}">
                             </div>
                         `,
                         showCancelButton: true,
@@ -717,7 +730,9 @@ document.addEventListener("DOMContentLoaded", () => {
                                 icon: 'success',
                                 title: 'Cita Reprogramada',
                                 text: `Se cambió la cita al ${formattedDate}. Notificación enviada al paciente.`,
-                                confirmButtonColor: 'var(--primary, #0099cc)'
+                                confirmButtonColor: 'var(--primary, #0099cc)',
+                                background: isDark ? '#1e293b' : '#fff',
+                                color: isDark ? '#f1f5f9' : '#1e293b'
                             });
                         }
                     });
@@ -933,8 +948,10 @@ document.addEventListener("DOMContentLoaded", () => {
             selectedEmailId = null;
             selectedPatientId = null;
 
+            const patientActionsBar = document.getElementById("patientActionsBar");
             if (folderName === "patients") {
                 searchBarInput.placeholder = "Buscar paciente por Nombre o DNI...";
+                if (patientActionsBar) patientActionsBar.classList.remove("hidden");
                 
                 emailList.classList.add("hidden");
                 patientList.classList.remove("hidden");
@@ -945,6 +962,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 renderPatientsList();
             } else {
                 searchBarInput.placeholder = "Buscar en la bandeja...";
+                if (patientActionsBar) patientActionsBar.classList.add("hidden");
                 
                 emailList.classList.remove("hidden");
                 patientList.classList.add("hidden");
@@ -1050,6 +1068,111 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
     });
+
+    // 13. REGISTRAR NUEVO PACIENTE EN CRM
+    const btnRegisterPatient = document.getElementById("btnRegisterPatient");
+    if (btnRegisterPatient) {
+        btnRegisterPatient.addEventListener("click", () => {
+            const isDark = document.body.classList.contains("dark-mode");
+            Swal.fire({
+                title: 'Registrar Nuevo Paciente en CRM',
+                background: isDark ? '#1e293b' : '#fff',
+                color: isDark ? '#f1f5f9' : '#1e293b',
+                html: `
+                    <div style="text-align: left; font-size: 0.9rem; display: flex; flex-direction: column; gap: 10px;">
+                        <div>
+                            <label style="display:block; font-weight:600; margin-bottom: 4px;">Nombre Completo:</label>
+                            <input type="text" id="newPatientName" class="swal2-input" style="width: 100%; margin: 0; background: ${isDark ? '#0f172a' : '#fff'}; color: ${isDark ? '#f1f5f9' : '#1e293b'}; border: 1px solid var(--border-color);" placeholder="Ej. Juan López">
+                        </div>
+                        <div style="display: flex; gap: 10px;">
+                            <div style="flex: 1;">
+                                <label style="display:block; font-weight:600; margin-bottom: 4px;">DNI:</label>
+                                <input type="text" id="newPatientDni" class="swal2-input" style="width: 100%; margin: 0; background: ${isDark ? '#0f172a' : '#fff'}; color: ${isDark ? '#f1f5f9' : '#1e293b'}; border: 1px solid var(--border-color);" placeholder="8 dígitos" maxlength="8">
+                            </div>
+                            <div style="flex: 1;">
+                                <label style="display:block; font-weight:600; margin-bottom: 4px;">Edad:</label>
+                                <input type="number" id="newPatientAge" class="swal2-input" style="width: 100%; margin: 0; background: ${isDark ? '#0f172a' : '#fff'}; color: ${isDark ? '#f1f5f9' : '#1e293b'}; border: 1px solid var(--border-color);" placeholder="Años">
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 10px;">
+                            <div style="flex: 1;">
+                                <label style="display:block; font-weight:600; margin-bottom: 4px;">Teléfono:</label>
+                                <input type="text" id="newPatientPhone" class="swal2-input" style="width: 100%; margin: 0; background: ${isDark ? '#0f172a' : '#fff'}; color: ${isDark ? '#f1f5f9' : '#1e293b'}; border: 1px solid var(--border-color);" placeholder="Ej. 987654321">
+                            </div>
+                            <div style="flex: 1;">
+                                <label style="display:block; font-weight:600; margin-bottom: 4px;">Dirección:</label>
+                                <input type="text" id="newPatientAddress" class="swal2-input" style="width: 100%; margin: 0; background: ${isDark ? '#0f172a' : '#fff'}; color: ${isDark ? '#f1f5f9' : '#1e293b'}; border: 1px solid var(--border-color);" placeholder="Jr. Lima 123">
+                            </div>
+                        </div>
+                        <div>
+                            <label style="display:block; font-weight:600; margin-bottom: 4px;">Alergias e Historial:</label>
+                            <input type="text" id="newPatientHistory" class="swal2-input" style="width: 100%; margin: 0; background: ${isDark ? '#0f172a' : '#fff'}; color: ${isDark ? '#f1f5f9' : '#1e293b'}; border: 1px solid var(--border-color);" placeholder="Alergias, condiciones médicas">
+                        </div>
+                    </div>
+                `,
+                showCancelButton: true,
+                confirmButtonColor: 'var(--primary, #0099cc)',
+                cancelButtonColor: 'var(--text-muted, #64748b)',
+                confirmButtonText: 'Registrar Paciente',
+                cancelButtonText: 'Cancelar',
+                preConfirm: () => {
+                    const name = document.getElementById('newPatientName').value.trim();
+                    const dni = document.getElementById('newPatientDni').value.trim();
+                    const age = document.getElementById('newPatientAge').value.trim();
+                    const phone = document.getElementById('newPatientPhone').value.trim();
+                    const address = document.getElementById('newPatientAddress').value.trim();
+                    const history = document.getElementById('newPatientHistory').value.trim();
+                    
+                    if (!name || !dni || !age || !phone) {
+                        Swal.showValidationMessage('Nombre, DNI, Edad y Teléfono son obligatorios');
+                        return false;
+                    }
+                    if (dni.length !== 8 || isNaN(dni)) {
+                        Swal.showValidationMessage('El DNI debe ser numérico de 8 dígitos');
+                        return false;
+                    }
+                    
+                    return { name, dni, age, phone, address, history };
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const data = result.value;
+                    const newPatient = {
+                        id: (patientsData.length + 1).toString(),
+                        name: data.name,
+                        dni: data.dni,
+                        age: parseInt(data.age),
+                        phone: data.phone,
+                        address: data.address || "No registrada",
+                        history: data.history || "Ninguno reportado",
+                        summary: "Paciente registrado recientemente en el CRM.",
+                        visits: [
+                            { date: new Date().toLocaleDateString('es-PE'), desc: "Registro inicial de paciente en Intranet", doctor: "Sistema CRM Correo" }
+                        ]
+                    };
+                    
+                    patientsData.push(newPatient);
+                    selectedPatientId = newPatient.id;
+                    renderPatientsList();
+
+                    // Soporte responsivo para móvil (mostrar panel de lectura con la ficha)
+                    const appCard = document.querySelector(".email-app-card");
+                    if (appCard && window.innerWidth <= 768) {
+                        appCard.classList.add("show-reading");
+                    }
+                    
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Paciente Registrado',
+                        text: `${data.name} ha sido ingresado correctamente al CRM del hospital.`,
+                        confirmButtonColor: 'var(--primary, #0099cc)',
+                        background: isDark ? '#1e293b' : '#fff',
+                        color: isDark ? '#f1f5f9' : '#1e293b'
+                    });
+                }
+            });
+        });
+    }
 
     // Inicializar bandeja
     updateFolderBadges();
