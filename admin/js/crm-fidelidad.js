@@ -11,6 +11,70 @@ document.addEventListener("DOMContentLoaded", () => {
         { name: "Juan Manuel Castro", dni: "40789012", tier: "Bronce", badgeClass: "admin-badge-success", points: 150, lastVis: "28/05/2026" }
     ];
 
+    // =========================
+// REGISTRAR PACIENTE
+// =========================
+
+    const registerPatientForm =
+        document.getElementById("registerPatientForm");
+
+    if (registerPatientForm) {
+
+        registerPatientForm.addEventListener(
+            "submit",
+            function (e) {
+
+                e.preventDefault();
+
+                const name =
+                    document.getElementById("newPatientName")
+                        .value.trim();
+
+                const dni =
+                    document.getElementById("newPatientDni")
+                        .value.trim();
+
+                if (!name || !dni) {
+                    alert("Complete todos los campos.");
+                    return;
+                }
+
+                if (!/^\d{8}$/.test(dni)) {
+                    alert("El DNI debe contener exactamente 8 dígitos.");
+                    return;
+                }
+
+                const existe = loyaltyPatients.some(
+                    patient => patient.dni === dni
+                );
+
+                if (existe) {
+                    alert("Ya existe un paciente con ese DNI.");
+                    return;
+                }
+
+                loyaltyPatients.push({
+                    name: name,
+                    dni: dni,
+                    tier: "Bronce",
+                    badgeClass: "admin-badge-success",
+                    points: 0,
+                    lastVis: new Date().toLocaleDateString("es-PE")
+                });
+
+                renderPatientsTable();
+                updateMetrics();
+
+                registerPatientForm.reset();
+
+                alert(
+                    `Paciente registrado correctamente.\n\nNombre: ${name}\nDNI: ${dni}`
+                );
+            }
+        );
+    }
+
+
     // beneficios costos
 
     function getTier(points) {
@@ -55,7 +119,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const totalRedeemedBenefitsEl = document.getElementById("totalRedeemedBenefits");
     const redemptionForm = document.getElementById("redemptionForm");
     const pointsAssignmentForm =document.getElementById("pointsAssignmentForm");
-
+    const totalPatientsEl =document.getElementById("totalPatients");
 
     // Costo de Puntos por Beneficios
     const benefitCosts = {
@@ -100,6 +164,10 @@ document.addEventListener("DOMContentLoaded", () => {
             // El total de canjes de este mes será la cantidad de registros en el historial
             totalRedeemedBenefitsEl.textContent = (140 + redemptionsLog.length).toString();
         }
+        if (totalPatientsEl) {
+            totalPatientsEl.textContent =loyaltyPatients.length;
+        }
+
     };
 
     // 4. RENDERIZAR LA TABLA DE PACIENTES DE FIDELIDAD
@@ -364,3 +432,5 @@ document.addEventListener("DOMContentLoaded", () => {
     updateMetrics();
     initChart();
 });
+
+
