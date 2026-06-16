@@ -66,7 +66,16 @@ personalData = personalData.map(p => ({
     sueldoBase: typeof p.sueldoBase === 'number' ? p.sueldoBase : 2500,
     turno: p.turno || "Sin Asignar"
 }));
-if (!localStorage.getItem('erp_personal')) localStorage.setItem('erp_personal', JSON.stringify(personalData));
+
+// Si hay menos de 25 empleados en el localStorage, inyectar los default para tener una base representativa
+if (personalData.length < 25) {
+    defaultPersonal.forEach(dp => {
+        if (!personalData.some(p => p.nombre.toLowerCase() === dp.nombre.toLowerCase())) {
+            personalData.push(dp);
+        }
+    });
+}
+localStorage.setItem('erp_personal', JSON.stringify(personalData));
 
 // Configuración Global de Notificaciones (Toast)
 const Toast = Swal.mixin({
@@ -833,6 +842,31 @@ function generarHtmlGridVista(fechaIso) {
             <span style="font-size: 0.75rem; color: var(--text-muted); margin-left: auto;">(Selecciona un turno y haz clic en la fila de un empleado para rellenar)</span>
         </div>
 
+        <!-- Leyenda de colores y bloques de turnos -->
+        <div style="margin: 0 1.5rem 1.2rem 1.5rem; display: flex; gap: 15px; flex-wrap: wrap; align-items: center; font-size: 0.8rem; background: var(--bg-body, #0f172a); padding: 8px 15px; border-radius: 8px; border: 1px solid var(--border-color, #334155);">
+            <span style="color: var(--text-muted);"><strong>Leyenda de Asistencias:</strong></span>
+            <div class="gantt-legend-item">
+                <span class="gantt-legend-badge" style="background: rgba(56,189,248,0.15); color: #38bdf8;">M</span>
+                <span>TM (Mañana, 07:00 - 13:00)</span>
+            </div>
+            <div class="gantt-legend-item">
+                <span class="gantt-legend-badge" style="background: rgba(251,191,36,0.15); color: #fbbf24;">T</span>
+                <span>TT (Tarde, 13:00 - 19:00)</span>
+            </div>
+            <div class="gantt-legend-item">
+                <span class="gantt-legend-badge" style="background: rgba(192,132,252,0.15); color: #c084fc;">N</span>
+                <span>TN (Noche, 19:00 - 07:00)</span>
+            </div>
+            <div class="gantt-legend-item">
+                <span class="gantt-legend-badge" style="background: rgba(52,211,153,0.15); color: #34d399;">G</span>
+                <span>Guardia (24 horas)</span>
+            </div>
+            <div class="gantt-legend-item" style="margin-left: auto;">
+                <span class="gantt-legend-badge" style="border: 1px solid var(--border-color); color: var(--border-color);">✓</span>
+                <span>Asistencia Común</span>
+            </div>
+        </div>
+
         <div style="margin: 0 1.5rem 1.5rem 1.5rem; position: relative;">
             <div class="view-rrhh-grid-container" style="max-width: 100%;">
                 <div class="view-rrhh-time-header">
@@ -1087,9 +1121,12 @@ function volverAGestionPersonal() {
 }
 
 function renderizarRRHH() {
-    const tbody = document.getElementById("lista-personal-rrhh");
-    if (!tbody) return;
-    tbody.innerHTML = "";
+    const tbodyAsis = document.getElementById("lista-personal-rrhh-asistencia");
+    const tbodyPlanilla = document.getElementById("lista-personal-rrhh-planilla");
+    if (!tbodyAsis && !tbodyPlanilla) return;
+
+    if (tbodyAsis) tbodyAsis.innerHTML = "";
+    if (tbodyPlanilla) tbodyPlanilla.innerHTML = "";
 
     // Mostrar fecha de hoy en la UI
     const { iso, legible } = obtenerFechaHoy();
@@ -1129,39 +1166,107 @@ function renderizarRRHH() {
 
         const badgeColor = estadoHoy === 'Presente' ? '#22c55e' : estadoHoy === 'Ausente' ? '#ef4444' : '#f59e0b';
 
-        tbody.innerHTML += `
-            <tr>
-                <td><strong>${persona.nombre}</strong></td>
-                <td>${persona.especialidad}</td>
-                <td>
-                    <select class="turno-select" data-index="${index}" style="padding: 5px 8px; border-radius: 6px; background: var(--card-bg); color: var(--text-color); border: 1px solid var(--border-color); font-size:0.9rem;">
-                        <option value="Sin Asignar" ${persona.turno==='Sin Asignar'?'selected':''}>Sin Asignar</option>
-                        <option value="TM" ${persona.turno==='TM'?'selected':''}>TM (Mañana)</option>
-                        <option value="TT" ${persona.turno==='TT'?'selected':''}>TT (Tarde)</option>
-                        <option value="TN" ${persona.turno==='TN'?'selected':''}>TN (Noche)</option>
-                        <option value="Guardia" ${persona.turno==='Guardia'?'selected':''}>Guardia</option>
-                    </select>
-                </td>
-                <td>
-                    <select class="asistencia-select" data-index="${index}" style="padding: 5px 8px; border-radius: 6px; background: var(--card-bg); color: var(--text-color); border: 1px solid var(--border-color); font-size:0.9rem;">
-                        <option value="Pendiente" ${estadoHoy==='Pendiente'?'selected':''}>⏳ Pendiente</option>
-                        <option value="Presente" ${estadoHoy==='Presente'?'selected':''}>✅ Presente</option>
-                        <option value="Ausente" ${estadoHoy==='Ausente'?'selected':''}>❌ Ausente</option>
-                    </select>
-                </td>
-                <td style="text-align: right; white-space: nowrap;">
-                    <button class="admin-btn admin-badge-danger btn-eliminar-personal" data-index="${index}" style="padding: 4px 8px; border:none; border-radius:4px; cursor:pointer;" title="Eliminar trabajador"><i class="fa-solid fa-trash"></i></button>
-                </td>
-            </tr>
-        `;
+        // Llenar tabla de asistencia (Panel 1)
+        if (tbodyAsis) {
+            tbodyAsis.innerHTML += `
+                <tr>
+                    <td><strong>${persona.nombre}</strong></td>
+                    <td>${persona.especialidad}</td>
+                    <td>
+                        <select class="turno-select" data-index="${index}" style="padding: 5px 8px; border-radius: 6px; background: var(--card-bg); color: var(--text-color); border: 1px solid var(--border-color); font-size:0.9rem;">
+                            <option value="Sin Asignar" ${persona.turno==='Sin Asignar'?'selected':''}>Sin Asignar</option>
+                            <option value="TM" ${persona.turno==='TM'?'selected':''}>TM (Mañana)</option>
+                            <option value="TT" ${persona.turno==='TT'?'selected':''}>TT (Tarde)</option>
+                            <option value="TN" ${persona.turno==='TN'?'selected':''}>TN (Noche)</option>
+                            <option value="Guardia" ${persona.turno==='Guardia'?'selected':''}>Guardia</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select class="asistencia-select" data-index="${index}" style="padding: 5px 8px; border-radius: 6px; background: var(--card-bg); color: var(--text-color); border: 1px solid var(--border-color); font-size:0.9rem;">
+                            <option value="Pendiente" ${estadoHoy==='Pendiente'?'selected':''}>⏳ Pendiente</option>
+                            <option value="Presente" ${estadoHoy==='Presente'?'selected':''}>✅ Presente</option>
+                            <option value="Ausente" ${estadoHoy==='Ausente'?'selected':''}>❌ Ausente</option>
+                        </select>
+                    </td>
+                </tr>
+            `;
+        }
+
+        // Llenar tabla de planilla y datos (Panel 2)
+        if (tbodyPlanilla) {
+            tbodyPlanilla.innerHTML += `
+                <tr id="fila-personal-${index}">
+                    <td><strong>${persona.nombre}</strong></td>
+                    <td>${persona.especialidad}</td>
+                    <td><strong>S/ ${(persona.sueldoBase || 0).toLocaleString('es-PE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong></td>
+                    <td>
+                        <select class="turno-select" data-index="${index}" style="padding: 5px 8px; border-radius: 6px; background: var(--card-bg); color: var(--text-color); border: 1px solid var(--border-color); font-size:0.9rem;">
+                            <option value="Sin Asignar" ${persona.turno==='Sin Asignar'?'selected':''}>Sin Asignar</option>
+                            <option value="TM" ${persona.turno==='TM'?'selected':''}>TM (Mañana)</option>
+                            <option value="TT" ${persona.turno==='TT'?'selected':''}>TT (Tarde)</option>
+                            <option value="TN" ${persona.turno==='TN'?'selected':''}>TN (Noche)</option>
+                            <option value="Guardia" ${persona.turno==='Guardia'?'selected':''}>Guardia</option>
+                        </select>
+                    </td>
+                    <td style="text-align: right; white-space: nowrap;">
+                        <button class="admin-btn admin-btn-secondary btn-editar-personal" data-index="${index}" style="padding: 4px 8px; margin-right: 5px;" title="Editar datos del personal"><i class="fa-solid fa-pen"></i></button>
+                        <button class="admin-btn admin-badge-danger btn-eliminar-personal" data-index="${index}" style="padding: 4px 8px; border:none; border-radius:4px; cursor:pointer;" title="Eliminar trabajador"><i class="fa-solid fa-trash"></i></button>
+                    </td>
+                </tr>
+            `;
+        }
     });
 
-    // Escuchar cambios de turno
+    // Configurar comportamiento de pestañas
+    const tabAsis = document.getElementById('tabRrhhAsistencia');
+    const tabPlanilla = document.getElementById('tabRrhhPlanilla');
+    const panelAsis = document.getElementById('panelRrhhAsistencia');
+    const panelPlanilla = document.getElementById('panelRrhhPlanilla');
+    
+    if (tabAsis && tabPlanilla && panelAsis && panelPlanilla) {
+        tabAsis.onclick = () => {
+            tabAsis.classList.add('active');
+            tabPlanilla.classList.remove('active');
+            tabAsis.style.color = 'var(--primary)';
+            tabAsis.style.borderBottomColor = 'var(--primary)';
+            tabPlanilla.style.color = 'var(--text-muted)';
+            tabPlanilla.style.borderBottomColor = 'transparent';
+            panelAsis.style.display = 'block';
+            panelPlanilla.style.display = 'none';
+        };
+        
+        tabPlanilla.onclick = () => {
+            tabPlanilla.classList.add('active');
+            tabAsis.classList.remove('active');
+            tabPlanilla.style.color = 'var(--primary)';
+            tabPlanilla.style.borderBottomColor = 'var(--primary)';
+            tabAsis.style.color = 'var(--text-muted)';
+            tabAsis.style.borderBottomColor = 'transparent';
+            panelAsis.style.display = 'none';
+            panelPlanilla.style.display = 'block';
+        };
+    }
+
+    // Escuchar edición de personal
+    document.querySelectorAll('.btn-editar-personal').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const idx = parseInt(btn.dataset.index);
+            habilitarEdicionPersonal(idx);
+        });
+    });
+
+    // Escuchar cambios de turno (en cualquiera de las dos tablas)
     document.querySelectorAll('.turno-select').forEach(sel => {
         sel.addEventListener('change', (e) => {
             const idx = parseInt(e.target.dataset.index);
             personalData[idx].turno = e.target.value;
             localStorage.setItem('erp_personal', JSON.stringify(personalData));
+            
+            // Sincronizar el otro selector de turno en la otra pestaña
+            document.querySelectorAll(`.turno-select[data-index="${idx}"]`).forEach(otherSel => {
+                otherSel.value = e.target.value;
+            });
+            
             Toast.fire({ icon: 'success', title: `Turno de ${personalData[idx].nombre} actualizado` });
         });
     });
@@ -1237,6 +1342,109 @@ function registrarPersonal(event) {
     renderizarRRHH();
     event.target.reset();
     Toast.fire({ icon: 'success', title: 'Personal registrado correctamente' });
+}
+
+function habilitarEdicionPersonal(index) {
+    const fila = document.getElementById(`fila-personal-${index}`);
+    if (!fila) return;
+    
+    const persona = personalData[index];
+    
+    fila.innerHTML = `
+        <td>
+            <input type="text" id="edit-personal-nombre-${index}" value="${persona.nombre}" style="width: 100%; padding: 6px; border: 1px solid var(--border-color); border-radius: 6px; background: var(--card-bg); color: var(--text-color);">
+        </td>
+        <td>
+            <input type="text" id="edit-personal-cargo-${index}" value="${persona.especialidad}" style="width: 100%; padding: 6px; border: 1px solid var(--border-color); border-radius: 6px; background: var(--card-bg); color: var(--text-color);">
+        </td>
+        <td>
+            <input type="number" id="edit-personal-sueldo-${index}" value="${persona.sueldoBase || 2500}" style="width: 90px; padding: 6px; border: 1px solid var(--border-color); border-radius: 6px; background: var(--card-bg); color: var(--text-color);" min="0">
+        </td>
+        <td>
+            <span class="admin-badge admin-badge-muted" style="padding: 5px 8px;">Editando...</span>
+        </td>
+        <td>
+            <span class="admin-badge admin-badge-muted" style="padding: 5px 8px;">Editando...</span>
+        </td>
+        <td style="text-align: right; white-space: nowrap;">
+            <button class="admin-btn admin-badge-success btn-guardar-personal-edit" style="padding: 4px 10px; border:none; border-radius:4px; cursor:pointer; margin-right: 5px;">Guardar</button>
+            <button class="admin-btn admin-btn-secondary btn-cancelar-personal-edit" style="padding: 4px 10px; border:none; border-radius:4px; cursor:pointer;">Cancelar</button>
+        </td>
+    `;
+    
+    fila.querySelector('.btn-guardar-personal-edit').addEventListener('click', () => {
+        guardarEdicionPersonal(index);
+    });
+    
+    fila.querySelector('.btn-cancelar-personal-edit').addEventListener('click', () => {
+        renderizarRRHH();
+    });
+}
+
+function guardarEdicionPersonal(index) {
+    const nuevoNombre = document.getElementById(`edit-personal-nombre-${index}`).value.trim();
+    const nuevoCargo = document.getElementById(`edit-personal-cargo-${index}`).value.trim();
+    const nuevoSueldo = parseFloat(document.getElementById(`edit-personal-sueldo-${index}`).value);
+    
+    if (!nuevoNombre || !nuevoCargo || isNaN(nuevoSueldo) || nuevoSueldo < 0) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Datos inválidos',
+            text: 'Por favor complete todos los campos con valores válidos.',
+            confirmButtonColor: '#0099cc'
+        });
+        return;
+    }
+    
+    // Si cambió de nombre, verificar que no esté duplicado con otro index
+    if (personalData.some((p, i) => i !== index && p.nombre.toLowerCase() === nuevoNombre.toLowerCase())) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Ya existe',
+            text: `Ya hay otro trabajador registrado con el nombre "${nuevoNombre}".`,
+            confirmButtonColor: '#0099cc'
+        });
+        return;
+    }
+    
+    const nombreAnterior = personalData[index].nombre;
+    
+    // Actualizar datos
+    personalData[index].nombre = nuevoNombre;
+    personalData[index].especialidad = nuevoCargo;
+    personalData[index].sueldoBase = nuevoSueldo;
+    
+    localStorage.setItem('erp_personal', JSON.stringify(personalData));
+    
+    // Si cambió de nombre, renombrar la clave en las asistencias existentes para no perder su historial
+    if (nombreAnterior !== nuevoNombre) {
+        renombrarHistoricoAsistencia(nombreAnterior, nuevoNombre);
+    }
+    
+    renderizarRRHH();
+    
+    Toast.fire({
+        icon: 'success',
+        title: 'Datos del trabajador actualizados'
+    });
+}
+
+function renombrarHistoricoAsistencia(anterior, nuevo) {
+    for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key && key.startsWith('asistencias_')) {
+            try {
+                let data = JSON.parse(localStorage.getItem(key)) || {};
+                if (data[anterior] !== undefined) {
+                    data[nuevo] = data[anterior];
+                    delete data[anterior];
+                    localStorage.setItem(key, JSON.stringify(data));
+                }
+            } catch (e) {
+                console.error("Error al renombrar asistencia en clave:", key, e);
+            }
+        }
+    }
 }function calcularPlanillaMensual() {
     const hoy = new Date();
     const anioMes = hoy.toISOString().substring(0, 7); // "YYYY-MM"
