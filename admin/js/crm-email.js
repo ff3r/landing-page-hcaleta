@@ -20,7 +20,8 @@ document.addEventListener("DOMContentLoaded", () => {
                    <p>Agradezco de antemano su atención.</p>
                    <br>
                    <p>Atentamente,<br><strong>Carlos Mendoza</strong><br>DNI: 47859612</p>`,
-            unread: true
+            unread: true,
+            category: "paciente"
         },
         {
             id: "2",
@@ -35,7 +36,8 @@ document.addEventListener("DOMContentLoaded", () => {
                    <p>Ya han pasado más de 30 horas y aún no he recibido ningún documento en mi bandeja de entrada ni en spam. Agradecería que revisen mi caso a la brevedad, ya que tengo cita médica mañana y requiero esos resultados.</p>
                    <br>
                    <p>Datos adicionales:<br>Paciente: María del Carmen Espinoza Saldaña<br>DNI: 48956231</p>`,
-            unread: true
+            unread: true,
+            category: "paciente"
         },
         {
             id: "3",
@@ -52,7 +54,8 @@ document.addEventListener("DOMContentLoaded", () => {
                    <p>Quedo a la espera de su respuesta para proceder con la firma de la documentación.</p>
                    <br>
                    <p>Atentamente,<br><strong>Dr. Alejandro Pérez V.</strong><br>Especialista en Pediatría - CNP 45896</p>`,
-            unread: false
+            unread: false,
+            category: "medico"
         },
         {
             id: "4",
@@ -64,7 +67,8 @@ document.addEventListener("DOMContentLoaded", () => {
             body: `<p>Buenas tardes,</p>
                    <p>Mi hijo de 5 años fue atendido el día de ayer por pediatría. Le recetaron Paracetamol en jarabe de 120mg/5ml, pero en la receta no se lee bien la dosis en ml que debe tomar cada 8 horas. El niño pesa 18 kg. ¿Podrían confirmarme la dosis correcta, por favor?</p>
                    <p>Muchas gracias.</p>`,
-            unread: true
+            unread: true,
+            category: "paciente"
         },
         {
             id: "5",
@@ -75,7 +79,8 @@ document.addEventListener("DOMContentLoaded", () => {
             subject: "Error al intentar reservar cita en la web",
             body: `<p>Estimados señores,</p>
                    <p>Intento reservar una cita para odontología por medio del portal web ciudadano, pero al momento de confirmar el DNI me sale un error de "Servicio no disponible". He verificado mi DNI y está activo en el SIS. ¿Podrían ayudarme a registrar la cita manualmente?</p>`,
-            unread: false
+            unread: false,
+            category: "paciente"
         },
         {
             id: "6",
@@ -86,7 +91,8 @@ document.addEventListener("DOMContentLoaded", () => {
             subject: "Revisión de informe de mantenimiento de calderas",
             body: `<p>Hola Luis,</p>
                    <p>Te adjunto el borrador del informe técnico sobre el estado de las calderas de calefacción del hospital. Por favor dale una mirada y confírmame si el presupuesto se alinea con el fondo anual del ERP.</p>`,
-            unread: false
+            unread: false,
+            category: "administrativo"
         },
         {
             id: "7",
@@ -97,87 +103,173 @@ document.addEventListener("DOMContentLoaded", () => {
             subject: "Solicitud de copia de historial médico",
             body: `<p>Señores del Hospital La Caleta,</p>
                    <p>Solicito la copia fedateada de mi historial clínico de atenciones del año pasado en ginecología para presentarlo en mi centro laboral. ¿Cuál es el trámite o tasa que debo pagar en caja?</p>`,
-            unread: false
+            unread: false,
+            category: "paciente"
         },
         {
             id: "8",
             folder: "inbox",
-            sender: "Luis Alberto Ruiz",
+            sender: "Luis Alberto Ruiz (Paciente)",
             email: "luis.ruiz@hotmail.com",
             time: "03 Jun",
             subject: "Consulta de resultados de ecografía",
-            body: `<p>Buenas tardes,</p><p>Me realicé una ecografía abdominal el pasado lunes y aún no me llega el resultado a mi correo. ¿Podrían revisarlo por favor?</p>`,
-            unread: true
+            body: `<p>Buenas tardes,</p><p>Me realicé una ecografía abdominal el pasado lunes y aún no me llega el resultado a mi correo. ¿Podrían revisarlo por favor? DNI: 44556677</p>`,
+            unread: true,
+            category: "paciente"
         },
         {
             id: "9",
             folder: "inbox",
-            sender: "Carmen Rosa Mendoza",
+            sender: "Carmen Rosa Mendoza (Paciente)",
             email: "carmen.mendoza@gmail.com",
             time: "02 Jun",
             subject: "Reprogramación de cita odontológica",
-            body: `<p>Estimados,</p><p>Quisiera reprogramar mi cita de odontología para la siguiente semana debido a un cruce con mi horario laboral. Quedo atento.</p>`,
-            unread: false
+            body: `<p>Estimados,</p><p>Quisiera reprogramar mi cita de odontología para la siguiente semana debido a un cruce con mi horario laboral. Quedo atento. DNI: 42345678</p>`,
+            unread: false,
+            category: "paciente"
         },
         {
             id: "10",
             folder: "inbox",
-            sender: "Daniel Alcides Carrión",
+            sender: "Daniel Alcides Carrión (Paciente)",
             email: "daniel.carrion@yahoo.com",
             time: "01 Jun",
             subject: "Consulta sobre dosis de Metformina",
-            body: `<p>Hola doctor,</p><p>Quisiera saber si debo tomar la metformina antes o después de los alimentos. Muchas gracias.</p>`,
-            unread: true
+            body: `<p>Hola doctor,</p><p>Quisiera saber si debo tomar la metformina antes o después de los alimentos. Muchas gracias. DNI: 40987654</p>`,
+            unread: true,
+            category: "paciente"
         },
         {
             id: "11",
             folder: "inbox",
-            sender: "Patricia Benavides",
+            sender: "Patricia Benavides (Paciente)",
             email: "patricia.b@gmail.com",
             time: "30 May",
             subject: "Cita de control de endocrinología",
-            body: `<p>Buenas,</p><p>Tengo una consulta de control el próximo mes y quería confirmar si la fecha registrada en el sistema es la correcta.</p>`,
-            unread: false
+            body: `<p>Buenas,</p><p>Tengo una consulta de control el próximo mes y quería confirmar si la fecha registrada en el sistema es la correcta. DNI: 43344556</p>`,
+            unread: false,
+            category: "paciente"
         },
         {
             id: "12",
             folder: "inbox",
-            sender: "Sofía Vergara Díaz",
+            sender: "Sofía Vergara Díaz (Paciente)",
             email: "sofia.vergara@outlook.com",
             time: "28 May",
             subject: "Resultado de resonancia magnética",
-            body: `<p>Estimado doctor,</p><p>Quisiera saber si mis resultados de resonancia magnética ya están en el sistema para ir a recogerlos.</p>`,
-            unread: false
+            body: `<p>Estimado doctor,</p><p>Quisiera saber si mis resultados de resonancia magnética ya están en el sistema para ir a recogerlos. DNI: 46123456</p>`,
+            unread: false,
+            category: "paciente"
         },
         {
             id: "13",
             folder: "inbox",
-            sender: "Miguel Ángel Guerrero",
+            sender: "Miguel Ángel Guerrero (Paciente)",
             email: "mguerrero@gmail.com",
             time: "25 May",
             subject: "Duda sobre dieta para hígado graso",
-            body: `<p>Buenas,</p><p>El nutricionista me indicó una dieta pero tengo dudas sobre qué frutas comer por las noches. ¿Podrían orientarme?</p>`,
-            unread: true
+            body: `<p>Buenas,</p><p>El nutricionista me indicó una dieta pero tengo dudas sobre qué frutas comer por las noches. ¿Podrían orientarme? DNI: 44556677</p>`,
+            unread: true,
+            category: "paciente"
         },
         {
             id: "14",
             folder: "inbox",
-            sender: "Luisa Fernanda Ríos",
+            sender: "Luisa Fernanda Ríos (Paciente)",
             email: "luisa.rios@gmail.com",
             time: "22 May",
             subject: "Consulta por rinitis alérgica severa",
-            body: `<p>Hola,</p><p>El tratamiento con antihistamínicos que me recetaron no está dando resultados para mi rinitis. ¿Qué procede?</p>`,
-            unread: false
+            body: `<p>Hola,</p><p>El tratamiento con antihistamínicos que me recetaron no está dando resultados para mi rinitis. ¿Qué procede? DNI: 43344556</p>`,
+            unread: false,
+            category: "paciente"
         },
         {
             id: "15",
             folder: "inbox",
-            sender: "Juan Manuel Castro",
+            sender: "Juan Manuel Castro (Paciente)",
             email: "jmcastro@gmail.com",
             time: "20 May",
             subject: "Terapia física de rodilla",
-            body: `<p>Buenas tardes,</p><p>Quisiera saber los horarios de atención del área de fisioterapia para programar mis sesiones de rodilla.</p>`,
-            unread: false
+            body: `<p>Buenas tardes,</p><p>Quisiera saber los horarios de atención del área de fisioterapia para programar mis sesiones de rodilla. DNI: 41122334</p>`,
+            unread: false,
+            category: "paciente"
+        },
+        {
+            id: "16",
+            folder: "inbox",
+            sender: "Sonia Bustamante (Recursos Humanos)",
+            email: "sbustamante@hcaleta.gob.pe",
+            time: "18 May",
+            subject: "Envío de planillas del personal de enfermería - Junio",
+            body: `<p>Hola Luis,</p><p>Te hago envío del cuadro consolidado de horas extras y guardias del personal de enfermería para su respectiva validación en el presupuesto del ERP. Quedo atenta a tus observaciones.</p>`,
+            unread: true,
+            category: "administrativo"
+        },
+        {
+            id: "17",
+            folder: "inbox",
+            sender: "Ing. Marcos Vigil (Soporte TI)",
+            email: "mvigil@hcaleta.gob.pe",
+            time: "15 May",
+            subject: "Reporte de vulnerabilidad de red y actualización de antivirus",
+            body: `<p>Estimado Administrador,</p><p>Te informo que el día de mañana a las 11:00 PM se realizará el mantenimiento programado del firewall central del hospital. Habrá cortes intermitentes de conexión de red local y sistemas ERP/CRM de aproximadamente 15 minutos.</p>`,
+            unread: false,
+            category: "administrativo"
+        },
+        {
+            id: "18",
+            folder: "inbox",
+            sender: "Dra. Elena Ramos",
+            email: "eramos@hcaleta.gob.pe",
+            time: "12 May",
+            subject: "Actualización de guías clínicas de atención primaria",
+            body: `<p>Estimado Director,</p><p>Adjunto la propuesta de actualización para el flujograma de atención rápida de pacientes sintomáticos respiratorios. Agradecería agendar una reunión de revisión para el miércoles.</p>`,
+            unread: false,
+            category: "medico"
+        },
+        {
+            id: "19",
+            folder: "inbox",
+            sender: "Dr. Roberto Díaz (Cardiología)",
+            email: "rdiaz.med@hcaleta.gob.pe",
+            time: "10 May",
+            subject: "Solicitud de compra de electrodos para Holter",
+            body: `<p>Buenas tardes,</p><p>Por medio del presente solicito la compra urgente de 2 cajas de electrodos desechables compatibles con el equipo Holter del consultorio 104, ya que el stock actual se agotará esta semana. Gracias.</p>`,
+            unread: false,
+            category: "medico"
+        },
+        {
+            id: "20",
+            folder: "inbox",
+            sender: "Rosa María Palacios (Paciente)",
+            email: "rosa.palacios@gmail.com",
+            time: "08 May",
+            subject: "Consulta sobre recetas pendientes SIS",
+            body: `<p>Estimados,</p><p>Tengo una receta de Pregabalina pendiente por recoger en farmacia del SIS. ¿Tienen stock disponible actualmente para no ir en vano? DNI: 41122334</p>`,
+            unread: true,
+            category: "paciente"
+        },
+        {
+            id: "21",
+            folder: "inbox",
+            sender: "Juan Francisco Beltrán (Paciente)",
+            email: "jfbeltran@hotmail.com",
+            time: "05 May",
+            subject: "Duda sobre dosis de Espironolactona",
+            body: `<p>Buenas tardes,</p><p>Quisiera saber si puedo tomar la espironolactona junto con mi desayuno o debe ser en ayunas. Mi médico es el Dr. Díaz. DNI: 42233446</p>`,
+            unread: true,
+            category: "paciente"
+        },
+        {
+            id: "22",
+            folder: "inbox",
+            sender: "Laura Cristina Loli (Paciente)",
+            email: "laura.loli@gmail.com",
+            time: "02 May",
+            subject: "Solicitud de cita de control de Alergias",
+            body: `<p>Hola,</p><p>Requiero una cita de control por el área de neumología/alergología. He estado presentando crisis asmáticas leves en las noches. DNI: 43344556</p>`,
+            unread: false,
+            category: "paciente"
         },
         // Correos en Enviados
         {
@@ -190,7 +282,8 @@ document.addEventListener("DOMContentLoaded", () => {
             body: `<p>Estimado Carlos,</p>
                    <p>Le confirmo que su cita con el Dr. Roberto Díaz ha sido reprogramada para el próximo lunes a las 3:30 PM en el Consultorio 104. Los datos actualizados han sido registrados en nuestro ERP.</p>
                    <p>Saludos cordiales.</p>`,
-            unread: false
+            unread: false,
+            category: "administrativo"
         },
         // Correos en Borradores
         {
@@ -202,7 +295,8 @@ document.addEventListener("DOMContentLoaded", () => {
             subject: "[BORRADOR] Respuesta a reclamo de análisis clínicos",
             body: `<p>Estimada María,</p>
                    <p>Lamentamos el retraso en el envío de sus resultados. Hemos verificado en el ERP de Laboratorio y ya se encuentran listos. Adjunto los documentos en formato PDF...</p>`,
-            unread: false
+            unread: false,
+            category: "administrativo"
         },
         // Correos en Papelera
         {
@@ -213,7 +307,8 @@ document.addEventListener("DOMContentLoaded", () => {
             time: "02 Jun",
             subject: "Descuentos en equipos de bioseguridad",
             body: `<p>Aproveche las ofertas exclusivas de este mes en mascarillas, guantes quirúrgicos y alcohol en gel...</p>`,
-            unread: false
+            unread: false,
+            category: "general"
         }
     ];
 
@@ -377,7 +472,7 @@ document.addEventListener("DOMContentLoaded", () => {
             age: 60,
             phone: "911-234-567",
             address: "Urb. Las Gardenias Lt 15, Chimbote",
-            history: "Hiperplasia prostática benigna. Gastritis crónica.",
+            history: "Hiperplasia prostática benigna de grado II. Gastritis crónica en tratamiento activo con Omeprazol 20mg diario. Control prostático anual en curso.",
             summary: "Control geriátrico preventivo y Urología.",
             visits: [
                 { date: "09/06/2026", desc: "Consulta de control prostático", doctor: "Dr. Luis Vargas - Urología" },
@@ -391,7 +486,7 @@ document.addEventListener("DOMContentLoaded", () => {
             age: 50,
             phone: "922-345-678",
             address: "Jr. Elías Aguirre 550, Chimbote",
-            history: "Osteoporosis. Sin alergias reportadas.",
+            history: "Osteoporosis postmenopáusica severa. Tratamiento activo con Alendronato de Sodio 70mg semanal. Sin alergias reportadas.",
             summary: "Tratamiento activo de densitometría ósea.",
             visits: [
                 { date: "24/05/2026", desc: "Examen de Densitometría Ósea", doctor: "Lic. Roberto Ruiz - Imagenología" },
@@ -405,7 +500,7 @@ document.addEventListener("DOMContentLoaded", () => {
             age: 39,
             phone: "988-776-655",
             address: "Jr. Tacna 340, Chimbote",
-            history: "Hipertensión leve. Alergia al polen.",
+            history: "Hipertensión arterial Grado I controlada (Enalapril 10mg diario). Rinitis alérgica severa por polen y ácaros (toma Cetirizina 10mg).",
             summary: "Paciente de control por Medicina General.",
             visits: [
                 { date: "03/06/2026", desc: "Control de Presión Arterial", doctor: "Dra. Elena Ramos - Medicina General" }
@@ -418,7 +513,7 @@ document.addEventListener("DOMContentLoaded", () => {
             age: 55,
             phone: "912-345-678",
             address: "Av. Buenos Aires 120, Nuevo Chimbote",
-            history: "Sin antecedentes patológicos. No reporta alergias.",
+            history: "Paciente sana. Sin antecedentes patológicos de importancia. No reporta alergias medicamentosas o alimenticias.",
             summary: "Paciente afiliada al programa de prevención oncológica.",
             visits: [
                 { date: "15/05/2026", desc: "Chequeo ginecológico preventivo", doctor: "Dra. Lucía Castro - Ginecología" }
@@ -431,7 +526,7 @@ document.addEventListener("DOMContentLoaded", () => {
             age: 48,
             phone: "945-123-456",
             address: "Jr. José Balta 890, Chimbote",
-            history: "Fractura de fémur izquierdo (2024). Rehabilitado por completo.",
+            history: "Antecedentes de fractura diafisaria de fémur izquierdo (operado en 2024 con clavo intramedular). Rehabilitado por completo con fisioterapia. No alergias.",
             summary: "Control regular en Consulta Externa de Traumatología.",
             visits: [
                 { date: "10/04/2026", desc: "Evaluación traumatológica y placas", doctor: "Dr. Marcos Reyes - Traumatología" }
@@ -444,7 +539,7 @@ document.addEventListener("DOMContentLoaded", () => {
             age: 26,
             phone: "967-456-123",
             address: "Urb. El Bosque Mz A Lt 8, Nuevo Chimbote",
-            history: "Migraña tensional crónica. Sin alergias registradas.",
+            history: "Migraña tensional crónica de difícil control (tratamiento profiláctico con Propranolol 40mg diarios). Sin alergias medicamentosas.",
             summary: "Paciente en seguimiento médico por Neurología.",
             visits: [
                 { date: "05/05/2026", desc: "Consulta por cefalea recurrente", doctor: "Dr. Hugo Morán - Neurología" }
@@ -457,7 +552,7 @@ document.addEventListener("DOMContentLoaded", () => {
             age: 62,
             phone: "990-789-456",
             address: "P.J. San Pedro Jr. Áncash 450, Chimbote",
-            history: "Artrosis de cadera. Tratamiento analgésico activo.",
+            history: "Artrosis de cadera bilateral severa (grado III). Tratamiento analgésico y condroprotector activo con Condroitina y Glucosamina. Cita quirúrgica en evaluación.",
             summary: "Paciente de la tercera edad en programa de terapia física.",
             visits: [
                 { date: "12/05/2026", desc: "Terapia física de cadera y calor", doctor: "Lic. Pedro Castillo - Fisioterapia" }
@@ -470,7 +565,7 @@ document.addEventListener("DOMContentLoaded", () => {
             age: 33,
             phone: "911-456-789",
             address: "Jr. Huallaga 124, Chimbote",
-            history: "Asma bronquial leve controlada. No reporta alergias.",
+            history: "Asma bronquial leve intermitente (Salbutamol inhalador condicionado a crisis). Alérgica al polen y pelos de animales domésticos.",
             summary: "Paciente regular en Consulta de Neumología.",
             visits: [
                 { date: "20/05/2026", desc: "Examen de Espirometría y control", doctor: "Dr. Alejandro Pérez - Neumología" }
@@ -483,7 +578,7 @@ document.addEventListener("DOMContentLoaded", () => {
             age: 70,
             phone: "922-567-890",
             address: "Av. Meiggs 1550, Chimbote",
-            history: "Insuficiencia renal leve. Dieta e hidratación controlada.",
+            history: "Insuficiencia renal leve. Dieta e hidratación controlada. Tratamiento de anemia secundaria en curso.",
             summary: "Paciente crónico en seguimiento de Nefrología y Nutrición.",
             visits: [
                 { date: "22/05/2026", desc: "Control de perfil renal completo", doctor: "Dr. Carlos Valdivia - Endocrinología" }
@@ -496,10 +591,127 @@ document.addEventListener("DOMContentLoaded", () => {
             age: 29,
             phone: "933-678-901",
             address: "Jr. Iquitos 210, Chimbote",
-            history: "Primigesta. No reporta alergias a medicamentos.",
+            history: "Primigesta (embarazo de 18 semanas). No reporta alergias a medicamentos. Suplementada con sulfato ferroso y ácido fólico.",
             summary: "Paciente en control del programa materno-perinatal.",
             visits: [
                 { date: "28/05/2026", desc: "Ecografía del primer trimestre de embarazo", doctor: "Dra. Juana Aguilar - Ginecología" }
+            ]
+        },
+        {
+            id: "21",
+            name: "Rosa María Palacios",
+            dni: "41122334",
+            age: 45,
+            phone: "911-223-344",
+            address: "Av. Industrial 520, Chimbote",
+            history: "Alergia severa a los AINEs (especialmente Aspirina y Naproxeno). Fibromialgia en tratamiento activo con Pregabalina 75mg por las noches. Síndrome de colon irritable.",
+            summary: "Paciente bajo control por Medicina Familiar y Psiquiatría.",
+            visits: [
+                { date: "15/06/2026", desc: "Control de dolor por Fibromialgia", doctor: "Dra. Elena Ramos - Medicina General" }
+            ]
+        },
+        {
+            id: "22",
+            name: "Juan Francisco Beltrán",
+            dni: "42233446",
+            age: 58,
+            phone: "922-334-455",
+            address: "Urb. Laderas del Norte Mz J Lt 5, Chimbote",
+            history: "Insuficiencia cardíaca congestiva (Estadio B). Tratamiento con Carvedilol 6.25mg y Espironolactona 25mg diarios. Sin alergias reportadas.",
+            summary: "Control regular en Cardiología por cardiopatía dilatada.",
+            visits: [
+                { date: "10/06/2026", desc: "Monitoreo de función cardíaca y presión", doctor: "Dr. Roberto Díaz - Cardiología" }
+            ]
+        },
+        {
+            id: "23",
+            name: "Laura Cristina Loli",
+            dni: "43344556",
+            age: 33,
+            phone: "933-445-566",
+            address: "Jr. Francisco Pizarro 612, Nuevo Chimbote",
+            history: "Asma extrínseca activa (reacción alérgica grave a ácaros y polvo). Tratamiento con Budesonida + Formoterol inhalador c/12h. Hipersensibilidad al Ibuprofeno.",
+            summary: "Seguimiento por Neumología y programa de Asma.",
+            visits: [
+                { date: "12/06/2026", desc: "Cita Neumológica de Control", doctor: "Dr. Alejandro Pérez - Neumología" }
+            ]
+        },
+        {
+            id: "24",
+            name: "Humberto Luis Solano",
+            dni: "44455667",
+            age: 62,
+            phone: "944-556-677",
+            address: "Av. Centenario 104, Chimbote",
+            history: "Diabetes Mellitus Tipo II de larga data. Retinopatía diabética no proliferativa en control. Tratamiento activo con Insulina Glargina 18 UI nocturna.",
+            summary: "Paciente endocrino y oftalmológico crónico.",
+            visits: [
+                { date: "08/06/2026", desc: "Fondo de Ojo de Control", doctor: "Dr. José Uceda - Oftalmología" }
+            ]
+        },
+        {
+            id: "25",
+            name: "Silvia Regina Chávez",
+            dni: "45566778",
+            age: 51,
+            phone: "955-667-788",
+            address: "Jr. José Olaya 240, Chimbote",
+            history: "Hipotiroidismo controlado (Levotiroxina 75mcg). Alérgica a las sulfas (reacción dermatológica severa). Insomnio crónico en manejo con Zolpidem 5mg.",
+            summary: "Paciente metabólico regular.",
+            visits: [
+                { date: "05/06/2026", desc: "Control perfil tiroideo", doctor: "Dr. Carlos Valdivia - Endocrinología" }
+            ]
+        },
+        {
+            id: "26",
+            name: "Ricardo Antonio Bazán",
+            dni: "46677889",
+            age: 67,
+            phone: "966-778-899",
+            address: "Jr. Leoncio Prado 780, Chimbote",
+            history: "Hipertensión arterial Grado II (Valsartán 80mg / Hidroclorotiazida 12.5mg c/24h). Hipercolesterolemia familiar (Atorvastatina 20mg diarios). Sin alergias conocidas.",
+            summary: "Seguimiento por riesgo cardiovascular elevado.",
+            visits: [
+                { date: "01/06/2026", desc: "Consulta por dislipidemia y HTA", doctor: "Dr. Roberto Díaz - Cardiología" }
+            ]
+        },
+        {
+            id: "27",
+            name: "Beatriz Elena Delgado",
+            dni: "47788990",
+            age: 28,
+            phone: "977-889-900",
+            address: "Urb. Los Álamos Mz B Lt 14, Nuevo Chimbote",
+            history: "Lupus Eritematoso Sistémico (LES) en remisión médica. Tratamiento con Hidroxicloroquina 200mg c/24h. Alérgica a la Penicilina y cefalosporinas de primera generación.",
+            summary: "Paciente reumatológico en vigilancia periódica.",
+            visits: [
+                { date: "28/05/2026", desc: "Chequeo de marcadores lúpicos", doctor: "Dra. Silvia Torres - Reumatología" }
+            ]
+        },
+        {
+            id: "28",
+            name: "Manuel Octavio Neyra",
+            dni: "48899001",
+            age: 72,
+            phone: "988-990-011",
+            address: "Jr. Caraz 215, Chimbote",
+            history: "Enfermedad Pulmonar Obstructiva Crónica (EPOC) severa (Gold III). Oxigenodependiente nocturno. Uso diario de Tiotropio y Albuterol. Alergia a la Dipirona.",
+            summary: "Paciente crónico respiratorio del programa de oxigenoterapia.",
+            visits: [
+                { date: "25/05/2026", desc: "Espirometría y descarte de exacerbación", doctor: "Dr. Alejandro Pérez - Neumología" }
+            ]
+        },
+        {
+            id: "29",
+            name: "Gabriela Sofía Pinedo",
+            dni: "49900112",
+            age: 36,
+            phone: "999-001-122",
+            address: "Jr. Huari 410, Chimbote",
+            history: "Esclerosis múltiple remitente-recurrente (en tratamiento con Fingolimod 0.5mg diarios). Gastritis erosiva leve por uso episódico de corticoides. No reporta alergias.",
+            summary: "Paciente neurológico en programa de medicamentos de alto costo.",
+            visits: [
+                { date: "22/05/2026", desc: "Evaluación neurológica semestral", doctor: "Dr. Hugo Morán - Neurología" }
             ]
         }
     ];
@@ -526,6 +738,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let currentFolder = "inbox"; // Carpeta activa por defecto
     let selectedEmailId = null;  // ID del correo cargado actualmente
     let selectedPatientId = null; // ID del paciente cargado actualmente
+    let currentRoleFilter = "all"; // Filtro de rol activo (all, paciente, medico, administrativo)
 
     // 3. ACTUALIZAR CONTADORES DE BANDEJA
     const updateFolderBadges = () => {
@@ -548,6 +761,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Filtrar correos por carpeta
         let filtered = emailsData.filter(e => e.folder === currentFolder);
+
+        // Filtrar por rol / categoría de correo
+        if (currentRoleFilter !== "all") {
+            filtered = filtered.filter(e => e.category === currentRoleFilter);
+        }
 
         // Filtrar por texto de búsqueda si hay
         if (query !== "") {
@@ -989,9 +1207,11 @@ document.addEventListener("DOMContentLoaded", () => {
             selectedPatientId = null;
 
             const patientActionsBar = document.getElementById("patientActionsBar");
+            const emailRoleFilters = document.getElementById("emailRoleFilters");
             if (folderName === "patients") {
                 searchBarInput.placeholder = "Buscar paciente por Nombre o DNI...";
                 if (patientActionsBar) patientActionsBar.classList.remove("hidden");
+                if (emailRoleFilters) emailRoleFilters.classList.add("hidden");
                 
                 emailList.classList.add("hidden");
                 patientList.classList.remove("hidden");
@@ -1003,6 +1223,7 @@ document.addEventListener("DOMContentLoaded", () => {
             } else {
                 searchBarInput.placeholder = "Buscar en la bandeja...";
                 if (patientActionsBar) patientActionsBar.classList.add("hidden");
+                if (emailRoleFilters) emailRoleFilters.classList.remove("hidden");
                 
                 emailList.classList.remove("hidden");
                 patientList.classList.add("hidden");
@@ -1210,6 +1431,20 @@ document.addEventListener("DOMContentLoaded", () => {
                         color: isDark ? '#f1f5f9' : '#1e293b'
                     });
                 }
+            });
+        });
+    }
+
+    // Control de filtros de rol/categoría
+    const filterChips = document.querySelectorAll(".filter-chip");
+    if (filterChips) {
+        filterChips.forEach(chip => {
+            chip.addEventListener("click", () => {
+                filterChips.forEach(c => c.classList.remove("active"));
+                chip.classList.add("active");
+                currentRoleFilter = chip.getAttribute("data-role");
+                selectedEmailId = null; // Reiniciar selección para cargar el primer correo de la lista filtrada
+                renderEmailsList(searchBarInput.value);
             });
         });
     }
