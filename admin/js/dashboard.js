@@ -32,12 +32,40 @@ let finanzasData = JSON.parse(localStorage.getItem('erp_finanzas')) || defaultFi
 if (!localStorage.getItem('erp_finanzas')) localStorage.setItem('erp_finanzas', JSON.stringify(finanzasData));
 
 const defaultPersonal = [
-    { nombre: "Juan Pérez", especialidad: "Cardiología" },
-    { nombre: "María López", especialidad: "Pediatría" }
+    { nombre: "Juan Pérez", especialidad: "Cardiología", sueldoBase: 4500, turno: "Sin Asignar" },
+    { nombre: "María López", especialidad: "Pediatría", sueldoBase: 4200, turno: "Sin Asignar" },
+    { nombre: "Lucas Escamillo", especialidad: "Oftalmología", sueldoBase: 4800, turno: "Sin Asignar" },
+    { nombre: "Karla Chávez", especialidad: "Odontología", sueldoBase: 3800, turno: "Sin Asignar" },
+    { nombre: "Carlos Ruiz", especialidad: "Medicina General", sueldoBase: 3500, turno: "Sin Asignar" },
+    { nombre: "Ana Torres", especialidad: "Enfermería", sueldoBase: 2200, turno: "Sin Asignar" },
+    { nombre: "Luis Solís", especialidad: "Ginecología", sueldoBase: 4600, turno: "Sin Asignar" },
+    { nombre: "Pedro Gómez", especialidad: "Anestesiología", sueldoBase: 5000, turno: "Sin Asignar" },
+    { nombre: "Sofía Castro", especialidad: "Tecnología Médica", sueldoBase: 2800, turno: "Sin Asignar" },
+    { nombre: "Miguel Rivas", especialidad: "Traumatología", sueldoBase: 4700, turno: "Sin Asignar" },
+    { nombre: "Elena Díaz", especialidad: "Obstetricia", sueldoBase: 2400, turno: "Sin Asignar" },
+    { nombre: "Jorge Lima", especialidad: "Farmacia", sueldoBase: 2000, turno: "Sin Asignar" },
+    { nombre: "Carmen Vega", especialidad: "Nutrición", sueldoBase: 2100, turno: "Sin Asignar" },
+    { nombre: "Roberto Paz", especialidad: "Psiquiatría", sueldoBase: 4300, turno: "Sin Asignar" },
+    { nombre: "Lucía Milla", especialidad: "Enfermería UCI", sueldoBase: 2500, turno: "Sin Asignar" },
+    { nombre: "Andrés Soto", especialidad: "Terapia Física", sueldoBase: 2300, turno: "Sin Asignar" },
+    { nombre: "Diana Cruz", especialidad: "Laboratorio Clínico", sueldoBase: 2200, turno: "Sin Asignar" },
+    { nombre: "Gabriel Lara", especialidad: "Neurología", sueldoBase: 5200, turno: "Sin Asignar" },
+    { nombre: "Rosa Peralta", especialidad: "Servicio Social", sueldoBase: 1800, turno: "Sin Asignar" },
+    { nombre: "Víctor León", especialidad: "Urgencias", sueldoBase: 4000, turno: "Sin Asignar" },
+    { nombre: "Patricia Flores", especialidad: "Administración", sueldoBase: 1900, turno: "Sin Asignar" },
+    { nombre: "Hugo Torres", especialidad: "Soporte Técnico", sueldoBase: 2000, turno: "Sin Asignar" },
+    { nombre: "Silvia Roldán", especialidad: "Enfermería Pediatría", sueldoBase: 2300, turno: "Sin Asignar" },
+    { nombre: "Raúl Luna", especialidad: "Servicios Generales", sueldoBase: 1500, turno: "Sin Asignar" },
+    { nombre: "Isabel Cueva", especialidad: "Jefa de Enfermeras", sueldoBase: 3000, turno: "Sin Asignar" }
 ];
 let personalData = JSON.parse(localStorage.getItem('erp_personal')) || defaultPersonal;
-// Migrar registros antiguos: eliminar campos 'comision' y 'asistencia' si existen
-personalData = personalData.map(({ nombre, especialidad }) => ({ nombre, especialidad }));
+// Migrar registros antiguos: asegurar que tengan sueldoBase y turno
+personalData = personalData.map(p => ({
+    nombre: p.nombre,
+    especialidad: p.especialidad,
+    sueldoBase: typeof p.sueldoBase === 'number' ? p.sueldoBase : 2500,
+    turno: p.turno || "Sin Asignar"
+}));
 if (!localStorage.getItem('erp_personal')) localStorage.setItem('erp_personal', JSON.stringify(personalData));
 
 // Configuración Global de Notificaciones (Toast)
@@ -714,8 +742,65 @@ const VIEW_RRHH_COLORES = {
     'Permiso':   { bg: 'rgba(245,158,11,0.18)',      borde: '#f59e0b',                      emoji: '◐' }
 };
 
+let activePaintShift = null;
+
+function perteneceAlTurno(turno, hora) {
+    const h = parseInt(hora);
+    if (turno === 'TM') {
+        return h >= 7 && h <= 12;
+    } else if (turno === 'TT') {
+        return h >= 13 && h <= 18;
+    } else if (turno === 'TN') {
+        return h >= 19 || h <= 6;
+    } else if (turno === 'Guardia') {
+        return true;
+    }
+    return false;
+}
+
+function obtenerLetraYEstiloCelda(estado, hora, turnoEmpleado) {
+    if (estado !== 'Presente') {
+        const style = VIEW_RRHH_COLORES[estado] || VIEW_RRHH_COLORES[''];
+        return { emoji: style.emoji || '', bg: style.bg || 'transparent', color: style.borde || 'var(--border-color)' };
+    }
+    
+    // Si es Presente, determinamos la letra M, T, N, G y colores específicos
+    let letra = '✓';
+    let colorHex = '#22c55e'; // verde default
+    let bgHex = 'rgba(34,197,94,0.18)';
+    
+    const h = parseInt(hora);
+    if (perteneceAlTurno('TM', h)) {
+        letra = 'M';
+        colorHex = '#38bdf8'; // celeste / azul cielo
+        bgHex = 'rgba(56,189,248,0.15)';
+    } else if (perteneceAlTurno('TT', h)) {
+        letra = 'T';
+        colorHex = '#fbbf24'; // ámbar / naranja
+        bgHex = 'rgba(251,191,36,0.15)';
+    } else if (perteneceAlTurno('TN', h)) {
+        letra = 'N';
+        colorHex = '#c084fc'; // morado claro
+        bgHex = 'rgba(192,132,252,0.15)';
+    }
+    
+    // Si el turno del empleado es Guardia, y es Guardia
+    if (turnoEmpleado === 'Guardia') {
+        letra = 'G';
+        colorHex = '#34d399'; // esmeralda
+        bgHex = 'rgba(52,211,153,0.15)';
+    }
+    
+    return { emoji: letra, bg: bgHex, color: colorHex };
+}
+
 function generarHtmlGridVista(fechaIso) {
-    const data = JSON.parse(localStorage.getItem(claveAsistencia(fechaIso))) || {};
+    let data = JSON.parse(localStorage.getItem(claveAsistencia(fechaIso)));
+    let esNuevoRegistro = false;
+    if (!data) {
+        data = {};
+        esNuevoRegistro = true;
+    }
     
     let html = `
     <div class="admin-card" style="margin-bottom: 2rem;">
@@ -734,6 +819,18 @@ function generarHtmlGridVista(fechaIso) {
             <button class="admin-btn admin-btn-primary" onclick="guardarHistorialVista()" style="padding: 8px 16px; font-weight: bold; cursor: pointer; display:flex; align-items:center; gap:8px;">
                 <i class="fa-solid fa-save"></i> Guardar Cambios
             </button>
+        </div>
+
+        <!-- Barra de selección de pintura por bloques -->
+        <div class="shift-selector-bar" style="margin: 0 1.5rem 1.2rem 1.5rem; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; background: var(--bg-body); padding: 10px 15px; border-radius: 8px; border: 1px dashed var(--border-color);">
+            <span style="font-size: 0.85rem; color: var(--text-muted); margin-right: 8px; display: flex; align-items: center; gap: 5px;">
+                <i class="fa-solid fa-paint-roller"></i> <strong>Pintar por Bloque:</strong>
+            </span>
+            <button class="admin-btn btn-paint-shift" data-shift="TM" style="padding: 5px 12px; font-size: 0.8rem; background: transparent; border: 1px solid var(--border-color); color: var(--text-color); cursor:pointer;">TM (07-13)</button>
+            <button class="admin-btn btn-paint-shift" data-shift="TT" style="padding: 5px 12px; font-size: 0.8rem; background: transparent; border: 1px solid var(--border-color); color: var(--text-color); cursor:pointer;">TT (13-19)</button>
+            <button class="admin-btn btn-paint-shift" data-shift="TN" style="padding: 5px 12px; font-size: 0.8rem; background: transparent; border: 1px solid var(--border-color); color: var(--text-color); cursor:pointer;">TN (19-07)</button>
+            <button class="admin-btn btn-paint-shift" data-shift="Guardia" style="padding: 5px 12px; font-size: 0.8rem; background: transparent; border: 1px solid var(--border-color); color: var(--text-color); cursor:pointer;">Guardia (24h)</button>
+            <span style="font-size: 0.75rem; color: var(--text-muted); margin-left: auto;">(Selecciona un turno y haz clic en la fila de un empleado para rellenar)</span>
         </div>
 
         <div style="margin: 0 1.5rem 1.5rem 1.5rem; position: relative;">
@@ -756,20 +853,31 @@ function generarHtmlGridVista(fechaIso) {
             const inic = p.nombre.split(' ').map(n=>n[0]).slice(0,2).join('').toUpperCase();
             const color = coloresAvatar[idx % coloresAvatar.length];
             
-            html += `<div class="view-rrhh-row">
-                <div class="view-rrhh-emp-cell" title="${p.nombre}">
-                    <div class="view-rrhh-avatar" style="background:${color};">${inic}</div>
-                    <span class="view-rrhh-emp-name">${p.nombre}</span>
+            html += `<div class="view-rrhh-row" data-emp-row="${p.nombre}">
+                <div class="view-rrhh-emp-cell" title="${p.nombre}" style="display:flex; justify-content:space-between; align-items:center; cursor: pointer;">
+                    <div style="display:flex; align-items:center; gap:8px; overflow:hidden; pointer-events: none;">
+                        <div class="view-rrhh-avatar" style="background:${color}; flex-shrink:0;">${inic}</div>
+                        <span class="view-rrhh-emp-name" style="text-overflow:ellipsis; overflow:hidden; white-space:nowrap;">${p.nombre}</span>
+                    </div>
+                    <button class="btn-limpiar-fila-gantt" data-emp="${p.nombre}" style="background:transparent; border:none; color:#ef4444; cursor:pointer; padding:4px 8px; font-size:0.9rem;" title="Limpiar asistencia de este día">
+                        <i class="fa-solid fa-eraser"></i>
+                    </button>
                 </div>`;
                 
             VIEW_RRHH_HORAS.forEach(h => {
-                const estado = (data[p.nombre] && data[p.nombre][String(h)]) || '';
-                const style = VIEW_RRHH_COLORES[estado] || VIEW_RRHH_COLORES[''];
+                let estado = '';
+                if (data[p.nombre] && data[p.nombre][String(h)] !== undefined) {
+                    estado = data[p.nombre][String(h)];
+                } else if (esNuevoRegistro && perteneceAlTurno(p.turno, h)) {
+                    estado = 'Presente';
+                }
+                
+                const style = obtenerLetraYEstiloCelda(estado, h, p.turno);
                 html += `<div class="view-rrhh-cell" 
                             data-emp="${p.nombre}" 
                             data-hora="${h}" 
                             data-estado="${estado}"
-                            style="background:${style.bg}; border-color:${style.borde}; color:${style.borde};">
+                            style="background:${style.bg}; border-color:${style.color}; color:${style.color};">
                             <span class="view-rrhh-cell-label">${style.emoji}</span>
                         </div>`;
             });
@@ -803,12 +911,6 @@ function renderizarContenidoVistaHistorial(fecha) {
     
     historyView.innerHTML = generarHtmlGridVista(fecha);
     
-    // Posicionar scroll en las 8:00 AM (8 columnas x 60px)
-    const gridContainer = document.querySelector('.view-rrhh-grid-container');
-    if (gridContainer) {
-        
-    }
-    
     const dateInput = document.getElementById('viewRrhhDate');
     const gridBody = document.getElementById('viewRrhhGridBody');
     
@@ -822,19 +924,115 @@ function renderizarContenidoVistaHistorial(fecha) {
         });
     }
     
-    // Interacción con las celdas
+    // Lógica para botones de pintar turno
+    const shiftButtons = historyView.querySelectorAll('.btn-paint-shift');
+    shiftButtons.forEach(btn => {
+        if (activePaintShift === btn.dataset.shift) {
+            btn.classList.add('active');
+            btn.style.backgroundColor = 'var(--primary)';
+            btn.style.borderColor = 'var(--primary)';
+            btn.style.color = '#fff';
+        }
+        
+        btn.addEventListener('click', (e) => {
+            const clickedShift = btn.dataset.shift;
+            if (activePaintShift === clickedShift) {
+                activePaintShift = null;
+                btn.classList.remove('active');
+                btn.style.backgroundColor = 'transparent';
+                btn.style.borderColor = 'var(--border-color)';
+                btn.style.color = 'var(--text-color)';
+            } else {
+                activePaintShift = clickedShift;
+                shiftButtons.forEach(b => {
+                    b.classList.remove('active');
+                    b.style.backgroundColor = 'transparent';
+                    b.style.borderColor = 'var(--border-color)';
+                    b.style.color = 'var(--text-color)';
+                });
+                btn.classList.add('active');
+                btn.style.backgroundColor = 'var(--primary)';
+                btn.style.borderColor = 'var(--primary)';
+                btn.style.color = '#fff';
+                
+                Toast.fire({
+                    icon: 'info',
+                    title: `Pintor de turno ${clickedShift} activo. Haz clic en la fila de un empleado para rellenar su horario.`
+                });
+            }
+        });
+    });
+
+    // Lógica para el borrador (limpiar fila)
     if (gridBody) {
+        gridBody.querySelectorAll('.btn-limpiar-fila-gantt').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const empNombre = btn.dataset.emp;
+                
+                gridBody.querySelectorAll(`.view-rrhh-cell[data-emp="${empNombre}"]`).forEach(cell => {
+                    cell.dataset.estado = '';
+                    cell.style.background = 'transparent';
+                    cell.style.borderColor = 'var(--border-color, #334155)';
+                    cell.style.color = 'var(--border-color, #334155)';
+                    cell.innerHTML = '<span class="view-rrhh-cell-label"></span>';
+                });
+                
+                Toast.fire({ icon: 'info', title: `Horario limpiado para ${empNombre}` });
+            });
+        });
+        
+        // Pintar fila por bloque al hacer clic en el contenedor emp-cell
+        gridBody.querySelectorAll('.view-rrhh-emp-cell').forEach(empCell => {
+            empCell.addEventListener('click', (e) => {
+                if (e.target.closest('.btn-limpiar-fila-gantt')) return;
+                
+                const empNombre = empCell.querySelector('.view-rrhh-emp-name').textContent;
+                
+                if (!activePaintShift) {
+                    Toast.fire({
+                        icon: 'warning',
+                        title: 'Seleccione un bloque de turno arriba para pintar esta fila por bloques'
+                    });
+                    return;
+                }
+                
+                gridBody.querySelectorAll(`.view-rrhh-cell[data-emp="${empNombre}"]`).forEach(cell => {
+                    const hora = parseInt(cell.dataset.hora);
+                    if (perteneceAlTurno(activePaintShift, hora)) {
+                        cell.dataset.estado = 'Presente';
+                        const style = obtenerLetraYEstiloCelda('Presente', hora, activePaintShift);
+                        cell.style.background = style.bg;
+                        cell.style.borderColor = style.color;
+                        cell.style.color = style.color;
+                        cell.innerHTML = `<span class="view-rrhh-cell-label">${style.emoji}</span>`;
+                    }
+                });
+                
+                Toast.fire({
+                    icon: 'success',
+                    title: `Bloque ${activePaintShift} pintado para ${empNombre}`
+                });
+            });
+        });
+
+        // Interacción individual con las celdas
         gridBody.querySelectorAll('.view-rrhh-cell').forEach(cell => {
             cell.addEventListener('click', () => {
+                const empNombre = cell.dataset.emp;
+                const hora = parseInt(cell.dataset.hora);
+                const persona = personalData.find(p => p.nombre === empNombre);
+                const turnoEmpleado = persona ? persona.turno : 'Sin Asignar';
+
                 const actual = cell.dataset.estado;
                 const idx = VIEW_RRHH_ESTADOS.indexOf(actual);
                 const next = VIEW_RRHH_ESTADOS[(idx + 1) % VIEW_RRHH_ESTADOS.length];
                 
                 cell.dataset.estado = next;
-                const style = VIEW_RRHH_COLORES[next];
+                const style = obtenerLetraYEstiloCelda(next, hora, turnoEmpleado);
                 cell.style.background = style.bg;
-                cell.style.borderColor = style.borde;
-                cell.style.color = style.borde;
+                cell.style.borderColor = style.color;
+                cell.style.color = style.color;
                 cell.innerHTML = `<span class="view-rrhh-cell-label">${style.emoji}</span>`;
             });
         });
@@ -936,18 +1134,49 @@ function renderizarRRHH() {
                 <td><strong>${persona.nombre}</strong></td>
                 <td>${persona.especialidad}</td>
                 <td>
+                    <select class="turno-select" data-index="${index}" style="padding: 5px 8px; border-radius: 6px; background: var(--card-bg); color: var(--text-color); border: 1px solid var(--border-color); font-size:0.9rem;">
+                        <option value="Sin Asignar" ${persona.turno==='Sin Asignar'?'selected':''}>Sin Asignar</option>
+                        <option value="TM" ${persona.turno==='TM'?'selected':''}>TM (Mañana)</option>
+                        <option value="TT" ${persona.turno==='TT'?'selected':''}>TT (Tarde)</option>
+                        <option value="TN" ${persona.turno==='TN'?'selected':''}>TN (Noche)</option>
+                        <option value="Guardia" ${persona.turno==='Guardia'?'selected':''}>Guardia</option>
+                    </select>
+                </td>
+                <td>
                     <select class="asistencia-select" data-index="${index}" style="padding: 5px 8px; border-radius: 6px; background: var(--card-bg); color: var(--text-color); border: 1px solid var(--border-color); font-size:0.9rem;">
                         <option value="Pendiente" ${estadoHoy==='Pendiente'?'selected':''}>⏳ Pendiente</option>
                         <option value="Presente" ${estadoHoy==='Presente'?'selected':''}>✅ Presente</option>
                         <option value="Ausente" ${estadoHoy==='Ausente'?'selected':''}>❌ Ausente</option>
                     </select>
                 </td>
-                <td style="text-align: right;">
-                    <button class="admin-btn admin-badge-danger btn-eliminar-personal" data-index="${index}" style="padding: 4px 8px; border:none; border-radius:4px; cursor:pointer;"><i class="fa-solid fa-trash"></i></button>
+                <td style="text-align: right; white-space: nowrap;">
+                    <button class="admin-btn admin-badge-danger btn-eliminar-personal" data-index="${index}" style="padding: 4px 8px; border:none; border-radius:4px; cursor:pointer;" title="Eliminar trabajador"><i class="fa-solid fa-trash"></i></button>
                 </td>
             </tr>
         `;
     });
+
+    // Escuchar cambios de turno
+    document.querySelectorAll('.turno-select').forEach(sel => {
+        sel.addEventListener('change', (e) => {
+            const idx = parseInt(e.target.dataset.index);
+            personalData[idx].turno = e.target.value;
+            localStorage.setItem('erp_personal', JSON.stringify(personalData));
+            Toast.fire({ icon: 'success', title: `Turno de ${personalData[idx].nombre} actualizado` });
+        });
+    });
+
+    // Botón: Reporte Salarial
+    const btnReporte = document.getElementById('btnReporteSalarial');
+    if (btnReporte) {
+        btnReporte.onclick = descargarReporteSalarialCSV;
+    }
+
+    // Botón: Generar Planilla
+    const btnPlanilla = document.getElementById('btnGenerarPlanilla');
+    if (btnPlanilla) {
+        btnPlanilla.onclick = pagarPlanillaMensual;
+    }
 
     // Botón: Guardar asistencia del día
     const btnGuardar = document.getElementById('btnGuardarAsistencia');
@@ -987,9 +1216,11 @@ function registrarPersonal(event) {
     event.preventDefault();
     const nombre = document.getElementById("personalNombre").value.trim();
     const especialidad = document.getElementById("personalEspecialidad").value.trim();
+    const sueldoStr = document.getElementById("personalSueldo").value.trim();
+    const sueldoBase = parseFloat(sueldoStr);
 
-    if (!nombre || !especialidad) {
-        Swal.fire({ icon: 'error', title: 'Datos incompletos', text: 'Por favor completa nombre y especialidad.' });
+    if (!nombre || !especialidad || isNaN(sueldoBase) || sueldoBase < 0) {
+        Swal.fire({ icon: 'error', title: 'Datos inválidos o incompletos', text: 'Por favor completa nombre, especialidad y un sueldo base válido.' });
         return;
     }
 
@@ -1000,15 +1231,198 @@ function registrarPersonal(event) {
     }
 
     // Solo datos de perfil; la asistencia se guarda de forma independiente por día
-    personalData.push({ nombre, especialidad });
+    personalData.push({ nombre, especialidad, sueldoBase, turno: "Sin Asignar" });
 
     localStorage.setItem('erp_personal', JSON.stringify(personalData));
     renderizarRRHH();
     event.target.reset();
     Toast.fire({ icon: 'success', title: 'Personal registrado correctamente' });
+}function calcularPlanillaMensual() {
+    const hoy = new Date();
+    const anioMes = hoy.toISOString().substring(0, 7); // "YYYY-MM"
+    
+    // Obtenemos los meses en español para la visualización
+    const meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+    const nombreMes = meses[hoy.getMonth()] + " " + hoy.getFullYear();
+
+    const faltasPorEmpleado = {};
+    personalData.forEach(p => {
+        faltasPorEmpleado[p.nombre] = 0;
+    });
+
+    for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key && key.startsWith('asistencias_') && key.includes(`_${anioMes}-`)) {
+            const data = JSON.parse(localStorage.getItem(key)) || {};
+            personalData.forEach(p => {
+                const horas = data[p.nombre];
+                if (horas) {
+                    let estadoDia = 'Pendiente';
+                    if (typeof horas === 'string') {
+                        estadoDia = horas;
+                    } else {
+                        const conteo = { 'Presente': 0, 'Ausente': 0, 'Permiso': 0, '': 0 };
+                        Object.values(horas).forEach(v => {
+                            if (conteo[v] !== undefined) conteo[v]++;
+                        });
+                        
+                        let max = 0;
+                        let estadoMax = 'Pendiente';
+                        for (const [est, num] of Object.entries(conteo)) {
+                            if (est !== '' && num > max) {
+                                max = num;
+                                estadoMax = est;
+                            }
+                        }
+                        estadoDia = max > 0 ? estadoMax : 'Pendiente';
+                    }
+                    if (estadoDia === 'Ausente') {
+                        faltasPorEmpleado[p.nombre]++;
+                    }
+                }
+            });
+        }
+    }
+
+    let totalSueldosBase = 0;
+    let totalDescuentos = 0;
+    let totalSueldosNeto = 0;
+
+    const detalles = personalData.map(p => {
+        const sueldoBase = p.sueldoBase || 2500;
+        const faltas = faltasPorEmpleado[p.nombre] || 0;
+        const descuento = sueldoBase * 0.05 * faltas;
+        const sueldoNeto = Math.max(0, sueldoBase - descuento);
+
+        totalSueldosBase += sueldoBase;
+        totalDescuentos += descuento;
+        totalSueldosNeto += sueldoNeto;
+
+        return {
+            nombre: p.nombre,
+            cargo: p.especialidad,
+            turno: p.turno || 'Sin Asignar',
+            sueldoBase: sueldoBase,
+            faltas: faltas,
+            descuento: descuento,
+            sueldoNeto: sueldoNeto
+        };
+    });
+
+    return {
+        detalles,
+        totalSueldosBase,
+        totalDescuentos,
+        totalSueldosNeto,
+        anioMes,
+        nombreMes
+    };
 }
 
+function pagarPlanillaMensual() {
+    if (personalData.length === 0) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Sin personal',
+            text: 'No hay personal registrado para calcular la planilla.'
+        });
+        return;
+    }
 
+    const { detalles, totalSueldosBase, totalDescuentos, totalSueldosNeto, anioMes, nombreMes } = calcularPlanillaMensual();
 
+    // Crear un resumen HTML detallado para SweetAlert
+    const tablaResumen = `
+        <div style="text-align: left; font-size: 0.9rem; margin-top: 15px;">
+            <p><strong>Periodo:</strong> ${nombreMes}</p>
+            <p><strong>Personal a Pagar:</strong> ${detalles.length} empleados</p>
+            <hr style="border: 0; border-top: 1px solid var(--border-color, #ccc); margin: 10px 0;">
+            <div style="display:flex; justify-content:space-between; margin-bottom: 5px;">
+                <span>Total Sueldos Base:</span>
+                <strong>S/ ${totalSueldosBase.toLocaleString('es-PE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong>
+            </div>
+            <div style="display:flex; justify-content:space-between; margin-bottom: 5px; color:#ef4444;">
+                <span>Total Descuentos (Faltas 5% c/u):</span>
+                <strong>- S/ ${totalDescuentos.toLocaleString('es-PE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong>
+            </div>
+            <hr style="border: 0; border-top: 1px solid var(--border-color, #ccc); margin: 10px 0;">
+            <div style="display:flex; justify-content:space-between; font-size: 1.05rem; font-weight: bold;">
+                <span>Total a Desembolsar:</span>
+                <span style="color:#10b981;">S/ ${totalSueldosNeto.toLocaleString('es-PE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+            </div>
+        </div>
+    `;
 
+    Swal.fire({
+        title: 'Generar y Pagar Planilla',
+        html: `¿Está seguro de procesar y realizar el pago de la planilla?<br>${tablaResumen}`,
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#10b981',
+        cancelButtonColor: '#64748b',
+        confirmButtonText: 'Sí, Pagar Planilla',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Guardar egreso en finanzas
+            finanzasData.push({
+                fecha: new Date().toISOString().split('T')[0],
+                tipo: 'Egreso',
+                concepto: `Pago Planilla Mensual - ${nombreMes}`,
+                categoria: 'RRHH',
+                monto: totalSueldosNeto
+            });
+            localStorage.setItem('erp_finanzas', JSON.stringify(finanzasData));
 
+            // Si la vista de finanzas está activa, volver a renderizarla
+            const currentView = new URLSearchParams(window.location.search).get('view') || 'dashboard';
+            if (currentView === 'finanzas') {
+                renderizarFinanzas();
+            }
+
+            Swal.fire({
+                icon: 'success',
+                title: 'Planilla Procesada',
+                text: `Se ha registrado exitosamente un egreso de S/ ${totalSueldosNeto.toLocaleString('es-PE', { minimumFractionDigits: 2 })} en el módulo de Finanzas.`,
+                confirmButtonColor: '#0099cc'
+            });
+        }
+    });
+}
+
+function descargarReporteSalarialCSV() {
+    if (personalData.length === 0) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Sin personal',
+            text: 'No hay personal registrado para generar el reporte.'
+        });
+        return;
+    }
+
+    const { detalles, totalSueldosBase, totalDescuentos, totalSueldosNeto, anioMes } = calcularPlanillaMensual();
+
+    // Excel prefiere UTF-8 con BOM en español para abrir caracteres acentuados correctamente
+    let csvContent = "\uFEFF";
+    csvContent += "Nombre;Especialidad / Cargo;Turno Asignado;Sueldo Base (S/.);Días Ausente;Descuento Faltas (S/.);Sueldo Neto (S/.)\n";
+
+    detalles.forEach(d => {
+        csvContent += `"${d.nombre}";"${d.cargo}";"${d.turno}";${d.sueldoBase.toFixed(2)};${d.faltas};${d.descuento.toFixed(2)};${d.sueldoNeto.toFixed(2)}\n`;
+    });
+
+    csvContent += `\nTOTALES;;;${totalSueldosBase.toFixed(2)};;${totalDescuentos.toFixed(2)};${totalSueldosNeto.toFixed(2)}\n`;
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.setAttribute("href", url);
+    link.setAttribute("download", `Reporte_Salarial_LaCaleta_${anioMes}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    Toast.fire({
+        icon: 'success',
+        title: 'Reporte CSV descargado con éxito'
+    });
+}

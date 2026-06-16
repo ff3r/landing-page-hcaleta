@@ -143,9 +143,17 @@ const vistasPlantillas = {
             <div class="admin-card" style="margin-bottom: 2rem;">
                 <div class="admin-card-header">
                     <h2 class="admin-card-title"><i class="fa-solid fa-users" style="margin-right:8px; color:var(--primary);"></i>Recursos Humanos — Gestión de Personal</h2>
-                    <button class="admin-btn admin-btn-secondary" id="btnVerHistorialAsistencia" style="padding: 6px 14px; font-size: 0.9rem; display:flex; align-items:center; gap:6px;">
-                        <i class="fa-solid fa-calendar-check"></i> Ver Historial de Asistencia
-                    </button>
+                    <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                        <button class="admin-btn admin-btn-primary" id="btnReporteSalarial" style="padding: 6px 14px; font-size: 0.9rem; display:flex; align-items:center; gap:6px;">
+                            <i class="fa-solid fa-file-csv"></i> Reporte Salarial
+                        </button>
+                        <button class="admin-btn" id="btnGenerarPlanilla" style="padding: 6px 14px; font-size: 0.9rem; display:flex; align-items:center; gap:6px; background-color:#10b981; color:white; border:none; cursor:pointer; transition: background-color 0.2s;" onmouseover="this.style.backgroundColor='#059669'" onmouseout="this.style.backgroundColor='#10b981'">
+                            <i class="fa-solid fa-file-invoice-dollar"></i> Generar y Pagar Planilla
+                        </button>
+                        <button class="admin-btn admin-btn-secondary" id="btnVerHistorialAsistencia" style="padding: 6px 14px; font-size: 0.9rem; display:flex; align-items:center; gap:6px;">
+                            <i class="fa-solid fa-calendar-check"></i> Ver Historial de Asistencia
+                        </button>
+                    </div>
                 </div>
 
                 <div style="display: flex; gap: 2rem; margin: 1.5rem; flex-wrap: wrap;">
@@ -154,6 +162,7 @@ const vistasPlantillas = {
                         <form id="formPersonal" onsubmit="registrarPersonal(event)" style="display: flex; flex-direction: column; gap: 1rem;">
                             <input type="text" id="personalNombre" placeholder="Nombre completo" required style="padding: 10px; border: 1px solid var(--border-color, #ccc); border-radius: 6px; background-color: var(--card-bg, #fff); color: var(--text-color, #333);">
                             <input type="text" id="personalEspecialidad" placeholder="Especialidad / Cargo" required style="padding: 10px; border: 1px solid var(--border-color, #ccc); border-radius: 6px; background-color: var(--card-bg, #fff); color: var(--text-color, #333);">
+                            <input type="number" id="personalSueldo" placeholder="Sueldo Base (S/.)" min="0" required style="padding: 10px; border: 1px solid var(--border-color, #ccc); border-radius: 6px; background-color: var(--card-bg, #fff); color: var(--text-color, #333);">
                             <button type="submit" class="admin-btn admin-btn-primary" style="padding: 10px 20px; font-weight: bold; cursor: pointer;">Registrar Personal</button>
                         </form>
                     </div>
@@ -178,6 +187,7 @@ const vistasPlantillas = {
                             <tr>
                                 <th>Nombre</th>
                                 <th>Especialidad / Cargo</th>
+                                <th>Turno Asignado</th>
                                 <th>Asistencia Hoy</th>
                                 <th style="text-align: right;">Acciones</th>
                             </tr>

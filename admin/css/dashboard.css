@@ -1061,7 +1061,32 @@ body.dark-mode ::placeholder {
     }
 }
 
+/* Estilos para el selector de turnos en bloque */
+.btn-paint-shift {
+    transition: all 0.2s ease-in-out;
+}
 
+.btn-paint-shift:hover {
+    background-color: var(--primary-light, rgba(0, 153, 204, 0.1)) !important;
+    border-color: var(--primary) !important;
+}
 
+.btn-paint-shift.active {
+    box-shadow: 0 0 10px rgba(0, 153, 204, 0.4);
+    font-weight: bold;
+}
 
+/* Borrador de fila Gantt */
+.btn-limpiar-fila-gantt {
+    opacity: 0.4;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
 
+.btn-limpiar-fila-gantt:hover {
+    opacity: 1 !important;
+    transform: scale(1.1);
+}
+
+.view-rrhh-emp-cell:hover .btn-limpiar-fila-gantt {
+    opacity: 0.8;
+}
