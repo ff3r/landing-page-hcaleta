@@ -25,20 +25,28 @@ let citasProgramadas = JSON.parse(localStorage.getItem('erp_citas')) || defaultC
 if (!localStorage.getItem('erp_citas')) localStorage.setItem('erp_citas', JSON.stringify(citasProgramadas));
 
 const defaultFinanzas = [
-    { fecha: new Date().toISOString().split('T')[0], tipo: "Ingreso", concepto: "Consulta Particular", categoria: "Cardiología", monto: 50.00 },
+    { fecha: new Date().toISOString().split('T')[0], tipo: "Ingreso", concepto: "Consulta Particular", categoria: "Cardiología", monto: 20.00 },
     { fecha: new Date().toISOString().split('T')[0], tipo: "Egreso", concepto: "Compra Insumos", categoria: "Operativo", monto: 120.00 }
 ];
 let finanzasData = JSON.parse(localStorage.getItem('erp_finanzas')) || defaultFinanzas;
 if (!localStorage.getItem('erp_finanzas')) localStorage.setItem('erp_finanzas', JSON.stringify(finanzasData));
 
 const defaultPersonal = [
-    { nombre: "Juan Pérez", especialidad: "Cardiología" },
-    { nombre: "María López", especialidad: "Pediatría" }
+    { nombre: "Juan Pérez", especialidad: "Cardiología", telefono: "987654321", correo: "juan.perez@hcaleta.pe", sueldoBase: 3500.00, fechaInicio: "2024-01-15", estadoContrato: "Activo" },
+    { nombre: "María López", especialidad: "Pediatría", telefono: "912345678", correo: "maria.lopez@hcaleta.pe", sueldoBase: 3200.00, fechaInicio: "2024-03-01", estadoContrato: "Activo" }
 ];
 let personalData = JSON.parse(localStorage.getItem('erp_personal')) || defaultPersonal;
-// Migrar registros antiguos: eliminar campos 'comision' y 'asistencia' si existen
-personalData = personalData.map(({ nombre, especialidad }) => ({ nombre, especialidad }));
-if (!localStorage.getItem('erp_personal')) localStorage.setItem('erp_personal', JSON.stringify(personalData));
+// Migración automática: añadir campos nuevos a registros antiguos que solo tenían nombre/especialidad
+personalData = personalData.map(p => ({
+    nombre: p.nombre || '',
+    especialidad: p.especialidad || '',
+    telefono: p.telefono || '',
+    correo: p.correo || '',
+    sueldoBase: p.sueldoBase !== undefined ? p.sueldoBase : 0,
+    fechaInicio: p.fechaInicio || new Date().toISOString().split('T')[0],
+    estadoContrato: p.estadoContrato || 'Activo'
+}));
+localStorage.setItem('erp_personal', JSON.stringify(personalData));
 
 // Configuración Global de Notificaciones (Toast)
 const Toast = Swal.mixin({
@@ -466,7 +474,7 @@ function renderizarCitasCompleto() {
         
         let btnAccion = '';
         if (cita.flujoPago === 'Pendiente de Pago en Caja') {
-            btnAccion = `<button class="admin-btn admin-btn-primary btn-cobrar-cita" data-index="${index}" style="padding: 4px 8px; font-size: 0.8rem;">Cobrar (S/ 50)</button>`;
+            btnAccion = `<button class="admin-btn admin-btn-primary btn-cobrar-cita" data-index="${index}" style="padding: 4px 8px; font-size: 0.8rem;">Cobrar (S/ 20)</button>`;
         } else {
             btnAccion = `<span class="text-muted" style="font-size:0.8rem;">-</span>`;
         }
@@ -492,13 +500,12 @@ function cobrarCita(index) {
     cita.flujoPago = 'Pagado';
     localStorage.setItem('erp_citas', JSON.stringify(citasProgramadas));
     
-    // Inyectar a finanzas
     finanzasData.push({
         fecha: new Date().toISOString().split('T')[0],
         tipo: 'Ingreso',
         concepto: 'Consulta Particular (' + cita.paciente + ')',
         categoria: cita.especialidad,
-        monto: 50.00
+        monto: 20.00
     });
     localStorage.setItem('erp_finanzas', JSON.stringify(finanzasData));
     
@@ -942,8 +949,11 @@ function renderizarRRHH() {
                         <option value="Ausente" ${estadoHoy==='Ausente'?'selected':''}>❌ Ausente</option>
                     </select>
                 </td>
-                <td style="text-align: right;">
-                    <button class="admin-btn admin-badge-danger btn-eliminar-personal" data-index="${index}" style="padding: 4px 8px; border:none; border-radius:4px; cursor:pointer;"><i class="fa-solid fa-trash"></i></button>
+                <td style="text-align: right; white-space: nowrap; vertical-align: middle;">
+                    <div style="display: inline-flex; gap: 6px; justify-content: flex-end; align-items: center;">
+                        <button class="admin-btn admin-btn-primary btn-ver-detalle-personal" data-index="${index}" style="padding: 4px 8px; border:none; border-radius:4px; cursor:pointer; font-size:0.85rem;" title="Ver Detalle / Editar"><i class="fa-solid fa-eye"></i></button>
+                        <button class="admin-btn admin-badge-danger btn-eliminar-personal" data-index="${index}" style="padding: 4px 8px; border:none; border-radius:4px; cursor:pointer;" title="Eliminar"><i class="fa-solid fa-trash"></i></button>
+                    </div>
                 </td>
             </tr>
         `;
@@ -981,6 +991,26 @@ function renderizarRRHH() {
             });
         });
     });
+
+    // Ver detalle / Editar personal
+    document.querySelectorAll('.btn-ver-detalle-personal').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const i = e.target.closest('.btn-ver-detalle-personal').dataset.index;
+            abrirModalGestionPersonal(parseInt(i));
+        });
+    });
+
+    // Botón: Reporte Salarial
+    const btnReporte = document.getElementById('btnReporteSalarial');
+    if (btnReporte) {
+        btnReporte.onclick = mostrarReporteSalarial;
+    }
+
+    // Botón: Generar y Pagar Planilla
+    const btnPlanilla = document.getElementById('btnGenerarPlanilla');
+    if (btnPlanilla) {
+        btnPlanilla.onclick = generarPlanillaMensual;
+    }
 }
 
 function registrarPersonal(event) {
@@ -999,8 +1029,16 @@ function registrarPersonal(event) {
         return;
     }
 
-    // Solo datos de perfil; la asistencia se guarda de forma independiente por día
-    personalData.push({ nombre, especialidad });
+    // Datos de perfil con campos completos
+    personalData.push({
+        nombre,
+        especialidad,
+        telefono: '',
+        correo: '',
+        sueldoBase: 0,
+        fechaInicio: new Date().toISOString().split('T')[0],
+        estadoContrato: 'Activo'
+    });
 
     localStorage.setItem('erp_personal', JSON.stringify(personalData));
     renderizarRRHH();
@@ -1008,7 +1046,376 @@ function registrarPersonal(event) {
     Toast.fire({ icon: 'success', title: 'Personal registrado correctamente' });
 }
 
+/**
+ * =======================================================
+ * MODAL DE GESTIÓN COMPLETA DE PERSONAL
+ * =======================================================
+ */
+function abrirModalGestionPersonal(index) {
+    const p = personalData[index];
+    if (!p) return;
 
+    const estadoOpciones = ['Activo', 'Prueba', 'Por Vencer'];
+    const optsHTML = estadoOpciones.map(e =>
+        `<option value="${e}" ${p.estadoContrato === e ? 'selected' : ''}>${e}</option>`
+    ).join('');
 
+    Swal.fire({
+        title: `<i class="fa-solid fa-id-card" style="color:var(--primary); margin-right:8px;"></i> Gestión de Personal`,
+        html: `
+            <div class="modal-gestion-personal">
+                <div class="mgp-section">
+                    <h3 class="mgp-section-title"><i class="fa-solid fa-user"></i> Datos Personales</h3>
+                    <div class="mgp-grid">
+                        <div class="mgp-field">
+                            <label>Nombre Completo</label>
+                            <input type="text" id="mgpNombre" value="${p.nombre}" />
+                        </div>
+                        <div class="mgp-field">
+                            <label>Especialidad / Cargo</label>
+                            <input type="text" id="mgpEspecialidad" value="${p.especialidad}" />
+                        </div>
+                        <div class="mgp-field">
+                            <label>Teléfono</label>
+                            <input type="tel" id="mgpTelefono" value="${p.telefono}" placeholder="Ej. 987654321" />
+                        </div>
+                        <div class="mgp-field">
+                            <label>Correo Electrónico</label>
+                            <input type="email" id="mgpCorreo" value="${p.correo}" placeholder="correo@hospital.pe" />
+                        </div>
+                    </div>
+                </div>
+                <div class="mgp-section">
+                    <h3 class="mgp-section-title"><i class="fa-solid fa-file-contract"></i> Información Contractual</h3>
+                    <div class="mgp-grid">
+                        <div class="mgp-field">
+                            <label>Sueldo Base (S/.)</label>
+                            <input type="number" step="0.01" id="mgpSueldo" value="${p.sueldoBase}" min="0" />
+                        </div>
+                        <div class="mgp-field">
+                            <label>Fecha de Inicio</label>
+                            <input type="date" id="mgpFechaInicio" value="${p.fechaInicio}" />
+                        </div>
+                        <div class="mgp-field">
+                            <label>Estado de Contrato</label>
+                            <select id="mgpEstadoContrato">${optsHTML}</select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `,
+        width: '720px',
+        showCancelButton: true,
+        showDenyButton: true,
+        confirmButtonText: '<i class="fa-solid fa-floppy-disk"></i> Guardar Cambios',
+        denyButtonText: '<i class="fa-solid fa-trash"></i> Eliminar Empleado',
+        cancelButtonText: 'Cerrar',
+        confirmButtonColor: '#0099cc',
+        denyButtonColor: '#ef4444',
+        customClass: {
+            popup: 'mgp-popup',
+            htmlContainer: 'mgp-html-container'
+        },
+        focusConfirm: false,
+        preConfirm: () => {
+            return {
+                nombre: document.getElementById('mgpNombre').value.trim(),
+                especialidad: document.getElementById('mgpEspecialidad').value.trim(),
+                telefono: document.getElementById('mgpTelefono').value.trim(),
+                correo: document.getElementById('mgpCorreo').value.trim(),
+                sueldoBase: parseFloat(document.getElementById('mgpSueldo').value) || 0,
+                fechaInicio: document.getElementById('mgpFechaInicio').value,
+                estadoContrato: document.getElementById('mgpEstadoContrato').value
+            };
+        }
+    }).then((result) => {
+        if (result.isConfirmed && result.value) {
+            const datos = result.value;
+            if (!datos.nombre || !datos.especialidad) {
+                Toast.fire({ icon: 'error', title: 'Nombre y especialidad son obligatorios' });
+                return;
+            }
+            personalData[index] = datos;
+            localStorage.setItem('erp_personal', JSON.stringify(personalData));
+            renderizarRRHH();
+            Toast.fire({ icon: 'success', title: 'Datos actualizados correctamente' });
+        } else if (result.isDenied) {
+            // Confirmar eliminación
+            Swal.fire({
+                title: '⚠️ ¿Estás seguro?',
+                text: `Se eliminará permanentemente a "${p.nombre}". Esta acción no se puede deshacer.`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#ef4444',
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar'
+            }).then((res2) => {
+                if (res2.isConfirmed) {
+                    personalData.splice(index, 1);
+                    localStorage.setItem('erp_personal', JSON.stringify(personalData));
+                    renderizarRRHH();
+                    Toast.fire({ icon: 'success', title: `"${p.nombre}" eliminado` });
+                }
+            });
+        }
+    });
+}
 
+/**
+ * =======================================================
+ * REPORTE SALARIAL CON EXPORTACIÓN CSV
+ * =======================================================
+ */
+function mostrarReporteSalarial() {
+    let totalSueldos = 0;
+    let rowsHTML = '';
 
+    personalData.forEach((p, i) => {
+        totalSueldos += p.sueldoBase || 0;
+        const badgeClass = p.estadoContrato === 'Activo' ? 'admin-badge-success'
+            : p.estadoContrato === 'Por Vencer' ? 'admin-badge-warning'
+            : 'admin-badge-info';
+        rowsHTML += `
+            <tr>
+                <td style="font-weight:600;">${p.nombre}</td>
+                <td>${p.especialidad}</td>
+                <td style="text-align:right;">S/ ${(p.sueldoBase || 0).toFixed(2)}</td>
+                <td><span class="admin-badge ${badgeClass}" style="font-size:0.8rem;">${p.estadoContrato}</span></td>
+            </tr>
+        `;
+    });
+
+    Swal.fire({
+        title: '<i class="fa-solid fa-chart-pie" style="color:var(--primary); margin-right:8px;"></i> Reporte Salarial General',
+        html: `
+            <div class="reporte-salarial-container">
+                <div class="reporte-resumen">
+                    <div class="reporte-stat">
+                        <span class="reporte-stat-label">Total Empleados</span>
+                        <span class="reporte-stat-value">${personalData.length}</span>
+                    </div>
+                    <div class="reporte-stat">
+                        <span class="reporte-stat-label">Planilla Mensual</span>
+                        <span class="reporte-stat-value" style="color:#22c55e;">S/ ${totalSueldos.toFixed(2)}</span>
+                    </div>
+                    <div class="reporte-stat">
+                        <span class="reporte-stat-label">Promedio Sueldo</span>
+                        <span class="reporte-stat-value">S/ ${personalData.length > 0 ? (totalSueldos / personalData.length).toFixed(2) : '0.00'}</span>
+                    </div>
+                </div>
+                <div style="max-height:300px; overflow-y:auto; margin-top:1rem;">
+                    <table class="admin-table" style="width:100%;">
+                        <thead style="position:sticky; top:0; z-index:5;">
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Especialidad</th>
+                                <th style="text-align:right;">Sueldo Base</th>
+                                <th>Estado Contrato</th>
+                            </tr>
+                        </thead>
+                        <tbody>${rowsHTML}</tbody>
+                        <tfoot>
+                            <tr style="font-weight:700; border-top: 2px solid var(--primary);">
+                                <td colspan="2">TOTAL PLANILLA</td>
+                                <td style="text-align:right; color:#22c55e;">S/ ${totalSueldos.toFixed(2)}</td>
+                                <td></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                <button onclick="exportarCSVSalarial()" class="admin-btn admin-btn-primary" style="margin-top:1rem; width:100%; padding:10px; font-weight:bold; display:flex; align-items:center; justify-content:center; gap:8px; cursor:pointer;">
+                    <i class="fa-solid fa-file-csv"></i> Exportar a CSV
+                </button>
+            </div>
+        `,
+        width: '700px',
+        showConfirmButton: false,
+        showCloseButton: true,
+        customClass: {
+            popup: 'mgp-popup',
+            htmlContainer: 'mgp-html-container'
+        }
+    });
+}
+
+function exportarCSVSalarial() {
+    const headers = ['Nombre', 'Especialidad', 'Sueldo Base (S/.)', 'Estado Contrato'];
+    const rows = personalData.map(p => [
+        `"${p.nombre}"`,
+        `"${p.especialidad}"`,
+        (p.sueldoBase || 0).toFixed(2),
+        `"${p.estadoContrato}"`
+    ]);
+
+    let csv = headers.join(',') + '\n';
+    rows.forEach(r => csv += r.join(',') + '\n');
+
+    const blob = new Blob(["\uFEFF" + csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `reporte_salarial_${new Date().toISOString().split('T')[0]}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+    Toast.fire({ icon: 'success', title: 'CSV descargado correctamente' });
+}
+
+function generarPlanillaMensual() {
+    if (personalData.length === 0) {
+        Swal.fire({
+            title: 'Error',
+            text: 'No hay personal registrado para generar la planilla.',
+            icon: 'error',
+            confirmButtonColor: '#0099cc'
+        });
+        return;
+    }
+
+    Swal.fire({
+        title: '¿Confirmas la generación de la planilla mensual para todos los empleados?',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#10b981',
+        cancelButtonColor: '#ef4444',
+        confirmButtonText: 'Sí, generar y pagar',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            const hoy = new Date();
+            const anio = hoy.getFullYear();
+            const mes = String(hoy.getMonth() + 1).padStart(2, '0');
+            const mesClave = `${anio}-${mes}`; // YYYY-MM
+
+            let totalPlanilla = 0;
+            const detallesPlanilla = [];
+
+            personalData.forEach(persona => {
+                let faltas = 0;
+
+                // Buscar inasistencias en todas las claves de asistencia de este mes
+                for (let i = 0; i < localStorage.length; i++) {
+                    const key = localStorage.key(i);
+                    if (key && key.startsWith(`asistencias_${mesClave}`)) {
+                        const asistenciasDia = JSON.parse(localStorage.getItem(key)) || {};
+                        const horas = asistenciasDia[persona.nombre];
+                        
+                        let estadoDia = '';
+                        if (horas) {
+                            if (typeof horas === 'string') {
+                                estadoDia = horas;
+                            } else if (typeof horas === 'object') {
+                                const conteo = { 'Presente': 0, 'Ausente': 0, 'Pendiente': 0, '': 0 };
+                                for (const est of Object.values(horas)) {
+                                    conteo[est] = (conteo[est] || 0) + 1;
+                                }
+                                let max = 0;
+                                let estadoMax = '';
+                                for (const [est, num] of Object.entries(conteo)) {
+                                    if (est !== '' && num > max) {
+                                        max = num;
+                                        estadoMax = est;
+                                    }
+                                }
+                                estadoDia = max > 0 ? estadoMax : '';
+                            }
+                        }
+
+                        if (estadoDia === 'Ausente') {
+                            faltas++;
+                        }
+                    }
+                }
+
+                const sueldoBase = persona.sueldoBase !== undefined ? parseFloat(persona.sueldoBase) : 0;
+                const descuentoPorcentaje = faltas * 0.05;
+                const descuentoMonto = sueldoBase * descuentoPorcentaje;
+                const totalPagar = Math.max(0, sueldoBase - descuentoMonto);
+
+                totalPlanilla += totalPagar;
+
+                detallesPlanilla.push({
+                    nombre: persona.nombre,
+                    especialidad: persona.especialidad,
+                    sueldoBase: sueldoBase,
+                    faltas: faltas,
+                    descuento: descuentoMonto,
+                    totalPagar: totalPagar
+                });
+            });
+
+            // Registro automático en Finanzas
+            const nombresMeses = [
+                'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+                'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+            ];
+            const nombreMes = nombresMeses[hoy.getMonth()];
+            const conceptoPlanilla = `Pago de Planilla - ${nombreMes} ${anio}`;
+
+            finanzasData.push({
+                fecha: hoy.toISOString().split('T')[0],
+                tipo: 'Egreso',
+                concepto: conceptoPlanilla,
+                categoria: 'RRHH',
+                monto: parseFloat(totalPlanilla.toFixed(2))
+            });
+            localStorage.setItem('erp_finanzas', JSON.stringify(finanzasData));
+
+            // Actualizar UI del panel de Finanzas
+            renderizarFinanzas();
+
+            // Construir resumen HTML para mostrar al usuario
+            let tablaDetalles = `
+                <div class="table-responsive" style="max-height: 250px; overflow-y: auto; margin-top: 1rem; border: 1px solid var(--border-color, #334155); border-radius: 6px;">
+                    <table class="admin-table" style="width: 100%; border-collapse: collapse; font-size: 0.85rem;">
+                        <thead>
+                            <tr style="background-color: rgba(255,255,255,0.05); border-bottom: 1px solid var(--border-color, #334155);">
+                                <th style="text-align: left; padding: 8px;">Empleado</th>
+                                <th style="text-align: right; padding: 8px;">Sueldo Base</th>
+                                <th style="text-align: center; padding: 8px;">Faltas</th>
+                                <th style="text-align: right; padding: 8px;">Dcto. (5%/falta)</th>
+                                <th style="text-align: right; padding: 8px;">Neto a Pagar</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            `;
+
+            detallesPlanilla.forEach(det => {
+                tablaDetalles += `
+                    <tr style="border-bottom: 1px solid rgba(255,255,255,0.02);">
+                        <td style="text-align: left; padding: 8px;"><strong>${det.nombre}</strong><br><span style="font-size:0.75rem; color:var(--text-muted, #94a3b8);">${det.especialidad}</span></td>
+                        <td style="text-align: right; padding: 8px;">S/ ${det.sueldoBase.toFixed(2)}</td>
+                        <td style="text-align: center; padding: 8px;"><span class="admin-badge ${det.faltas > 0 ? 'admin-badge-danger' : 'admin-badge-success'}" style="padding: 2px 6px;">${det.faltas}</span></td>
+                        <td style="text-align: right; padding: 8px; color: ${det.descuento > 0 ? '#ef4444' : 'inherit'};">S/ ${det.descuento.toFixed(2)}</td>
+                        <td style="text-align: right; padding: 8px; font-weight: bold; color: #22c55e;">S/ ${det.totalPagar.toFixed(2)}</td>
+                    </tr>
+                `;
+            });
+
+            tablaDetalles += `
+                        </tbody>
+                    </table>
+                </div>
+                <div style="margin-top: 1rem; text-align: right; font-size: 1rem;">
+                    <strong>Total Egresado: </strong>
+                    <span style="color: #ef4444; font-weight: bold; font-size: 1.1rem;">S/ ${totalPlanilla.toFixed(2)}</span>
+                </div>
+            `;
+
+            Swal.fire({
+                title: '¡Planilla Generada y Pagada!',
+                html: `
+                    <p>Se ha registrado el egreso correspondiente en el módulo de Finanzas bajo el concepto: <strong>${conceptoPlanilla}</strong>.</p>
+                    ${tablaDetalles}
+                `,
+                icon: 'success',
+                confirmButtonColor: '#10b981',
+                confirmButtonText: 'Aceptar',
+                width: '600px',
+                customClass: {
+                    popup: 'mgp-popup',
+                    htmlContainer: 'mgp-html-container'
+                }
+            });
+        }
+    });
+}
