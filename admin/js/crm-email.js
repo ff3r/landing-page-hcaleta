@@ -616,6 +616,46 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
 
+    // Helper para formatear historial clínico como una lista semántica e interactiva
+    const renderClinicalHistory = (historyText) => {
+        if (!historyText || historyText.trim() === "" || historyText.trim() === "-") {
+            return `<div class="clinical-alert-item no-alerts"><i class="fa-solid fa-circle-check"></i> Sin antecedentes registrados</div>`;
+        }
+        
+        // Separar por puntos, limpiando espacios
+        const parts = historyText.split('.')
+            .map(p => p.trim())
+            .filter(p => p.length > 0);
+            
+        if (parts.length === 0) {
+            return `<div class="clinical-alert-item no-alerts"><i class="fa-solid fa-circle-check"></i> Sin antecedentes registrados</div>`;
+        }
+        
+        return `<ul class="clinical-alert-list">` + 
+            parts.map(part => {
+                let icon = '<i class="fa-solid fa-circle-chevron-right alert-bullet-icon"></i>';
+                let itemClass = 'clinical-alert-item';
+                const lowerPart = part.toLowerCase();
+                
+                if (lowerPart.includes('alerg') || lowerPart.includes('alérgic')) {
+                    icon = '<i class="fa-solid fa-triangle-exclamation alert-icon-danger"></i>';
+                    itemClass += ' alert-item-danger';
+                } else if (lowerPart.includes('tratamiento') || lowerPart.includes('toma') || lowerPart.includes('activo') || lowerPart.includes('diario') || lowerPart.includes('mg') || lowerPart.includes('prescrip') || lowerPart.includes('dosis') || lowerPart.includes('suplement')) {
+                    icon = '<i class="fa-solid fa-prescription-bottle-medical alert-icon-warning"></i>';
+                    itemClass += ' alert-item-treatment';
+                } else if (lowerPart.includes('sin ') || lowerPart.includes('ningun') || lowerPart.includes('no reporta')) {
+                    icon = '<i class="fa-solid fa-circle-check alert-icon-success"></i>';
+                    itemClass += ' alert-item-success';
+                } else {
+                    icon = '<i class="fa-solid fa-stethoscope alert-icon-info"></i>';
+                    itemClass += ' alert-item-info';
+                }
+                
+                return `<li class="${itemClass}">${icon}<span>${part}.</span></li>`;
+            }).join('') + 
+            `</ul>`;
+    };
+
     const loadEmailIntoPane = (id) => {
         selectedEmailId = id;
         const email = emailsData.find(e => e.id === id);
@@ -657,7 +697,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 document.getElementById("sidebarPatientDniBadge").textContent = `DNI: ${patient.dni}`;
                 document.getElementById("sidebarPatientAge").textContent = `${patient.age} años`;
                 document.getElementById("sidebarPatientPhone").textContent = patient.phone;
-                document.getElementById("sidebarPatientHistory").textContent = patient.history;
+                document.getElementById("sidebarPatientHistory").innerHTML = renderClinicalHistory(patient.history);
 
                 // Cargar próxima visita si existe
                 const nextVisit = patient.visits && patient.visits.length > 0 ? patient.visits[0] : null;
