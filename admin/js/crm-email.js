@@ -623,6 +623,124 @@ document.addEventListener("DOMContentLoaded", () => {
         
         // Mostrar panel de acciones
         document.querySelector(".email-pane-actions").classList.remove("hidden");
+
+        // --- SISTEMA INNOVADOR: VINCULACIÓN AUTOMÁTICA CON HISTORIAL CLÍNICO ---
+        const patientLinkBanner = document.getElementById("patientLinkBanner");
+        const emailPatientSidebar = document.getElementById("emailPatientSidebar");
+        
+        if (patientLinkBanner && emailPatientSidebar) {
+            // Buscar paciente en la base de datos mock por coincidencia de nombre
+            const senderNameLower = email.sender.toLowerCase();
+            const patient = patientsData.find(p => {
+                const patNameLower = p.name.toLowerCase();
+                return senderNameLower.includes(patNameLower) || patNameLower.includes(senderNameLower);
+            });
+
+            if (patient) {
+                // Rellenar Banner
+                document.getElementById("linkedPatientDniText").textContent = patient.dni;
+                patientLinkBanner.classList.remove("hidden");
+
+                // Rellenar Sidebar
+                document.getElementById("sidebarPatientAvatar").textContent = patient.name.charAt(0).toUpperCase();
+                document.getElementById("sidebarPatientName").textContent = patient.name;
+                document.getElementById("sidebarPatientDniBadge").textContent = `DNI: ${patient.dni}`;
+                document.getElementById("sidebarPatientAge").textContent = `${patient.age} años`;
+                document.getElementById("sidebarPatientPhone").textContent = patient.phone;
+                document.getElementById("sidebarPatientHistory").textContent = patient.history;
+
+                // Cargar próxima visita si existe
+                const nextVisit = patient.visits && patient.visits.length > 0 ? patient.visits[0] : null;
+                const visitCard = document.getElementById("sidebarPatientNextVisit");
+                if (nextVisit) {
+                    document.getElementById("sidebarPatientNextVisitDate").textContent = nextVisit.date;
+                    document.getElementById("sidebarPatientNextVisitDesc").textContent = nextVisit.desc;
+                    document.getElementById("sidebarPatientNextVisitDoctor").textContent = nextVisit.doctor;
+                    visitCard.style.display = "block";
+                } else {
+                    visitCard.style.display = "none";
+                }
+
+                // Mostrar Sidebar
+                emailPatientSidebar.classList.remove("hidden");
+
+                // Vincular Acción: Reprogramar Cita Rápida
+                document.getElementById("btnSidebarReprogram").onclick = () => {
+                    const currentDateVal = nextVisit ? nextVisit.date : "";
+                    
+                    Swal.fire({
+                        title: 'Reprogramar Consulta Externa',
+                        html: `
+                            <div style="text-align: left; font-size: 0.95rem; color: var(--text-main, #333);">
+                                <p style="margin-bottom: 8px;"><strong>Paciente:</strong> ${patient.name}</p>
+                                <p style="margin-bottom: 8px;"><strong>Médico/Servicio:</strong> ${nextVisit ? nextVisit.doctor : 'Consulta General'}</p>
+                                <hr style="border-color: var(--border-color, #e2e8f0); margin: 12px 0;">
+                                <label for="swalNewDate" style="display:block; font-weight:600; margin-bottom: 6px;">Seleccione Nueva Fecha:</label>
+                                <input type="date" id="swalNewDate" class="swal2-input" style="width: 100%; margin: 0;" value="${currentDateVal.split('/').reverse().join('-')}">
+                            </div>
+                        `,
+                        showCancelButton: true,
+                        confirmButtonColor: 'var(--primary, #0099cc)',
+                        cancelButtonColor: 'var(--text-muted, #64748b)',
+                        confirmButtonText: 'Confirmar Cambio',
+                        cancelButtonText: 'Cancelar',
+                        preConfirm: () => {
+                            const newDate = document.getElementById('swalNewDate').value;
+                            if (!newDate) {
+                                Swal.showValidationMessage('Por favor seleccione una fecha válida');
+                            }
+                            return newDate;
+                        }
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Convertir AAAA-MM-DD a DD/MM/AAAA para el mock
+                            const [y, m, d] = result.value.split('-');
+                            const formattedDate = `${d}/${m}/${y}`;
+
+                            if (nextVisit) {
+                                nextVisit.date = formattedDate;
+                                if (!nextVisit.desc.includes("Reprogramada")) {
+                                    nextVisit.desc += " (Reprogramada)";
+                                }
+                            } else {
+                                patient.visits.unshift({
+                                    date: formattedDate,
+                                    desc: "Consulta Externa (Reprogramada)",
+                                    doctor: "Medicina General"
+                                });
+                            }
+
+                            // Re-cargar panel de lectura
+                            loadEmailIntoPane(id);
+
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Cita Reprogramada',
+                                text: `Se cambió la cita al ${formattedDate}. Notificación enviada al paciente.`,
+                                confirmButtonColor: 'var(--primary, #0099cc)'
+                            });
+                        }
+                    });
+                };
+
+                // Vincular Acción: Ver Ficha Completa en Base de Datos
+                document.getElementById("btnSidebarFullProfile").onclick = () => {
+                    const folderPatients = document.getElementById("folderPatients");
+                    if (folderPatients) {
+                        // Simular clic en la carpeta de base de datos de pacientes
+                        folderPatients.click();
+                        // Seleccionar al paciente y renderizar
+                        selectedPatientId = patient.id;
+                        renderPatientsList();
+                    }
+                };
+
+            } else {
+                // Ocultar elementos clínicos si el remitente no es paciente
+                patientLinkBanner.classList.add("hidden");
+                emailPatientSidebar.classList.add("hidden");
+            }
+        }
     };
 
     const clearEmailReadingPane = () => {
@@ -636,6 +754,12 @@ document.addEventListener("DOMContentLoaded", () => {
         
         // Ocultar panel de acciones
         document.querySelector(".email-pane-actions").classList.add("hidden");
+
+        // Ocultar banners y sidebar clínicos
+        const patientLinkBanner = document.getElementById("patientLinkBanner");
+        const emailPatientSidebar = document.getElementById("emailPatientSidebar");
+        if (patientLinkBanner) patientLinkBanner.classList.add("hidden");
+        if (emailPatientSidebar) emailPatientSidebar.classList.add("hidden");
     };
 
     // 5. RENDERIZADO DE LA BASE DE DATOS DE PACIENTES (LOCAL DB)

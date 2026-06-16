@@ -6,6 +6,8 @@
     <title>CRM Correo - Hospital La Caleta</title>
     <!-- FontAwesome para Iconos -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- SweetAlert2 para Alertas Premium -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- Estilos Compartidos Base -->
     <link rel="stylesheet" href="css/shared.css">
     <!-- Estilos Específicos del CRM Correo -->
@@ -219,28 +221,88 @@
                                     <span id="readTime">Hoy, 4:15 PM</span>
                                 </div>
                             </div>
-                            <h2 class="email-pane-subject" id="readSubject">Duda sobre reprogramación de cita de Cardiología</h2>
                             
-                            <div class="email-pane-body" id="readBody">
-                                <p>Estimado equipo de atención del Hospital La Caleta,</p>
-                                <br>
-                                <p>Le escribo porque tengo una cita agendada para este viernes 12 de junio a las 9:00 AM con el cardiólogo. Lamentablemente, se me ha presentado una urgencia familiar y me será imposible asistir a esa hora.</p>
-                                <p>Quisiera solicitarles, por favor, si es posible reprogramar la cita para el próximo lunes por la tarde o algún horario disponible la siguiente semana.</p>
-                                <br>
-                                <p>Agradezco de antemano su atención.</p>
-                                <br>
-                                <p>Atentamente,<br><strong>Carlos Mendoza</strong><br>DNI: 47859612</p>
+                            <!-- Banner de vinculación automática EHR -->
+                            <div class="patient-link-banner hidden" id="patientLinkBanner">
+                                <i class="fa-solid fa-circle-check"></i>
+                                <span>Paciente Vinculado al ERP (DNI: <strong id="linkedPatientDniText">-</strong>)</span>
                             </div>
-                            
-                            <div class="email-pane-actions">
-                                <button class="admin-btn admin-btn-primary" id="btnReply">
-                                    <i class="fa-solid fa-reply"></i>
-                                    <span>Responder</span>
-                                </button>
-                                <button class="admin-btn admin-btn-secondary" id="btnDelete">
-                                    <i class="fa-regular fa-trash-can"></i>
-                                    <span>Eliminar</span>
-                                </button>
+
+                            <div class="email-reading-layout">
+                                <div class="email-view-main">
+                                    <h2 class="email-pane-subject" id="readSubject">Duda sobre reprogramación de cita de Cardiología</h2>
+                                    
+                                    <div class="email-pane-body" id="readBody">
+                                        <p>Estimado equipo de atención del Hospital La Caleta,</p>
+                                        <br>
+                                        <p>Le escribo porque tengo una cita agendada para este viernes 12 de junio a las 9:00 AM con el cardiólogo. Lamentablemente, se me ha presentado una urgencia familiar y me será imposible asistir a esa hora.</p>
+                                        <p>Quisiera solicitarles, por favor, si es posible reprogramar la cita para el próximo lunes por la tarde o algún horario disponible la siguiente semana.</p>
+                                        <br>
+                                        <p>Agradezco de antemano su atención.</p>
+                                        <br>
+                                        <p>Atentamente,<br><strong>Carlos Mendoza</strong><br>DNI: 47859612</p>
+                                    </div>
+                                    
+                                    <div class="email-pane-actions">
+                                        <button class="admin-btn admin-btn-primary" id="btnReply">
+                                            <i class="fa-solid fa-reply"></i>
+                                            <span>Responder</span>
+                                        </button>
+                                        <button class="admin-btn admin-btn-secondary" id="btnDelete">
+                                            <i class="fa-regular fa-trash-can"></i>
+                                            <span>Eliminar</span>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Columna de Ficha Clínica Rápida (CRM / ERP) -->
+                                <div class="email-patient-sidebar hidden" id="emailPatientSidebar">
+                                    <div class="sidebar-section-title">
+                                        <i class="fa-solid fa-user-doctor"></i> Ficha Clínica Vinculada
+                                    </div>
+                                    <div class="sidebar-patient-header">
+                                        <div class="sidebar-patient-avatar" id="sidebarPatientAvatar">C</div>
+                                        <div class="sidebar-patient-name-dni">
+                                            <h4 id="sidebarPatientName">Carlos Mendoza</h4>
+                                            <span class="patient-dni-badge" id="sidebarPatientDniBadge">DNI: 47859612</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="sidebar-patient-details">
+                                        <div class="sidebar-detail-item">
+                                            <span class="detail-label"><i class="fa-solid fa-cake-candles"></i> Edad:</span>
+                                            <span class="detail-value" id="sidebarPatientAge">34 años</span>
+                                        </div>
+                                        <div class="sidebar-detail-item">
+                                            <span class="detail-label"><i class="fa-solid fa-mobile-screen-button"></i> Teléfono:</span>
+                                            <span class="detail-value" id="sidebarPatientPhone">987-654-321</span>
+                                        </div>
+                                        <div class="sidebar-detail-item">
+                                            <span class="detail-label"><i class="fa-solid fa-triangle-exclamation"></i> Historial/Alergias:</span>
+                                            <span class="detail-value" id="sidebarPatientHistory" style="color: var(--danger); font-weight: 600;">Asma. Sin alergias</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="sidebar-patient-visits">
+                                        <h5><i class="fa-solid fa-calendar-check"></i> Próxima Cita / Visita Activa</h5>
+                                        <div class="visit-brief-card" id="sidebarPatientNextVisit">
+                                            <div class="visit-brief-date" id="sidebarPatientNextVisitDate">12/06/2026</div>
+                                            <div class="visit-brief-desc" id="sidebarPatientNextVisitDesc">Cardiología - Consulta</div>
+                                            <div class="visit-brief-doctor" id="sidebarPatientNextVisitDoctor">Dr. Roberto Díaz</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="sidebar-patient-actions">
+                                        <button class="admin-btn admin-btn-primary sidebar-action-btn" id="btnSidebarReprogram" style="font-size: 0.8rem; padding: 8px 12px; width: 100%;">
+                                            <i class="fa-solid fa-calendar-days"></i>
+                                            <span>Reprogramar Cita</span>
+                                        </button>
+                                        <button class="admin-btn admin-btn-secondary sidebar-action-btn" id="btnSidebarFullProfile" style="font-size: 0.8rem; padding: 8px 12px; width: 100%; margin-top: 6px;">
+                                            <i class="fa-solid fa-folder-open"></i>
+                                            <span>Ver Ficha Completa</span>
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 

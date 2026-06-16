@@ -775,3 +775,251 @@
     width: 20px;
     text-align: center;
 }
+
+/* ============================================================
+   INBOX CLÍNICO INTELIGENTE - VINCULACIÓN AUTOMÁTICA EHR/ERP
+   ============================================================ */
+
+/* Banner de Vinculación */
+.patient-link-banner {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: rgba(46, 196, 182, 0.12);
+    border: 1px solid rgba(46, 196, 182, 0.3);
+    color: var(--success, #2ec4b6);
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    animation: fadeIn 0.4s ease;
+}
+
+body.dark-mode .patient-link-banner {
+    background-color: rgba(46, 196, 182, 0.08);
+    border-color: rgba(46, 196, 182, 0.2);
+}
+
+/* Contenedor de doble columna */
+.email-reading-layout {
+    display: grid;
+    grid-template-columns: 1fr 280px;
+    gap: 24px;
+    align-items: start;
+    width: 100%;
+}
+
+.email-view-main {
+    min-width: 0; /* Previene desborde flex/grid */
+}
+
+/* Sidebar Clínico */
+.email-patient-sidebar {
+    background-color: var(--bg-body, #f4f8fb);
+    border: 1px solid var(--border-color, #e2e8f0);
+    border-radius: 12px;
+    padding: 16px;
+    animation: fadeInRight 0.4s ease;
+    box-shadow: var(--shadow-sm);
+}
+
+body.dark-mode .email-patient-sidebar {
+    background-color: #151f32; /* Un tono ligeramente diferente para resaltar */
+}
+
+.sidebar-section-title {
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--primary, #0099cc);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 8px;
+}
+
+.sidebar-patient-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.sidebar-patient-avatar {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background-color: var(--primary);
+    color: white;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    box-shadow: var(--shadow-sm);
+}
+
+.sidebar-patient-name-dni h4 {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-main);
+    line-height: 1.2;
+}
+
+.sidebar-patient-name-dni .patient-dni-badge {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+.sidebar-patient-details {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+    background: var(--bg-card);
+    border-radius: 8px;
+    padding: 12px;
+    border: 1px solid var(--border-color);
+}
+
+.sidebar-detail-item {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+}
+
+.sidebar-detail-item .detail-label {
+    color: var(--text-muted);
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.sidebar-detail-item .detail-value {
+    color: var(--text-main);
+    font-weight: 600;
+}
+
+.sidebar-patient-visits h5 {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-main);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.visit-brief-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 0.75rem;
+    margin-bottom: 20px;
+    border-left: 4px solid var(--primary);
+}
+
+.visit-brief-date {
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 2px;
+}
+
+.visit-brief-desc {
+    font-weight: 600;
+    color: var(--text-main);
+}
+
+.visit-brief-doctor {
+    color: var(--text-muted);
+    font-size: 0.7rem;
+}
+
+.sidebar-patient-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.sidebar-action-btn {
+    width: 100% !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 8px !important;
+    font-size: 0.8rem !important;
+    font-weight: 600 !important;
+    border-radius: 8px !important;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+/* Animaciones */
+@keyframes fadeInRight {
+    from {
+        opacity: 0;
+        transform: translateX(15px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* ============================================================
+   RESPONSIVIDAD Y APILAMIENTO MÓVIL PARA SIDEBAR CLÍNICO
+   ============================================================ */
+
+@media (max-width: 1200px) {
+    .email-reading-layout {
+        grid-template-columns: 1fr 240px;
+        gap: 16px;
+    }
+}
+
+@media (max-width: 1024px) {
+    /* En tabletas apilamos verticalmente para evitar aplastamiento */
+    .email-reading-layout {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .email-patient-sidebar {
+        margin-top: 10px;
+        box-shadow: none;
+    }
+}
+
+@media (max-width: 768px) {
+    /* Portabilidad en pantallas móviles pequeñas */
+    .email-reading-layout {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .email-patient-sidebar {
+        border-radius: 8px;
+        padding: 12px;
+    }
+
+    .sidebar-patient-details {
+        padding: 10px;
+    }
+    
+    .sidebar-patient-actions {
+        flex-direction: row;
+        gap: 10px;
+    }
+    
+    .sidebar-action-btn {
+        flex: 1;
+        font-size: 0.75rem !important;
+        padding: 10px !important;
+    }
+}
