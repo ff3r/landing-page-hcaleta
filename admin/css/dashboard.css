@@ -1016,7 +1016,7 @@ body.dark-mode ::placeholder {
     width: 100%;
     min-width: 1150px;
     display: grid;
-    grid-template-columns: 140px repeat(24, 1fr);
+    grid-template-columns: 160px repeat(24, 1fr);
     background: var(--bg-body);
     border-bottom: 1px solid var(--border-color);
     position: sticky;
@@ -1038,8 +1038,8 @@ body.dark-mode ::placeholder {
 .view-rrhh-hour-label:last-child { border-right: none; }
 
 .view-rrhh-hour-label.emp-col { 
-    min-width: 140px; 
-    max-width: 140px; 
+    min-width: 160px; 
+    max-width: 160px; 
     text-align: left; 
     padding-left: 18px; 
     position: sticky; 
@@ -1067,15 +1067,15 @@ body.dark-mode ::placeholder {
     width: 100%;
     min-width: 1150px;
     display: grid;
-    grid-template-columns: 140px repeat(24, 1fr);
+    grid-template-columns: 160px repeat(24, 1fr);
     border-bottom: 1px solid var(--border-color);
 }
 
 .view-rrhh-row:last-child { border-bottom: none; }
 
 .view-rrhh-emp-cell { 
-    min-width: 140px; 
-    max-width: 140px;
+    min-width: 160px; 
+    max-width: 160px;
     display: flex;
     align-items: center;
     gap: 10px;

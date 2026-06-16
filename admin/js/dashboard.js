@@ -44,7 +44,8 @@ personalData = personalData.map(p => ({
     correo: p.correo || '',
     sueldoBase: p.sueldoBase !== undefined ? p.sueldoBase : 0,
     fechaInicio: p.fechaInicio || new Date().toISOString().split('T')[0],
-    estadoContrato: p.estadoContrato || 'Activo'
+    estadoContrato: p.estadoContrato || 'Activo',
+    turnoAsignado: p.turnoAsignado || ''
 }));
 localStorage.setItem('erp_personal', JSON.stringify(personalData));
 
@@ -662,13 +663,41 @@ function guardarAsistencia() {
     const registroHoy = {};
 
     document.querySelectorAll('.asistencia-select').forEach(sel => {
-        const nombre = personalData[sel.dataset.index]?.nombre;
-        if (nombre) {
+        const persona = personalData[sel.dataset.index];
+        if (persona) {
+            const nombre = persona.nombre;
             const estado = sel.value;
-            // Guardar en formato detallado por horas
+            const turno = persona.turnoAsignado || '';
+
             registroHoy[nombre] = {};
+
+            // Determinar qué horas corresponden a su turno
+            let horasTurno = [];
+            if (turno === 'TM') {
+                horasTurno = [7, 8, 9, 10, 11, 12];
+            } else if (turno === 'TT') {
+                horasTurno = [13, 14, 15, 16, 17, 18];
+            } else if (turno === 'TN') {
+                horasTurno = [19, 20, 21, 22, 23, 0, 1, 2, 3, 4, 5, 6];
+            } else if (turno === 'Guardia') {
+                horasTurno = Array.from({length: 24}, (_, i) => i);
+            } else {
+                // Sin Asignar: por defecto cubren todo
+                horasTurno = Array.from({length: 24}, (_, i) => i);
+            }
+
             for (let h = 0; h <= 23; h++) {
-                registroHoy[nombre][String(h)] = estado === 'Pendiente' ? '' : estado;
+                if (horasTurno.includes(h)) {
+                    if (estado === 'Presente') {
+                        registroHoy[nombre][String(h)] = turno || 'Presente';
+                    } else if (estado === 'Ausente') {
+                        registroHoy[nombre][String(h)] = 'Ausente';
+                    } else {
+                        registroHoy[nombre][String(h)] = '';
+                    }
+                } else {
+                    registroHoy[nombre][String(h)] = '';
+                }
             }
         }
     });
@@ -718,7 +747,11 @@ const VIEW_RRHH_COLORES = {
     '':          { bg: 'transparent',               borde: 'var(--border-color, #334155)', emoji: '' },
     'Presente':  { bg: 'rgba(34,197,94,0.18)',      borde: '#22c55e',                      emoji: '✓' },
     'Ausente':   { bg: 'rgba(239,68,68,0.18)',       borde: '#ef4444',                      emoji: '✗' },
-    'Permiso':   { bg: 'rgba(245,158,11,0.18)',      borde: '#f59e0b',                      emoji: '◐' }
+    'Permiso':   { bg: 'rgba(245,158,11,0.18)',      borde: '#f59e0b',                      emoji: '◐' },
+    'TM':        { bg: 'rgba(14,165,233,0.25)',      borde: '#0ea5e9',                      emoji: 'M' },
+    'TT':        { bg: 'rgba(234,179,8,0.25)',       borde: '#eab308',                      emoji: 'T' },
+    'TN':        { bg: 'rgba(139,92,246,0.25)',      borde: '#8b5cf6',                      emoji: 'N' },
+    'Guardia':   { bg: 'rgba(236,72,153,0.25)',      borde: '#ec4899',                      emoji: 'G' }
 };
 
 function generarHtmlGridVista(fechaIso) {
@@ -738,9 +771,34 @@ function generarHtmlGridVista(fechaIso) {
                 <strong style="color: var(--text-main); font-size:1rem;">Seleccione Fecha:</strong>
                 <input type="date" id="viewRrhhDate" value="${fechaIso}" max="${obtenerFechaHoy().iso}" style="background: var(--bg-body, #0f172a); color: var(--text-main, #f1f5f9); border: 1px solid var(--border-color, #334155); padding: 8px 14px; border-radius: 6px; outline: none;">
             </div>
-            <button class="admin-btn admin-btn-primary" onclick="guardarHistorialVista()" style="padding: 8px 16px; font-weight: bold; cursor: pointer; display:flex; align-items:center; gap:8px;">
-                <i class="fa-solid fa-save"></i> Guardar Cambios
+            <div style="display: flex; gap: 8px;">
+                <button class="admin-btn admin-btn-secondary" onclick="restablecerTurnosBaseVista()" style="padding: 8px 16px; font-weight: bold; cursor: pointer; display:flex; align-items:center; gap:8px;">
+                    <i class="fa-solid fa-rotate-left"></i> Restablecer a Turnos Base
+                </button>
+                <button class="admin-btn admin-btn-primary" onclick="guardarHistorialVista()" style="padding: 8px 16px; font-weight: bold; cursor: pointer; display:flex; align-items:center; gap:8px;">
+                    <i class="fa-solid fa-save"></i> Guardar Cambios
+                </button>
+            </div>
+        </div>
+
+        <!-- BARRA DE ASIGNACIÓN DE TURNOS POR BLOQUES -->
+        <div class="view-rrhh-turnos-toolbar" style="margin: 0 1.5rem 1rem 1.5rem; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; background: rgba(255,255,255,0.02); padding: 10px 15px; border-radius: 8px; border: 1px solid var(--border-color, #334155);">
+            <strong style="color: var(--text-main); font-size: 0.9rem;"><i class="fa-solid fa-business-time" style="color: var(--primary); margin-right: 6px;"></i>Asignar Turno por Bloque:</strong>
+            <button class="admin-btn btn-turno-sel" data-turno="TM" style="padding: 6px 12px; font-size: 0.85rem; background: transparent; border: 1px solid #0ea5e9; color: #0ea5e9; border-radius: 6px; cursor: pointer; transition: all 0.2s;" title="Turno Mañana (07:00 - 13:00)">
+                <i class="fa-solid fa-sun" style="margin-right: 4px;"></i> TM (07-13)
             </button>
+            <button class="admin-btn btn-turno-sel" data-turno="TT" style="padding: 6px 12px; font-size: 0.85rem; background: transparent; border: 1px solid #eab308; color: #eab308; border-radius: 6px; cursor: pointer; transition: all 0.2s;" title="Turno Tarde (13:00 - 19:00)">
+                <i class="fa-solid fa-cloud-sun" style="margin-right: 4px;"></i> TT (13-19)
+            </button>
+            <button class="admin-btn btn-turno-sel" data-turno="TN" style="padding: 6px 12px; font-size: 0.85rem; background: transparent; border: 1px solid #8b5cf6; color: #8b5cf6; border-radius: 6px; cursor: pointer; transition: all 0.2s;" title="Turno Noche (19:00 - 07:00)">
+                <i class="fa-solid fa-moon" style="margin-right: 4px;"></i> TN (19-07)
+            </button>
+            <button class="admin-btn btn-turno-sel" data-turno="Guardia" style="padding: 6px 12px; font-size: 0.85rem; background: transparent; border: 1px solid #ec4899; color: #ec4899; border-radius: 6px; cursor: pointer; transition: all 0.2s;" title="Guardia Completa (24 Horas)">
+                <i class="fa-solid fa-shield-halved" style="margin-right: 4px;"></i> Guardia
+            </button>
+            <span id="turnoSelIndicador" style="font-size: 0.8rem; color: var(--text-muted, #94a3b8); margin-left: 10px; display: none;">
+                💡 <span style="color: var(--primary); font-weight: 600;">Modo pintar activo:</span> Haz clic en el nombre de un empleado para asignarle el turno.
+            </span>
         </div>
 
         <div style="margin: 0 1.5rem 1.5rem 1.5rem; position: relative;">
@@ -764,13 +822,31 @@ function generarHtmlGridVista(fechaIso) {
             const color = coloresAvatar[idx % coloresAvatar.length];
             
             html += `<div class="view-rrhh-row">
-                <div class="view-rrhh-emp-cell" title="${p.nombre}">
+                <div class="view-rrhh-emp-cell" title="Hacer clic para asignar el turno seleccionado" style="cursor: pointer; transition: background-color 0.2s;" onmouseover="this.style.backgroundColor='var(--bg-body)'" onmouseout="this.style.backgroundColor='var(--bg-card)'" data-emp="${p.nombre}">
                     <div class="view-rrhh-avatar" style="background:${color};">${inic}</div>
-                    <span class="view-rrhh-emp-name">${p.nombre}</span>
+                    <span class="view-rrhh-emp-name" style="max-width: 80px;">${p.nombre}</span>
+                    <button class="btn-limpiar-fila" data-emp="${p.nombre}" style="background:transparent; border:none; color:#ef4444; cursor:pointer; font-size:0.85rem; padding: 2px; margin-left: auto; display:flex; align-items:center;" title="Limpiar todos los turnos de esta fila">
+                        <i class="fa-solid fa-eraser"></i>
+                    </button>
                 </div>`;
                 
             VIEW_RRHH_HORAS.forEach(h => {
-                const estado = (data[p.nombre] && data[p.nombre][String(h)]) || '';
+                let estado = '';
+                if (data[p.nombre] && data[p.nombre][String(h)] !== undefined) {
+                    estado = data[p.nombre][String(h)];
+                } else {
+                    // Configuración inicial basada en Turno Asignado
+                    const defaultTurno = p.turnoAsignado || '';
+                    if (defaultTurno === 'TM' && h >= 7 && h <= 12) {
+                        estado = 'TM';
+                    } else if (defaultTurno === 'TT' && h >= 13 && h <= 18) {
+                        estado = 'TT';
+                    } else if (defaultTurno === 'TN' && (h >= 19 || h <= 6)) {
+                        estado = 'TN';
+                    } else if (defaultTurno === 'Guardia') {
+                        estado = 'Guardia';
+                    }
+                }
                 const style = VIEW_RRHH_COLORES[estado] || VIEW_RRHH_COLORES[''];
                 html += `<div class="view-rrhh-cell" 
                             data-emp="${p.nombre}" 
@@ -804,17 +880,14 @@ function mostrarVistaHistorial() {
     renderizarContenidoVistaHistorial(isoHoy);
 }
 
+/**
+ * Renderiza el cronograma de asistencia interactivo para la fecha dada.
+ */
 function renderizarContenidoVistaHistorial(fecha) {
     const historyView = document.getElementById('rrhh-history-view');
     if (!historyView) return;
     
     historyView.innerHTML = generarHtmlGridVista(fecha);
-    
-    // Posicionar scroll en las 8:00 AM (8 columnas x 60px)
-    const gridContainer = document.querySelector('.view-rrhh-grid-container');
-    if (gridContainer) {
-        
-    }
     
     const dateInput = document.getElementById('viewRrhhDate');
     const gridBody = document.getElementById('viewRrhhGridBody');
@@ -829,13 +902,107 @@ function renderizarContenidoVistaHistorial(fecha) {
         });
     }
     
-    // Interacción con las celdas
+    // Gestión del Selector de Turnos
+    let turnoSeleccionado = null;
+    const btnTurnos = document.querySelectorAll('.btn-turno-sel');
+    const indicador = document.getElementById('turnoSelIndicador');
+
+    btnTurnos.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const turno = btn.dataset.turno;
+            if (turnoSeleccionado === turno) {
+                // Deseleccionar
+                turnoSeleccionado = null;
+                btn.style.background = 'transparent';
+                btn.style.color = btn.style.borderColor;
+                if (indicador) indicador.style.display = 'none';
+            } else {
+                // Seleccionar
+                turnoSeleccionado = turno;
+                btnTurnos.forEach(b => {
+                    b.style.background = 'transparent';
+                    b.style.color = b.style.borderColor;
+                });
+                btn.style.background = btn.style.borderColor;
+                btn.style.color = 'white';
+                if (indicador) indicador.style.display = 'inline';
+            }
+        });
+    });
+
+    // Asignar turno rápido haciendo clic en la celda del empleado
+    document.querySelectorAll('.view-rrhh-emp-cell').forEach(empCell => {
+        empCell.addEventListener('click', (e) => {
+            const empNombre = empCell.dataset.emp;
+            if (!turnoSeleccionado) {
+                Toast.fire({
+                    icon: 'info',
+                    title: 'Selecciona primero un turno (TM, TT, TN, Guardia) en la barra superior para pintarlo en esta fila.'
+                });
+                return;
+            }
+
+            let horasTurno = [];
+            if (turnoSeleccionado === 'TM') {
+                horasTurno = [7, 8, 9, 10, 11, 12];
+            } else if (turnoSeleccionado === 'TT') {
+                horasTurno = [13, 14, 15, 16, 17, 18];
+            } else if (turnoSeleccionado === 'TN') {
+                horasTurno = [19, 20, 21, 22, 23, 0, 1, 2, 3, 4, 5, 6];
+            } else if (turnoSeleccionado === 'Guardia') {
+                horasTurno = Array.from({length: 24}, (_, i) => i);
+            }
+
+            const celdasFila = document.querySelectorAll(`.view-rrhh-cell[data-emp="${empNombre}"]`);
+            celdasFila.forEach(cell => {
+                const h = parseInt(cell.dataset.hora);
+                if (horasTurno.includes(h)) {
+                    cell.dataset.estado = turnoSeleccionado;
+                    const style = VIEW_RRHH_COLORES[turnoSeleccionado];
+                    cell.style.background = style.bg;
+                    cell.style.borderColor = style.borde;
+                    cell.style.color = style.borde;
+                    cell.innerHTML = `<span class="view-rrhh-cell-label">${style.emoji}</span>`;
+                }
+            });
+
+            Toast.fire({
+                icon: 'success',
+                title: `Turno ${turnoSeleccionado} asignado a ${empNombre}`
+            });
+        });
+    });
+
+    // Limpiar fila rápidamente
+    document.querySelectorAll('.btn-limpiar-fila').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation(); // Evitar que se propague el clic en la fila de empleado
+            const empNombre = btn.dataset.emp;
+            
+            const celdasFila = document.querySelectorAll(`.view-rrhh-cell[data-emp="${empNombre}"]`);
+            celdasFila.forEach(cell => {
+                cell.dataset.estado = '';
+                const style = VIEW_RRHH_COLORES[''];
+                cell.style.background = style.bg;
+                cell.style.borderColor = style.borde;
+                cell.style.color = style.borde;
+                cell.innerHTML = `<span class="view-rrhh-cell-label">${style.emoji}</span>`;
+            });
+            Toast.fire({
+                icon: 'success',
+                title: `Turnos limpiados para ${empNombre}`
+            });
+        });
+    });
+    
+    // Interacción manual con celdas (ciclo de estados normales)
     if (gridBody) {
         gridBody.querySelectorAll('.view-rrhh-cell').forEach(cell => {
             cell.addEventListener('click', () => {
                 const actual = cell.dataset.estado;
                 const idx = VIEW_RRHH_ESTADOS.indexOf(actual);
-                const next = VIEW_RRHH_ESTADOS[(idx + 1) % VIEW_RRHH_ESTADOS.length];
+                const nextIdx = idx >= 0 ? (idx + 1) % VIEW_RRHH_ESTADOS.length : 0;
+                const next = VIEW_RRHH_ESTADOS[nextIdx];
                 
                 cell.dataset.estado = next;
                 const style = VIEW_RRHH_COLORES[next];
@@ -920,7 +1087,9 @@ function renderizarRRHH() {
                 // Contar ocurrencias de cada estado en las horas
                 const conteo = { 'Presente': 0, 'Ausente': 0, 'Permiso': 0, '': 0 };
                 Object.values(horas).forEach(v => {
-                    if (conteo[v] !== undefined) conteo[v]++;
+                    let normalizado = v;
+                    if (['TM', 'TT', 'TN', 'Guardia'].includes(v)) normalizado = 'Presente';
+                    if (conteo[normalizado] !== undefined) conteo[normalizado]++;
                 });
                 
                 // Determinar el estado más frecuente
@@ -942,6 +1111,15 @@ function renderizarRRHH() {
             <tr>
                 <td><strong>${persona.nombre}</strong></td>
                 <td>${persona.especialidad}</td>
+                <td>
+                    <select class="turno-asignado-select" data-index="${index}" style="padding: 5px 8px; border-radius: 6px; background: var(--card-bg); color: var(--text-color); border: 1px solid var(--border-color); font-size:0.9rem;">
+                        <option value="" ${(persona.turnoAsignado || '') === '' ? 'selected' : ''}>Sin Asignar</option>
+                        <option value="TM" ${(persona.turnoAsignado || '') === 'TM' ? 'selected' : ''}>TM (Mañana)</option>
+                        <option value="TT" ${(persona.turnoAsignado || '') === 'TT' ? 'selected' : ''}>TT (Tarde)</option>
+                        <option value="TN" ${(persona.turnoAsignado || '') === 'TN' ? 'selected' : ''}>TN (Noche)</option>
+                        <option value="Guardia" ${(persona.turnoAsignado || '') === 'Guardia' ? 'selected' : ''}>Guardia</option>
+                    </select>
+                </td>
                 <td>
                     <select class="asistencia-select" data-index="${index}" style="padding: 5px 8px; border-radius: 6px; background: var(--card-bg); color: var(--text-color); border: 1px solid var(--border-color); font-size:0.9rem;">
                         <option value="Pendiente" ${estadoHoy==='Pendiente'?'selected':''}>⏳ Pendiente</option>
@@ -1011,6 +1189,22 @@ function renderizarRRHH() {
     if (btnPlanilla) {
         btnPlanilla.onclick = generarPlanillaMensual;
     }
+
+    // Guardar turno asignado
+    document.querySelectorAll('.turno-asignado-select').forEach(sel => {
+        sel.addEventListener('change', (e) => {
+            const idx = parseInt(e.target.dataset.index);
+            const val = e.target.value;
+            if (personalData[idx]) {
+                personalData[idx].turnoAsignado = val;
+                localStorage.setItem('erp_personal', JSON.stringify(personalData));
+                Toast.fire({
+                    icon: 'success',
+                    title: `Turno asignado actualizado para ${personalData[idx].nombre}`
+                });
+            }
+        });
+    });
 }
 
 function registrarPersonal(event) {
@@ -1037,7 +1231,8 @@ function registrarPersonal(event) {
         correo: '',
         sueldoBase: 0,
         fechaInicio: new Date().toISOString().split('T')[0],
-        estadoContrato: 'Activo'
+        estadoContrato: 'Activo',
+        turnoAsignado: ''
     });
 
     localStorage.setItem('erp_personal', JSON.stringify(personalData));
@@ -1081,7 +1276,7 @@ function abrirModalGestionPersonal(index) {
                         </div>
                         <div class="mgp-field">
                             <label>Correo Electrónico</label>
-                            <input type="email" id="mgpCorreo" value="${p.correo}" placeholder="correo@hospital.pe" />
+                            <input type="email" id="mgpCorreo" value="${p.correo}" placeholder="ejemplo@hcaleta.gob.pe" />
                         </div>
                     </div>
                 </div>
@@ -1306,7 +1501,9 @@ function generarPlanillaMensual() {
                             } else if (typeof horas === 'object') {
                                 const conteo = { 'Presente': 0, 'Ausente': 0, 'Pendiente': 0, '': 0 };
                                 for (const est of Object.values(horas)) {
-                                    conteo[est] = (conteo[est] || 0) + 1;
+                                    let normalizado = est;
+                                    if (['TM', 'TT', 'TN', 'Guardia'].includes(est)) normalizado = 'Presente';
+                                    conteo[normalizado] = (conteo[normalizado] || 0) + 1;
                                 }
                                 let max = 0;
                                 let estadoMax = '';
@@ -1415,6 +1612,60 @@ function generarPlanillaMensual() {
                     popup: 'mgp-popup',
                     htmlContainer: 'mgp-html-container'
                 }
+            });
+        }
+    });
+}
+
+function restablecerTurnosBaseVista() {
+    Swal.fire({
+        title: '¿Restablecer a Turnos Base?',
+        text: 'Se sobrescribirá la cuadrícula actual con los turnos por defecto asignados a cada empleado.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#0099cc',
+        cancelButtonColor: '#64748b',
+        confirmButtonText: 'Sí, restablecer',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            personalData.forEach(p => {
+                const defaultTurno = p.turnoAsignado || '';
+                let horasTurno = [];
+                if (defaultTurno === 'TM') {
+                    horasTurno = [7, 8, 9, 10, 11, 12];
+                } else if (defaultTurno === 'TT') {
+                    horasTurno = [13, 14, 15, 16, 17, 18];
+                } else if (defaultTurno === 'TN') {
+                    horasTurno = [19, 20, 21, 22, 23, 0, 1, 2, 3, 4, 5, 6];
+                } else if (defaultTurno === 'Guardia') {
+                    horasTurno = Array.from({length: 24}, (_, i) => i);
+                }
+
+                const celdasFila = document.querySelectorAll(`.view-rrhh-cell[data-emp="${p.nombre}"]`);
+                celdasFila.forEach(cell => {
+                    const h = parseInt(cell.dataset.hora);
+                    if (horasTurno.includes(h)) {
+                        cell.dataset.estado = defaultTurno;
+                        const style = VIEW_RRHH_COLORES[defaultTurno];
+                        cell.style.background = style.bg;
+                        cell.style.borderColor = style.borde;
+                        cell.style.color = style.borde;
+                        cell.innerHTML = `<span class="view-rrhh-cell-label">${style.emoji}</span>`;
+                    } else {
+                        cell.dataset.estado = '';
+                        const style = VIEW_RRHH_COLORES[''];
+                        cell.style.background = style.bg;
+                        cell.style.borderColor = style.borde;
+                        cell.style.color = style.borde;
+                        cell.innerHTML = `<span class="view-rrhh-cell-label">${style.emoji}</span>`;
+                    }
+                });
+            });
+
+            Toast.fire({
+                icon: 'success',
+                title: 'Cuadrícula restablecida a los turnos base'
             });
         }
     });

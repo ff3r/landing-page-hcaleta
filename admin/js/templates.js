@@ -186,8 +186,9 @@ const vistasPlantillas = {
                             <tr>
                                 <th>Nombre</th>
                                 <th>Especialidad / Cargo</th>
+                                <th>Turno Asignado</th>
                                 <th>Asistencia Hoy</th>
-                                <th style="text-align: right;">Acciones</th>
+                                <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody id="lista-personal-rrhh">
