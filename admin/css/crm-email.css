@@ -1206,14 +1206,16 @@ body.dark-mode .clinical-alert-item.alert-item-info {
     font-weight: 500;
 }
 
-/* Filtros de Rol/Categoría (Chips Modernos) */
+/* Filtros de Rol/Categoría (Chips Modernos y Deslizables) */
 .email-role-filters {
     display: flex;
-    gap: 8px;
-    padding: 12px 16px;
+    gap: 6px;
+    padding: 10px 12px;
     border-bottom: 1px solid var(--border-color);
     background-color: var(--bg-card);
     overflow-x: auto;
+    flex-wrap: nowrap;
+    -webkit-overflow-scrolling: touch; /* Scroll suave en iOS */
     scrollbar-width: none; /* Ocultar barra en Firefox */
 }
 
@@ -1225,16 +1227,17 @@ body.dark-mode .clinical-alert-item.alert-item-info {
     background-color: var(--bg-body, #f4f8fb);
     color: var(--text-muted, #64748b);
     border: 1px solid var(--border-color, #e2e8f0);
-    border-radius: 20px;
-    padding: 6px 14px;
-    font-size: 0.75rem;
+    border-radius: 16px;
+    padding: 5px 10px;
+    font-size: 0.72rem;
     font-weight: 600;
     cursor: pointer;
     white-space: nowrap;
     transition: var(--transition);
     display: flex;
     align-items: center;
-    gap: 6px;
+    justify-content: center;
+    flex-shrink: 0; /* Previene que se compriman */
 }
 
 body.dark-mode .filter-chip {
