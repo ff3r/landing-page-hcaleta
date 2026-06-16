@@ -127,7 +127,7 @@
     }
 
     /* Ajustar icono de lupa en barra de búsqueda móvil para que libre el botón de carpetas */
-    .email-search-bar i {
+    .email-search-bar > i {
         left: 64px !important;
     }
     
@@ -207,7 +207,7 @@
     align-items: center;
 }
 
-.email-search-bar i {
+.email-search-bar > i {
     position: absolute;
     left: 28px;
     color: var(--text-muted);
