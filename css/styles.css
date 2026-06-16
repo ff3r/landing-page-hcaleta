@@ -2157,6 +2157,12 @@ body.dark-mode .intranet-btn:hover {
 
 /* Reglas responsivas para pantallas <= 992px */
 @media (max-width: 992px) {
+    body, html {
+        overflow-x: hidden !important;
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
     .mobile-nav-toggle {
         display: block;
         margin-left: 10px !important;
@@ -2396,5 +2402,21 @@ body.dark-mode .intranet-btn:hover {
     
     .banner-content h1 {
         font-size: 1.8rem !important;
+    }
+
+    /* Input de búsqueda responsivo */
+    .input-button-wrapper {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 10px !important;
+    }
+
+    #doc-number {
+        width: 100% !important;
+    }
+
+    #btn-search {
+        width: 100% !important;
+        padding: 10px !important;
     }
 }

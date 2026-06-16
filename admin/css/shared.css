@@ -424,6 +424,12 @@ body {
    ADAPTABILIDAD MÓVIL (RESPONSIVO)
    ========================================== */
 @media (max-width: 992px) {
+    body, html, .app-container {
+        overflow-x: hidden !important;
+        max-width: 100% !important;
+        width: 100% !important;
+    }
+
     .sidebar {
         left: calc(-1 * var(--sidebar-width));
     }
@@ -433,7 +439,10 @@ body {
     }
     
     .main-content {
-        margin-left: 0;
+        margin-left: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important; /* Previene desbordes en layouts flex */
     }
     
     .icon-btn.menu-toggle {
@@ -444,5 +453,54 @@ body {
 @media (min-width: 993px) {
     .icon-btn.menu-toggle {
         display: none;
+    }
+}
+
+/* Reglas específicas para pantallas móviles <= 768px */
+@media (max-width: 768px) {
+    .content-body {
+        padding: 15px !important;
+        gap: 15px !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important; /* Previene desbordes en layouts flex */
+    }
+    
+    .topbar {
+        padding: 0 15px !important;
+    }
+
+    .admin-card {
+        padding: 15px !important; /* Reduce padding lateral en móviles para ganar espacio */
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important; /* Previene desbordes en layouts flex */
+    }
+
+    .table-responsive {
+        width: 100% !important;
+        max-width: 100% !important;
+        display: block !important; /* Fuerza a comportarse como bloque para respetar el ancho máximo */
+        overflow-x: auto !important; /* Habilita el scroll horizontal interno */
+        -webkit-overflow-scrolling: touch !important;
+        margin-bottom: 15px;
+    }
+    
+    .admin-table {
+        min-width: 650px !important; /* Fuerza a la tabla a tener un ancho mínimo legible */
+        table-layout: auto !important; /* Permite que el navegador ajuste el ancho de columnas dinámicamente */
+    }
+    
+    .admin-table th, 
+    .admin-table td {
+        padding: 10px 12px !important; /* Reduce el espaciado para aprovechar mejor el ancho */
+        font-size: 0.85rem !important;
+    }
+
+    /* Prevenir que Chart.js o canvas ensanchen las tarjetas en móvil */
+    .chart-container-card, .chart-wrapper, canvas {
+        max-width: 100% !important;
+        width: 100% !important;
+        overflow: hidden !important;
     }
 }
