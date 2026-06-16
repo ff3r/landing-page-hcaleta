@@ -890,10 +890,8 @@ body.dark-mode ::placeholder {
 .view-rrhh-grid-container::-webkit-scrollbar-track { background: var(--bg-body); }
 
 .view-rrhh-time-header {
-    width: 100%;
-    min-width: 1150px;
     display: grid;
-    grid-template-columns: 160px repeat(24, 1fr);
+    grid-template-columns: 160px repeat(24, 60px);
     background: var(--bg-body);
     border-bottom: 1px solid var(--border-color);
     position: sticky;
@@ -922,15 +920,14 @@ body.dark-mode ::placeholder {
     position: sticky; 
     left: 0; 
     z-index: 10; 
-    background: var(--bg-card);
-    box-shadow: 4px 0 8px rgba(0,0,0,0.3);
+    background: var(--bg-body);
+    border-right: 1px solid var(--border-color);
+    box-shadow: 2px 0 5px rgba(0,0,0,0.03);
 }
 
 .view-rrhh-grid-body {
     overflow-y: auto;
     overflow-x: hidden;
-    width: 100%;
-    min-width: 1150px;
 }
 
 .view-rrhh-grid-body::-webkit-scrollbar { width: 6px; }
@@ -941,10 +938,8 @@ body.dark-mode ::placeholder {
 }
 
 .view-rrhh-row {
-    width: 100%;
-    min-width: 1150px;
     display: grid;
-    grid-template-columns: 160px repeat(24, 1fr);
+    grid-template-columns: 160px repeat(24, 60px);
     border-bottom: 1px solid var(--border-color);
 }
 
@@ -956,13 +951,13 @@ body.dark-mode ::placeholder {
     display: flex;
     align-items: center;
     gap: 10px;
-    padding: 6px 18px;
+    padding: 8px 18px;
     border-right: 1px solid var(--border-color);
     background: var(--bg-card);
     position: sticky;
     left: 0;
-    z-index: 4;
-    box-shadow: 4px 0 8px rgba(0,0,0,0.3);
+    z-index: 10;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.03);
 }
 
 .view-rrhh-avatar {
@@ -1066,145 +1061,6 @@ body.dark-mode ::placeholder {
     }
 }
 
-
-/* ============================================================
-   MODAL DE GESTIÓN DE PERSONAL (SweetAlert2 custom)
-   ============================================================ */
-
-.mgp-popup {
-    background: var(--bg-card, #1e293b) !important;
-    color: var(--text-main, #f1f5f9) !important;
-    border: 1px solid var(--border-color, #334155) !important;
-    border-radius: 16px !important;
-}
-
-.mgp-popup .swal2-title {
-    color: var(--text-main, #f1f5f9) !important;
-    font-size: 1.2rem !important;
-}
-
-.mgp-html-container {
-    color: var(--text-main, #f1f5f9) !important;
-    text-align: left !important;
-}
-
-.modal-gestion-personal {
-    display: flex;
-    flex-direction: column;
-    gap: 1.2rem;
-}
-
-.mgp-section {
-    background: var(--bg-body, #0f172a);
-    border: 1px solid var(--border-color, #334155);
-    border-radius: 10px;
-    padding: 1.2rem;
-}
-
-.mgp-section-title {
-    font-size: 0.95rem;
-    font-weight: 700;
-    color: var(--primary, #0099cc);
-    margin: 0 0 1rem 0;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.mgp-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.8rem;
-}
-
-.mgp-field {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-}
-
-.mgp-field label {
-    font-size: 0.78rem;
-    font-weight: 600;
-    color: var(--text-muted, #94a3b8);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.mgp-field input,
-.mgp-field select {
-    padding: 9px 12px;
-    border: 1px solid var(--border-color, #334155);
-    border-radius: 8px;
-    background: var(--bg-card, #1e293b);
-    color: var(--text-main, #f1f5f9);
-    font-size: 0.9rem;
-    transition: border-color 0.2s, box-shadow 0.2s;
-}
-
-.mgp-field input:focus,
-.mgp-field select:focus {
-    outline: none;
-    border-color: var(--primary, #0099cc);
-    box-shadow: 0 0 0 3px rgba(0, 153, 204, 0.15);
-}
-
-/* ============================================================
-   REPORTE SALARIAL
-   ============================================================ */
-
-.reporte-salarial-container {
-    text-align: left;
-}
-
-.reporte-resumen {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
-}
-
-.reporte-stat {
-    background: var(--bg-body, #0f172a);
-    border: 1px solid var(--border-color, #334155);
-    border-radius: 10px;
-    padding: 14px;
-    text-align: center;
-}
-
-.reporte-stat-label {
-    display: block;
-    font-size: 0.72rem;
-    font-weight: 600;
-    color: var(--text-muted, #94a3b8);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-bottom: 4px;
-}
-
-.reporte-stat-value {
-    display: block;
-    font-size: 1.3rem;
-    font-weight: 800;
-    color: var(--text-main, #f1f5f9);
-}
-
-/* Badge info for "Prueba" contract state */
-.admin-badge-info {
-    background: rgba(96, 165, 250, 0.15);
-    color: #60a5fa;
-    padding: 3px 10px;
-    border-radius: 20px;
-    font-weight: 600;
-}
-
-@media (max-width: 600px) {
-    .mgp-grid {
-        grid-template-columns: 1fr;
-    }
-    .reporte-resumen {
-        grid-template-columns: 1fr;
-    }
-}
 
 
 

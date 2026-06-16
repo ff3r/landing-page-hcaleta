@@ -10,73 +10,6 @@ document.addEventListener("DOMContentLoaded", () => {
         { name: "Luisa Fernanda Ríos", dni: "45678901", tier: "Plata", badgeClass: "admin-badge-info", points: 420, lastVis: "01/06/2026" },
         { name: "Juan Manuel Castro", dni: "40789012", tier: "Bronce", badgeClass: "admin-badge-success", points: 150, lastVis: "28/05/2026" }
     ];
-    // Control del botón Ver Todos
-    let showAllPatients = false;
-    const MAX_VISIBLE_PATIENTS = 5;
-
-    // =========================
-// REGISTRAR PACIENTE
-// =========================
-
-    const registerPatientForm =
-        document.getElementById("registerPatientForm");
-
-    if (registerPatientForm) {
-
-        registerPatientForm.addEventListener(
-            "submit",
-            function (e) {
-
-                e.preventDefault();
-
-                const name =
-                    document.getElementById("newPatientName")
-                        .value.trim();
-
-                const dni =
-                    document.getElementById("newPatientDni")
-                        .value.trim();
-
-                if (!name || !dni) {
-                    alert("Complete todos los campos.");
-                    return;
-                }
-
-                if (!/^\d{8}$/.test(dni)) {
-                    alert("El DNI debe contener exactamente 8 dígitos.");
-                    return;
-                }
-
-                const existe = loyaltyPatients.some(
-                    patient => patient.dni === dni
-                );
-
-                if (existe) {
-                    alert("Ya existe un paciente con ese DNI.");
-                    return;
-                }
-
-                loyaltyPatients.push({
-                    name: name,
-                    dni: dni,
-                    tier: "Bronce",
-                    badgeClass: "admin-badge-success",
-                    points: 0,
-                    lastVis: new Date().toLocaleDateString("es-PE")
-                });
-
-                renderPatientsTable();
-                updateMetrics();
-
-                registerPatientForm.reset();
-
-                alert(
-                    `Paciente registrado correctamente.\n\nNombre: ${name}\nDNI: ${dni}`
-                );
-            }
-        );
-    }
-
 
     // beneficios costos
 
@@ -122,9 +55,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const totalRedeemedBenefitsEl = document.getElementById("totalRedeemedBenefits");
     const redemptionForm = document.getElementById("redemptionForm");
     const pointsAssignmentForm =document.getElementById("pointsAssignmentForm");
-    const totalPatientsEl =document.getElementById("totalPatients");
-    const btnTogglePatients =document.getElementById("btnTogglePatients");
-
 
 
     // Costo de Puntos por Beneficios
@@ -170,71 +100,33 @@ document.addEventListener("DOMContentLoaded", () => {
             // El total de canjes de este mes será la cantidad de registros en el historial
             totalRedeemedBenefitsEl.textContent = (140 + redemptionsLog.length).toString();
         }
-        if (totalPatientsEl) {
-            totalPatientsEl.textContent =loyaltyPatients.length;
-        }
-
     };
 
     // 4. RENDERIZAR LA TABLA DE PACIENTES DE FIDELIDAD
     const renderPatientsTable = () => {
         if (!loyaltyPatientsTable) return;
-
         // Ordenar de mayor a menor puntaje
         loyaltyPatients.sort((a, b) => b.points - a.points);
 
-        // Mostrar todos o solo los primeros 5
-        const patientsToShow = showAllPatients
-            ? loyaltyPatients
-            : loyaltyPatients.slice(0, MAX_VISIBLE_PATIENTS);
-
         loyaltyPatientsTable.innerHTML = "";
 
-        patientsToShow.forEach(patient => {
+        loyaltyPatients.forEach(patient => {
 
             const tr = document.createElement("tr");
-
             tr.innerHTML = `
-            <td>
-                <strong>${patient.name}</strong><br>
-                <span style="font-size:0.8rem; color:var(--text-muted);">
-                    DNI ${patient.dni}
-                </span>
-            </td>
+                <td>
+                    <strong>${patient.name}</strong><br>
+                    <span style="font-size:0.8rem; color:var(--text-muted);">DNI ${patient.dni}</span>
+                </td>
+                <td><span class="admin-badge ${patient.badgeClass}">Nivel ${patient.tier}</span></td>
+                <td><strong style="color: var(--primary);">${patient.points} pts</strong></td>
+                <td>${patient.lastVis}</td>
+                <td><button class="admin-btn admin-btn-secondary btn-detail" data-dni="${patient.dni}" style="padding: 4px 8px; font-size: 0.75rem;">Detalle</button></td>
+            `;
 
-            <td>
-                <span class="admin-badge ${patient.badgeClass}">
-                    Nivel ${patient.tier}
-                </span>
-            </td>
-
-            <td>
-                <strong style="color: var(--primary);">
-                    ${patient.points} pts
-                </strong>
-            </td>
-
-            <td>${patient.lastVis}</td>
-
-            <td>
-                <button
-                    class="admin-btn admin-btn-secondary btn-detail"
-                    data-dni="${patient.dni}"
-                    style="padding:4px 8px;font-size:0.75rem;">
-                    Detalle
-                </button>
-            </td>
-        `;
-
+            // Botón de detalle simula ver la ficha del paciente
             tr.querySelector(".btn-detail").addEventListener("click", () => {
-                alert(
-                    `Ficha de Fidelidad de Paciente:\n\n` +
-                    `Nombre: ${patient.name}\n` +
-                    `DNI: ${patient.dni}\n` +
-                    `Nivel: ${patient.tier}\n` +
-                    `Puntos Acumulados: ${patient.points} pts\n` +
-                    `Última Visita: ${patient.lastVis}`
-                );
+                alert(`Ficha de Fidelidad de Paciente:\n\nNombre: ${patient.name}\nDNI: ${patient.dni}\nNivel: ${patient.tier}\nPuntos Acumulados: ${patient.points} pts\nÚltima Visita: ${patient.lastVis}`);
             });
 
             loyaltyPatientsTable.appendChild(tr);
@@ -389,25 +281,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-
-    if (btnTogglePatients) {
-
-        btnTogglePatients.addEventListener("click", () => {
-
-            showAllPatients = !showAllPatients;
-
-            btnTogglePatients.textContent =
-                showAllPatients
-                    ? "Mostrar Menos"
-                    : "Ver Todos";
-
-            renderPatientsTable();
-        });
-
-    }
-
-
-
     // 7. INICIALIZAR EL GRÁFICO DE SATISFACCIÓN (CHART.JS LINE CHART)
     const initChart = () => {
         const ctx = document.getElementById("satisfactionChart");
@@ -491,6 +364,3 @@ document.addEventListener("DOMContentLoaded", () => {
     updateMetrics();
     initChart();
 });
-
-
-
