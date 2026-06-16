@@ -72,42 +72,64 @@
 }
 
 .redemption-form .form-group input,
-.redemption-form .form-group select {
-    padding: 10px;
-    border: 1px solid var(--border-color);
-    background-color: var(--bg-body);
-    color: var(--text-main);
-    border-radius: 8px;
-    outline: none;
-    font-size: 0.9rem;
-    transition: var(--transition);
+.redemption-form .form-group select,
+#formPuntos input,
+#formPuntos select,
+#formCanje input,
+#formCanje select {
+    width: 100%;
+    padding: 12px 16px !important;
+    border: 1px solid var(--border-outer) !important;
+    border-radius: var(--border-radius-md) !important;
+    font-size: 0.9rem !important;
+    background-color: var(--bg-card) !important;
+    color: var(--text-main) !important;
+    outline: none !important;
+    transition: var(--transition) !important;
+    box-shadow: none !important;
 }
 
 .redemption-form .form-group input:focus,
-.redemption-form .form-group select:focus {
-    border-color: var(--primary);
-    background-color: var(--bg-card);
+.redemption-form .form-group select:focus,
+#formPuntos input:focus,
+#formPuntos select:focus,
+#formCanje input:focus,
+#formCanje select:focus {
+    border-color: var(--primary) !important;
+    box-shadow: 0 0 0 4px var(--primary-glow) !important;
 }
 
-/* Personalización de Badges de Nivel */
+/* Personalización de Badges de Nivel (Glow Metálico) */
 .admin-badge-danger {
-    background-color: rgba(239, 68, 68, 0.1);
-    color: #ef4444; /* Platino / Rojo */
+    background: linear-gradient(135deg, #cbd5e1 0%, #94a3b8 100%) !important;
+    color: #0f172a !important;
+    font-weight: 700 !important;
+    border: 1px solid #64748b !important;
+    box-shadow: 0 0 10px rgba(148, 163, 184, 0.25) !important;
 }
 
 .admin-badge-warning {
-    background-color: rgba(255, 159, 28, 0.1);
-    color: #ff9f1c; /* Oro / Naranja */
+    background: linear-gradient(135deg, #facc15 0%, #ca8a04 100%) !important;
+    color: #451a03 !important;
+    font-weight: 700 !important;
+    border: 1px solid #ca8a04 !important;
+    box-shadow: 0 0 10px rgba(234, 179, 8, 0.25) !important;
 }
 
 .admin-badge-info {
-    background-color: rgba(0, 153, 204, 0.1);
-    color: #0099cc; /* Plata / Azul */
+    background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%) !important;
+    color: #334155 !important;
+    font-weight: 700 !important;
+    border: 1px solid #cbd5e1 !important;
+    box-shadow: 0 0 10px rgba(203, 213, 225, 0.2) !important;
 }
 
 .admin-badge-success {
-    background-color: rgba(46, 196, 182, 0.1);
-    color: #2ec4b6; /* Bronce / Verde */
+    background: linear-gradient(135deg, #fed7aa 0%, #ea580c 100%) !important;
+    color: #431407 !important;
+    font-weight: 700 !important;
+    border: 1px solid #ea580c !important;
+    box-shadow: 0 0 10px rgba(234, 88, 12, 0.2) !important;
 }
 
 /* Marcador de posición (Placeholder) */
@@ -256,27 +278,33 @@
 .levels-content {
     display: flex;
     flex-direction: column;
-    gap: 18px; /* más espacio entre niveles */
+    gap: 14px;
     padding: 10px 0;
-}
-
-.level-item {
-    display: flex;
-    align-items: center;
-    gap: 20px; /* separación entre badge y puntos */
-}
-
-.level-points {
-    font-size: 0.9rem;
-    font-weight: 450;
-    color: var(--text-main);
 }
 
 .level-item {
     display: grid;
     grid-template-columns: 100px 1fr;
     align-items: center;
-    gap: 20px;
+    gap: 16px;
+    padding: 12px 16px;
+    background-color: var(--bg-body);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-md);
+    transition: var(--transition);
+}
+
+.level-item:hover {
+    transform: translateX(4px);
+    border-color: var(--primary);
+    box-shadow: var(--shadow-sm);
+}
+
+.level-points {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-align: right;
 }
 
 .fidelidad-actions-grid{
