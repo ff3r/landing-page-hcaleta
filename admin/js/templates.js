@@ -74,7 +74,7 @@ const vistasPlantillas = {
     finanzas: `
         <div class="admin-card" style="margin-bottom: 2rem;">
             <div class="admin-card-header">
-                <h2 class="admin-card-title">Dashboard de Finanzas (Tesorería)</h2>
+                <h2 class="admin-card-title">Dashboard de Finanzas</h2>
             </div>
             <div class="finance-metrics-grid">
                 <div class="admin-card metric-card">
