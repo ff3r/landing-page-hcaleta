@@ -42,43 +42,43 @@ Landing page moderna para el Hospital La Caleta
 ```plaintext
 landing-page-hcaleta/
 │
-├── index.html                   # Página de inicio del portal público
-├── institucional.html           # Información institucional
-├── convocatorias.html           # Convocatorias laborales
-├── consulta-cupos.html         # Consulta de cupos de citas
-├── consulta-cita.html          # Consulta y reserva de citas
-├── contactenos.html             # Formulario de contacto
-├── comentarios-sugerencias.html # Registro de sugerencias y reclamos
-├── valoracion-usuarios.html     # Valoración del servicio médico
+├── index.html
+├── institucional.html
+├── convocatorias.html
+├── consulta-cupos.html
+├── consulta-cita.html
+├── contactenos.html
+├── comentarios-sugerencias.html
+├── valoracion-usuarios.html
 │
-├── admin/                       # Intranet Administrativa (ERP & CRM)
-│   ├── index.html               # Inicio de sesión (Login)
-│   ├── dashboard.html           # Dashboard ERP y accesos a Finanzas y RRHH
-│   ├── crm-email.html           # CRM Correo (Inbox clínico)
-│   ├── crm-fidelidad.html       # CRM Fidelización (Puntos y niveles)
-│   ├── css/                     # Hojas de estilo específicas del admin
-│   │   ├── shared.css           # Estilos comunes y variables globales
-│   │   ├── login.css            # Estilos del login con mesh gradient
-│   │   ├── dashboard.css        # Estilos de métricas, Gantt y ERP
-│   │   ├── crm-email.css        # Estilos de bandeja de entrada y EHR
-│   │   └── crm-fidelidad.css    # Estilos de tiers metálicos y puntos
-│   └── js/                      # Lógica de la intranet
-│       ├── auth.js              # Validación de sesión
-│       ├── common.js            # Temas claro/oscuro y perfil común
-│       ├── dashboard.js         # Lógica de finanzas, camas y Gantt
-│       ├── crm-email.js         # Lógica de bandeja e historial clínico
-│       ├── crm-fidelidad.js     # Lógica de acumulación de puntos y tiers
-│       └── templates.js         # Plantillas HTML dinámicas
+├── admin/
+│   ├── index.html
+│   ├── dashboard.html
+│   ├── crm-email.html
+│   ├── crm-fidelidad.html
+│   ├── css/
+│   │   ├── shared.css
+│   │   ├── login.css
+│   │   ├── dashboard.css
+│   │   ├── crm-email.css
+│   │   └── crm-fidelidad.css
+│   └── js/
+│       ├── auth.js
+│       ├── common.js
+│       ├── dashboard.js
+│       ├── crm-email.js
+│       ├── crm-fidelidad.js
+│       └── templates.js
 │
-├── css/                         # Estilos del portal público
+├── css/
 │   └── styles.css
 │
-├── js/                          # Scripts del portal público
+├── js/
 │   ├── script.js
 │   ├── comentarios.js
 │   └── valoracion.js
 │
-├── assets/                      # Recursos multimedia (logos, imágenes)
+├── assets/
 ├── .gitignore
 └── README.md
 ```
