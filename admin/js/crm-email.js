@@ -1286,6 +1286,9 @@ document.addEventListener("DOMContentLoaded", () => {
             const subject = document.getElementById("subjectEmail").value;
             const rawBody = document.getElementById("bodyEmail").value;
             const body = rawBody.replace(/\n/g, '<br>');
+            
+            // Capturar nombre del usuario logueado en la intranet
+            const senderName = document.getElementById("sidebarUserName") ? document.getElementById("sidebarUserName").innerText.trim() : "Administrador";
 
             const isDark = document.body.classList.contains("dark-mode");
 
@@ -1307,7 +1310,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     const newEmail = {
                         id: (Date.now()).toString(),
                         folder: "sent",
-                        sender: "Luis (Administrador)",
+                        sender: senderName,
                         email: "luis.admin@hcaleta.gob.pe",
                         time: "Ahora",
                         subject: subject,
@@ -1341,7 +1344,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 body: new URLSearchParams({
                     toEmail: to,
                     subject: subject,
-                    body: rawBody
+                    body: rawBody,
+                    senderName: senderName // remitente dinámico
                 })
             })
             .then(response => {
@@ -1354,7 +1358,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 const newEmail = {
                     id: (Date.now()).toString(),
                     folder: "sent",
-                    sender: "Luis (Administrador)",
+                    sender: senderName,
                     email: "luis.admin@hcaleta.gob.pe",
                     time: "Ahora",
                     subject: subject,
@@ -1385,7 +1389,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 const newEmail = {
                     id: (Date.now()).toString(),
                     folder: "sent",
-                    sender: "Luis (Administrador)",
+                    sender: senderName,
                     email: "luis.admin@hcaleta.gob.pe",
                     time: "Ahora",
                     subject: subject,
